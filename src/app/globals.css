@@ -29,6 +29,10 @@
     --text-body: #334155;
     --text-muted: #64748b;
     --text-heading: #0f172a;
+        --tj-ff-body: "Sora", sans-serif;
+    --tj-ff-heading: "Sora", sans-serif;
+    --tj-ff-russo: "Russo One", sans-serif;
+    --tj-ff-fontawesome: "Font Awesome 6 Pro";
   }
 
   .dark {
@@ -56,11 +60,18 @@
     border-radius: 4px;
   }
 
-  body {
+  /* body {
     background-color: var(--bg);
     color: var(--text-body);
     transition: background-color 0.3s ease, color 0.3s ease;
-  }
+
+  } */
+   body {
+  background-color: var(--bg);
+  color: var(--text-body);
+  font-family: var(--tj-ff-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 }
 
 @layer components {

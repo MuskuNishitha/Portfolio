@@ -41,8 +41,6 @@ export function Services() {
     </section>
   );
 }
-
-// components/Portfolio.jsx
 import { useState } from 'react';
 
 export function Portfolio() {
@@ -120,8 +118,6 @@ export function Portfolio() {
     </section>
   );
 }
-
-// components/Resume.jsx
 export function Resume() {
   const experience = [
     { time: '2022 – Present', title: 'Programming Course', place: 'Blockdots, London' },
@@ -332,8 +328,6 @@ export function Blog() {
     </section>
   );
 }
-
-// components/Contact.jsx
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);
 

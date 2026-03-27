@@ -1,12 +1,17 @@
-import { Contact } from '@/mainPages/Sections';
-import React from 'react';
+// app/contact/page.jsx
 
-const page = () => {
+import Contact from "@/mainPages/portfolioPages/Contact";
+
+
+export const metadata = {
+  title: 'Contact Me - Musku Nishitha | MERN Stack Developer',
+  description: 'Get in touch with Musku Nishitha, MERN Stack and React Native Developer. Available for freelance opportunities and full-time positions.',
+};
+
+export default function ContactPage() {
   return (
-    <div>
+    <main>
       <Contact />
-    </div>
+    </main>
   );
 }
-
-export default page;
