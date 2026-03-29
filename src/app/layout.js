@@ -250,7 +250,6 @@ export default function RootLayout({ children }) {
             <Header />
             <main>{children}</main>
             <Footer />
-            <ScrollTop />
             <CustomCursor />
           </ThemeProvider>
         </Providers>

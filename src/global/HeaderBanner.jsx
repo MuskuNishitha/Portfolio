@@ -74,7 +74,7 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
       style={{ 
         backgroundImage: `url('${bgImage}')`,
         backgroundAttachment: "fixed",
-        minHeight: "50vh",
+        minHeight: "10vh",
         display: "flex",
         alignItems: "center"
       }}
@@ -153,12 +153,12 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
         }}
       />
 
-      <div className="container-custom relative z-10 w-full py-20 md:py-28 lg:py-36">
+      <div className="container-custom relative z-10 w-full py-15 md:py-30 lg:py-12">
         <div className="text-center">
           {/* Title with Theme Transition */}
           <motion.h1
             variants={itemVariants}
-            className={`text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold ${titleColor} mb-4 select-none transition-colors duration-300`}
+            className={`text-3xl md:text-5xl lg:text-8xl xl:text-7xl font-bold ${titleColor} mb-4 select-none transition-colors duration-300`}
           >
             {title.split('').map((char, index) => (
               <motion.span

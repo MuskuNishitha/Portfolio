@@ -26,8 +26,11 @@ import {
   FiSend,
   FiUser as FiUserIcon,
   FiPhone,
-  FiMessageSquare
+  FiMessageSquare,
+  FiCheckCircle,
+  FiAlertCircle
 } from "react-icons/fi";
+
 const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function Header() {
@@ -106,8 +109,37 @@ export default function Header() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your name" });
+      return false;
+    }
+    if (!formData.email.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your email" });
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setSubmitStatus({ type: "error", message: "Please enter a valid email address" });
+      return false;
+    }
+    if (!formData.message.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your message" });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      setTimeout(() => {
+        setSubmitStatus({ type: "", message: "" });
+      }, 3000);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus({ type: "", message: "" });
 
@@ -118,10 +150,10 @@ export default function Header() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          phone: formData.phone || ""
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+          phone: formData.phone?.trim() || ""
         }),
       });
 
@@ -130,22 +162,29 @@ export default function Header() {
       if (response.ok) {
         setSubmitStatus({
           type: "success",
-          message: "Message sent successfully! I'll get back to you soon."
+          message: "✓ Message sent successfully! I'll get back to you within 24 hours."
         });
         setFormData({ name: "", email: "", phone: "", message: "" });
+        
+        // Auto close modal after 2 seconds on success
         setTimeout(() => {
           setIsModalOpen(false);
           setSubmitStatus({ type: "", message: "" });
         }, 2000);
       } else {
-        throw new Error(data.message || "Something went wrong");
+        throw new Error(data.message || data.error || "Failed to send message");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
       setSubmitStatus({
         type: "error",
-        message: error.message || "Failed to send message. Please try again."
+        message: error.message || "Network error. Please check your connection and try again."
       });
+      
+      // Clear error after 4 seconds
+      setTimeout(() => {
+        setSubmitStatus({ type: "", message: "" });
+      }, 4000);
     } finally {
       setIsSubmitting(false);
     }
@@ -153,6 +192,9 @@ export default function Header() {
 
   const openModal = () => {
     setIsModalOpen(true);
+    // Reset form when opening
+    setFormData({ name: "", email: "", phone: "", message: "" });
+    setSubmitStatus({ type: "", message: "" });
   };
 
   const closeModal = () => {
@@ -209,7 +251,6 @@ export default function Header() {
     exit: { opacity: 0, transition: { duration: 0.3 } }
   };
 
-  // Determine which logo to show based on theme
   const getLogoPath = () => {
     if (!mounted) return "/assets/white_bg.png";
     return isDarkMode ? "/assets/white_bg.png" : "/assets/black_bg.png";
@@ -231,14 +272,13 @@ export default function Header() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
-            {/* Logo */}
             <Link 
               href="/" 
               className="group relative flex-shrink-0" 
               onClick={() => handleNavClick("/")}
             >
               <motion.div 
-                className="relative w-[100px] sm:w-[110px] lg:w-[130px] h-[45px] sm:h-[55px] lg:h-[65px] transition-all duration-300 group-hover:scale-105"
+                className="relative w-[90px] sm:w-[110px] lg:w-[130px] h-[40px] sm:h-[55px] lg:h-[65px] transition-all duration-300 group-hover:scale-105"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
@@ -248,6 +288,7 @@ export default function Header() {
                   fill
                   className="object-contain"
                   priority
+                  sizes="(max-width: 640px) 200px, (max-width: 1024px) 250px, 250px"
                 />
               </motion.div>
             </Link>
@@ -291,7 +332,7 @@ export default function Header() {
                   key={item.name}
                   href={item.path}
                   onClick={() => handleNavClick(item.path)}
-                  className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 ${
+                  className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 whitespace-nowrap ${
                     activeItem === item.path
                       ? "text-primary"
                       : isDarkMode
@@ -312,7 +353,7 @@ export default function Header() {
               {navItems.length > 5 && (
                 <button
                   onClick={() => setMobileMenuOpen(true)}
-                  className={`px-2.5 py-2 text-xs font-medium transition-all hover:scale-105 ${
+                  className={`px-2.5 py-2 text-xs font-medium transition-all hover:scale-105 whitespace-nowrap ${
                     isDarkMode
                       ? "text-gray-300 hover:text-primary"
                       : "text-gray-700 hover:text-primary"
@@ -356,7 +397,7 @@ export default function Header() {
                 onClick={openModal}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold rounded-full py-2 px-5 lg:py-2.5 lg:px-6 xl:py-3 xl:px-7 overflow-hidden transition-all duration-300 hover:shadow-xl text-sm lg:text-base"
+                className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold rounded-full py-2 px-4 lg:py-2.5 lg:px-6 xl:py-3 xl:px-7 overflow-hidden transition-all duration-300 hover:shadow-xl text-sm lg:text-base"
               >
                 <span className="relative z-10">Hire Me!</span>
                 <motion.span
@@ -427,6 +468,7 @@ export default function Header() {
                       alt="Logo"
                       fill
                       className="object-contain"
+                      sizes="(max-width: 640px) 96px, 112px"
                     />
                   </div>
                   <motion.button
@@ -621,7 +663,7 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      {/* Hire Me Modal */}
+      {/* Hire Me Modal - Mobile Responsive */}
       <AnimatePresence>
         {isModalOpen && (
           <>
@@ -636,29 +678,29 @@ export default function Header() {
             />
 
             {/* Modal */}
-            <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+            <div className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-4">
               <motion.div
                 variants={modalVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className={`w-full max-w-md sm:max-w-lg rounded-2xl shadow-2xl overflow-hidden ${
+                className={`w-full max-w-[95%] sm:max-w-md md:max-w-lg rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] sm:max-h-[85vh] flex flex-col ${
                   isDarkMode ? "bg-gray-900" : "bg-white"
                 }`}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Header */}
-                <div className={`relative px-6 py-5 border-b ${
-                  isDarkMode ? "border-gray-800" : "border-gray-200"
+                {/* Header - Sticky */}
+                <div className={`sticky top-0 z-10 px-4 sm:px-6 py-4 sm:py-5 border-b ${
+                  isDarkMode ? "border-gray-800 bg-gray-900" : "border-gray-200 bg-white"
                 }`}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className={`text-xl font-bold ${
+                      <h3 className={`text-lg sm:text-xl font-bold ${
                         isDarkMode ? "text-white" : "text-gray-900"
                       }`}>
                         Hire Me
                       </h3>
-                      <p className={`text-sm mt-1 ${
+                      <p className={`text-xs sm:text-sm mt-0.5 sm:mt-1 ${
                         isDarkMode ? "text-gray-400" : "text-gray-600"
                       }`}>
                         Fill out the form and I'll get back to you within 24 hours
@@ -667,30 +709,30 @@ export default function Header() {
                     <button
                       onClick={closeModal}
                       disabled={isSubmitting}
-                      className={`p-2 rounded-lg transition-colors ${
+                      className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
                         isDarkMode
                           ? "hover:bg-gray-800"
                           : "hover:bg-gray-100"
                       } disabled:opacity-50`}
                     >
-                      <FiX className={`w-5 h-5 ${
+                      <FiX className={`w-4 h-4 sm:w-5 sm:h-5 ${
                         isDarkMode ? "text-gray-400" : "text-gray-600"
                       }`} />
                     </button>
                   </div>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                {/* Form - Scrollable */}
+                <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 space-y-3 sm:space-y-4">
                   {/* Name Field */}
                   <div>
-                    <label className={`block text-sm font-medium mb-2 ${
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
                       Full Name *
                     </label>
                     <div className="relative">
-                      <FiUserIcon className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${
+                      <FiUserIcon className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
                       <input
@@ -699,7 +741,7 @@ export default function Header() {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none ${
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${
                           isDarkMode
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
@@ -711,13 +753,13 @@ export default function Header() {
 
                   {/* Email Field */}
                   <div>
-                    <label className={`block text-sm font-medium mb-2 ${
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
                       Email Address *
                     </label>
                     <div className="relative">
-                      <FiMail className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${
+                      <FiMail className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
                       <input
@@ -726,7 +768,7 @@ export default function Header() {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none ${
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${
                           isDarkMode
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
@@ -738,13 +780,13 @@ export default function Header() {
 
                   {/* Phone Field */}
                   <div>
-                    <label className={`block text-sm font-medium mb-2 ${
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
-                      Phone Number
+                      Phone Number (Optional)
                     </label>
                     <div className="relative">
-                      <FiPhone className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${
+                      <FiPhone className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
                       <input
@@ -752,7 +794,7 @@ export default function Header() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none ${
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${
                           isDarkMode
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
@@ -764,13 +806,13 @@ export default function Header() {
 
                   {/* Message Field */}
                   <div>
-                    <label className={`block text-sm font-medium mb-2 ${
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
                       Message / Project Details *
                     </label>
                     <div className="relative">
-                      <FiMessageSquare className={`absolute left-3 top-3 w-4 h-4 ${
+                      <FiMessageSquare className={`absolute left-3 top-3 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
                       <textarea
@@ -778,8 +820,8 @@ export default function Header() {
                         value={formData.message}
                         onChange={handleInputChange}
                         required
-                        rows="4"
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none ${
+                        rows={4}
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none text-sm sm:text-base ${
                           isDarkMode
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
@@ -796,7 +838,7 @@ export default function Header() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className={`p-3 rounded-lg ${
+                        className={`p-2.5 sm:p-3 rounded-lg flex items-start gap-2 text-xs sm:text-sm ${
                           submitStatus.type === "success"
                             ? isDarkMode
                               ? "bg-green-900/20 text-green-400 border border-green-800"
@@ -806,7 +848,12 @@ export default function Header() {
                             : "bg-red-50 text-red-700 border border-red-200"
                         }`}
                       >
-                        {submitStatus.message}
+                        {submitStatus.type === "success" ? (
+                          <FiCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5" />
+                        ) : (
+                          <FiAlertCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5" />
+                        )}
+                        <span className="flex-1">{submitStatus.message}</span>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -815,17 +862,17 @@ export default function Header() {
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="relative w-full py-3 bg-gradient-to-r from-primary to-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                    className="relative w-full py-2.5 sm:py-3 bg-gradient-to-r from-primary to-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden text-sm sm:text-base"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <span className={`inline-flex items-center gap-2 transition-all ${isSubmitting ? "opacity-0" : "opacity-100"}`}>
+                    <span className={`inline-flex items-center justify-center gap-2 transition-all ${isSubmitting ? "opacity-0" : "opacity-100"}`}>
                       Send Message
-                      <FiSend className="w-4 h-4" />
+                      <FiSend className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </span>
                     {isSubmitting && (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -834,11 +881,11 @@ export default function Header() {
                   </motion.button>
                 </form>
 
-                {/* Footer */}
-                <div className={`px-6 py-4 border-t ${
+                {/* Footer - Sticky */}
+                <div className={`sticky bottom-0 px-4 sm:px-6 py-3 sm:py-4 border-t ${
                   isDarkMode ? "border-gray-800 bg-gray-800/30" : "border-gray-200 bg-gray-50"
                 }`}>
-                  <p className={`text-xs text-center ${
+                  <p className={`text-[10px] sm:text-xs text-center ${
                     isDarkMode ? "text-gray-400" : "text-gray-500"
                   }`}>
                     I'll respond within 24 hours. Your information is safe with me.

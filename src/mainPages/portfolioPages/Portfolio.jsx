@@ -1,478 +1,437 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
-import HeaderBanner from '@/global/HeaderBanner'
 import { useTheme } from '@/components/ThemeProvider'
+import { FiArrowRight, FiGithub, FiExternalLink } from 'react-icons/fi'
 
 export default function Portfolio() {
   const [filter, setFilter] = useState('all')
   const [selectedProject, setSelectedProject] = useState(null)
+  const [mounted, setMounted] = useState(false)
+  const [hoveredCard, setHoveredCard] = useState(null)
+  const sectionRef = useRef(null)
+  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
   const { isDarkMode } = useTheme()
 
+  useEffect(() => { setMounted(true) }, [])
+
   const categories = [
-    { id: 'all', name: 'All Projects', icon: '🎯' },
-    { id: 'ecommerce', name: 'E-Commerce', icon: '🛒' },
-    { id: 'mobile', name: 'Mobile Apps', icon: '📱' },
-    { id: 'dashboard', name: 'Dashboards', icon: '📊' }
+    { id: 'all', name: 'All Work', count: 4 },
+    { id: 'ecommerce', name: 'Web Development', count: 3 },
+    { id: 'mobile', name: 'Applications', count: 1 },
+    { id: 'dashboard', name: 'Dashboards', count: 1 },
   ]
 
   const projects = [
     {
       id: 1,
-      title: "EWShopping",
-      category: "ecommerce",
-      subcategory: "Multi-Vendor E-Commerce Platform",
-      period: "Jun 2024 - Present",
-      image: "/assets/projects/ewshopping.jpg",
-      icon: "🛍️",
-      description: "Full-scale multi-vendor e-commerce platform with customer website, admin panel, seller panel, and mobile app.",
+      title: 'EWShopping',
+      category: 'ecommerce',
+      subcategory: 'Web Development',
+      period: 'Jun 2024 – Present',
+      image: '/assets/projects/Ewshooping.png',
+      description: 'Full-scale multi-vendor e-commerce platform with customer website, admin panel, seller panel, and mobile app.',
       features: [
-        "Next.js customer website with 20% improved SEO and performance",
-        "Admin & Seller dashboards with React (Vite) and Tailwind CSS",
-        "Cross-platform mobile app with React Native",
-        "Firebase for real-time updates, reducing data sync delay by 50%",
-        "Hostinger deployment with 99% uptime"
+        'Next.js customer website with 20% improved SEO and performance',
+        'Admin & Seller dashboards with React (Vite) and Tailwind CSS',
+        'Cross-platform mobile app with React Native',
+        'Firebase for real-time updates, reducing data sync delay by 50%',
+        'Hostinger deployment with 99% uptime',
       ],
-      tech: ["Next.js", "React.js (Vite)", "React Native", "Node.js", "Express.js", "MongoDB", "Tailwind CSS", "Firebase", "Git"],
-      liveLink: "#",
-      githubLink: "https://github.com/MuskuNishitha/ewshopping",
-      challenges: "Implementing real-time inventory sync across multiple vendors and platforms simultaneously."
+      tech: ['Next.js', 'React.js', 'React Native', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Firebase'],
+      liveLink: 'https://ewshopping-demo.vercel.app',
+      githubLink: 'https://github.com/MuskuNishitha/ewshopping',
+      challenges: 'Implementing real-time inventory sync across multiple vendors and platforms simultaneously.',
+      solution: 'Implemented WebSocket connections and optimised DB queries to ensure real-time synchronisation with 99.9% accuracy.',
     },
     {
       id: 2,
-      title: "KiranaWorld",
-      category: "ecommerce",
-      subcategory: "Grocery E-Commerce Platform",
-      period: "Apr 2025 - Present",
-      image: "/assets/projects/kiranaworld.jpg",
-      icon: "🥬",
-      description: "Grocery e-commerce platform enabling online orders of fruits, vegetables, and household essentials.",
+      title: 'KiranaWorld',
+      category: 'ecommerce',
+      subcategory: 'Web Development',
+      period: 'Apr 2025 – Present',
+      image: '/assets/projects/KiranaWorld.png',
+      description: 'Grocery e-commerce platform enabling online orders of fruits, vegetables, and household essentials.',
       features: [
-        "Responsive customer website with React.js (Vite), improving UX by 30%",
-        "Admin Panel for efficient inventory and order management",
-        "Cross-platform mobile app with React Native",
-        "Scalable backend with Node.js, Express.js, and MongoDB",
-        "Smooth checkout experience across all platforms"
+        'Responsive customer website with React.js (Vite), improving UX by 30%',
+        'Admin Panel for efficient inventory and order management',
+        'Cross-platform mobile app with React Native',
+        'Scalable backend with Node.js, Express.js, and MongoDB',
+        'Smooth checkout experience across all platforms',
       ],
-      tech: ["React.js (Vite)", "React Native", "Node.js", "Express.js", "MongoDB", "Tailwind CSS", "Git"],
-      liveLink: "#",
-      githubLink: "https://github.com/MuskuNishitha/kiranaworld",
-      challenges: "Managing real-time inventory updates and preventing overselling during peak hours."
+      tech: ['React.js', 'React Native', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Redux Toolkit'],
+      liveLink: 'https://kiranaworld-demo.vercel.app',
+      githubLink: 'https://github.com/MuskuNishitha/kiranaworld',
+      challenges: 'Managing real-time inventory updates and preventing overselling during peak hours.',
+      solution: 'Implemented optimistic updates with rollback mechanisms and used Redis caching for inventory management.',
     },
     {
       id: 3,
-      title: "POT Dashboard",
-      category: "dashboard",
-      subcategory: "Construction Resource Management System",
-      period: "Nov 2025 - Jan 2026",
-      image: "/assets/projects/pot-dashboard.jpg",
-      icon: "🏗️",
-      description: "Mobile dashboard for visualizing construction project metrics including cost, manpower, and progress.",
+      title: 'POT Dashboard',
+      category: 'dashboard',
+      subcategory: 'Dashboard',
+      period: 'Nov 2025 – Jan 2026',
+      image: '/assets/projects/POT.png',
+      description: 'Mobile dashboard for visualising construction project metrics including cost, manpower, and progress.',
       features: [
-        "Dynamic charts and graphs for real-time decision-making",
-        "Responsive UI for mobile and tablet, improving field usability by 40%",
-        "State management with Redux Toolkit",
-        "Real-time data visualization",
-        "Project cost and resource tracking"
+        'Dynamic charts and graphs for real-time decision-making',
+        'Responsive UI for mobile and tablet, improving field usability by 40%',
+        'State management with Redux Toolkit',
+        'Real-time data visualisation with Chart.js',
+        'Project cost and resource tracking with export capabilities',
       ],
-      tech: ["React Native", "Redux Toolkit", "Chart Libraries", "Node.js", "Express.js", "MongoDB"],
-      liveLink: "#",
-      githubLink: "https://github.com/MuskuNishitha/pot-dashboard",
-      challenges: "Creating smooth, real-time chart updates with large datasets on mobile devices."
+      tech: ['React Native', 'Redux Toolkit', 'Chart.js', 'Node.js', 'Express.js', 'MongoDB', 'Socket.io'],
+      liveLink: 'https://pot-dashboard-demo.vercel.app',
+      githubLink: 'https://github.com/MuskuNishitha/pot-dashboard',
+      challenges: 'Creating smooth, real-time chart updates with large datasets on mobile devices.',
+      solution: 'Implemented server-side data aggregation and used memoisation for efficient re-renders.',
     },
     {
       id: 4,
-      title: "Primera Dental Hub",
-      category: "ecommerce",
-      subcategory: "Dental E-Commerce Platform",
-      period: "Jul 2025 - Present",
-      image: "/assets/projects/primera.jpg",
-      icon: "🦷",
-      description: "Specialized dental e-commerce platform for products, instruments, and equipment.",
+      title: 'Primera Dental Hub',
+      category: 'ecommerce',
+      subcategory: 'Web Development',
+      period: 'Jul 2025 – Present',
+      image: '/assets/projects/Primeradental.png',
+      description: 'Specialised dental e-commerce platform for products, instruments, and equipment.',
       features: [
-        "Next.js customer website with improved performance and SEO",
-        "Firebase Authentication for secure login and email verification",
-        "Admin Panel with React (Vite) and Tailwind CSS",
-        "Cross-platform mobile apps (Customer & Service) with React Native",
-        "SMS and email notifications for orders and authentication",
-        "Analytics for monitoring user activity and business performance"
+        'Next.js customer website with improved performance and SEO',
+        'Firebase Authentication for secure login and email verification',
+        'Admin Panel with React (Vite) and Tailwind CSS',
+        'Cross-platform mobile apps (Customer & Service) with React Native',
+        'SMS and email notifications for orders and authentication',
       ],
-      tech: ["Next.js", "React.js (Vite)", "React Native", "Node.js", "Express.js", "MongoDB", "Firebase", "Tailwind CSS", "Git"],
-      liveLink: "#",
-      githubLink: "https://github.com/MuskuNishitha/primera-dental",
-      challenges: "Implementing role-based access for customer and service provider apps with secure authentication."
-    }
+      tech: ['Next.js', 'React.js', 'React Native', 'Node.js', 'Express.js', 'MongoDB', 'Firebase', 'Tailwind CSS'],
+      liveLink: 'https://primera-dental-demo.vercel.app',
+      githubLink: 'https://github.com/MuskuNishitha/primera-dental',
+      challenges: 'Implementing role-based access for customer and service provider apps with secure authentication.',
+      solution: 'Used JWT with refresh tokens and implemented RBAC (Role-Based Access Control) system.',
+    },
   ]
 
-  const filteredProjects = filter === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === filter)
+  const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter)
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  }
+  if (!mounted) return null
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    }
-  }
+  // Theme-based colors matching your header
+  const bgColor = isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
+  const cardBg = isDarkMode ? 'bg-gray-800' : 'bg-white'
+  const textPrimary = isDarkMode ? 'text-white' : 'text-gray-900'
+  const textSecondary = isDarkMode ? 'text-gray-300' : 'text-gray-600'
+  const textMuted = isDarkMode ? 'text-gray-400' : 'text-gray-500'
+  const borderColor = isDarkMode ? 'border-gray-700' : 'border-gray-200'
+  const tagBg = isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+  const tagText = isDarkMode ? 'text-gray-300' : 'text-gray-600'
+  const activeFilterBg = isDarkMode ? 'bg-primary/20' : 'bg-primary/10'
+  const activeFilterText = 'text-primary'
+  const inactiveFilterText = isDarkMode ? 'text-gray-400' : 'text-gray-500'
 
   return (
-    <section 
-      id="portfolio" 
-      className={`py-[100px] relative overflow-hidden transition-colors duration-300 ${
-        isDarkMode ? 'bg-bg-2' : 'bg-gray-50'
-      }`}
+    <section
+      ref={sectionRef}
+      className={`${bgColor} py-20 lg:py-28 relative overflow-hidden transition-colors duration-300`}
+      style={{ minHeight: '100vh' }}
     >
-      <HeaderBanner title={"Portfolio"} />
-      
-      {/* Background Elements */}
-      <div 
-        className="absolute inset-0 bg-[length:60px_60px]"
-        style={{
-          backgroundImage: `linear-gradient(${isDarkMode ? 'rgba(135,80,247,0.04)' : 'rgba(135,80,247,0.06)'} 1px, transparent 1px), linear-gradient(90deg, ${isDarkMode ? 'rgba(135,80,247,0.04)' : 'rgba(135,80,247,0.06)'} 1px, transparent 1px)`
-        }}
-      />
-      <div 
-        className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full animate-float"
-        style={{
-          background: `radial-gradient(circle, ${isDarkMode ? 'rgba(135,80,247,0.08)' : 'rgba(135,80,247,0.05)'} 0%, transparent 70%)`
-        }}
-      />
-      <div 
-        className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full animate-float [animation-delay:2s]"
-        style={{
-          background: `radial-gradient(circle, ${isDarkMode ? 'rgba(135,80,247,0.08)' : 'rgba(135,80,247,0.05)'} 0%, transparent 70%)`
-        }}
-      />
-      
-      <div className="container-custom relative z-10">
-        {/* Section Header */}
-        <motion.div 
-          className="text-center mb-[60px]"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div
+          className="mb-12 text-center sm:text-left"
+        // initial={{ opacity: 0, y: 26 }}
+        // animate={isInView ? { opacity: 1, y: 0 } : {}}
+        // transition={{ duration: 0.55 }}
         >
-          <motion.span 
-            className="section-label"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            style={{ color: 'var(--primary-3)' }}
-          >
-            My Portfolio
-          </motion.span>
-          <motion.h2 
-            className="section-title"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            style={{ color: 'var(--text-heading)' }}
-          >
-            Featured Projects
-          </motion.h2>
-          <motion.div 
-            className="section-divider section-divider-center"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            style={{ backgroundColor: 'var(--primary)' }}
-          />
-          <motion.p 
-            className="section-desc mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            style={{ color: 'var(--text-muted)' }}
-          >
-            Here are some of my recent projects showcasing my expertise in MERN stack and React Native development.
-          </motion.p>
+          <p className={`text-primary font-semibold text-sm uppercase ${isDarkMode ? 'text-[#fff]' : 'text-[#000]'} tracking-wider mb-3`}>            My Work
+          </p>
+          <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${isDarkMode ? 'text-[#fff]' : 'text-[#000]'} mb-4`}>            Portfolio
+          </h2>
+          <div className="w-20 h-1 bg-primary rounded-full mx-auto sm:mx-0" />
         </motion.div>
 
-        {/* Filter Buttons */}
-        <motion.div 
-          className="flex flex-wrap justify-center gap-3 mb-[50px]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+        {/* Filter Bar */}
+        <motion.div
+
+          className={`flex flex-wrap justify-center sm:justify-start gap-2 mb-12 pb-4 border-b ${borderColor}`}
         >
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setFilter(cat.id)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-                filter === cat.id
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25'
-                  : isDarkMode
-                    ? 'bg-bg-card border border-border text-text-body hover:border-primary hover:text-primary-3'
-                    : 'bg-white border border-gray-200 text-gray-600 hover:border-primary hover:text-primary-3'
-              }`}
-            >
-              <span>{cat.icon}</span>
-              {cat.name}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const active = filter === cat.id
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setFilter(cat.id)}
+                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${active
+                  ? `${activeFilterBg} ${activeFilterText}`
+                  : `${inactiveFilterText} hover:${activeFilterText} hover:${activeFilterBg}`
+                  }`}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  {cat.name}
+                  <span className={`text-xs px-1.5 py-0.5 rounded-full ${active
+                    ? 'bg-primary/30 text-primary'
+                    : isDarkMode ? 'bg-gray-700 text-gray-400' : 'bg-gray-200 text-gray-500'
+                    }`}>
+                    {cat.count}
+                  </span>
+                </span>
+                {active && (
+                  <motion.span
+                    layoutId="activeFilter"
+                    className={`absolute inset-0 rounded-lg ${activeFilterBg}`}
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
+                )}
+              </button>
+            )
+          })}
         </motion.div>
 
         {/* Projects Grid */}
-        <motion.div 
-          className="grid md:grid-cols-2 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-        >
-          <AnimatePresence mode="wait">
-            {filteredProjects.map((project) => (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={filter}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          >
+            {filteredProjects.map((project, idx) => (
               <motion.div
                 key={project.id}
-                variants={itemVariants}
-                layout
-                className={`group relative rounded-2xl overflow-hidden transition-all duration-500 ${
-                  isDarkMode
-                    ? 'bg-gradient-to-br from-bg-card to-bg-3 border border-border'
-                    : 'bg-white border border-gray-200 shadow-sm hover:shadow-xl'
-                } hover:border-primary`}
-                whileHover={{ y: -8 }}
+                initial={{ opacity: 0, y: 38 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.42, delay: idx * 0.07 }}
+                onMouseEnter={() => setHoveredCard(project.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                className={`${cardBg} rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${hoveredCard === project.id
+                  ? 'shadow-2xl transform -translate-y-2'
+                  : 'shadow-lg'
+                  } ${borderColor} border`}
+                onClick={() => setSelectedProject(project)}
               >
-                {/* Project Image Placeholder with Icon */}
-                <div className={`relative h-[240px] overflow-hidden ${
-                  isDarkMode ? 'bg-gradient-to-br from-primary/10 to-secondary/10' : 'bg-gradient-to-br from-primary/5 to-secondary/5'
-                }`}>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`text-8xl transition-opacity duration-300 ${
-                      isDarkMode ? 'opacity-20 group-hover:opacity-30' : 'opacity-30 group-hover:opacity-40'
+                {/* Image Container */}
+                <div className="relative w-full h-56 overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+
+                  {/* Hover Overlay */}
+                  <div className={`absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-4 ${hoveredCard === project.id ? 'opacity-100' : ''
                     }`}>
-                      {project.icon}
-                    </div>
-                  </div>
-                  <div className={`absolute inset-0 bg-gradient-to-t ${
-                    isDarkMode ? 'from-bg-card via-transparent to-transparent' : 'from-white via-transparent to-transparent'
-                  }`} />
-                  
-                  {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center gap-4">
-                    <Link 
+                    <a
                       href={project.liveLink}
-                      className="w-12 h-12 rounded-full bg-white text-primary flex items-center justify-center hover:scale-110 transition-transform"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-3 bg-white rounded-full hover:bg-primary hover:text-white transition-colors"
                     >
-                      🌐
-                    </Link>
-                    <Link 
+                      <FiExternalLink className="w-5 h-5" />
+                    </a>
+                    <a
                       href={project.githubLink}
                       target="_blank"
-                      className="w-12 h-12 rounded-full bg-white text-primary flex items-center justify-center hover:scale-110 transition-transform"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-3 bg-white rounded-full hover:bg-primary hover:text-white transition-colors"
                     >
-                      ⌘
-                    </Link>
+                      <FiGithub className="w-5 h-5" />
+                    </a>
                   </div>
                 </div>
 
-                {/* Project Content */}
+                {/* Content */}
                 <div className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <span className="text-xs text-primary-3 bg-primary/10 px-3 py-1 rounded-full">
-                        {project.subcategory}
-                      </span>
-                    </div>
-                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{project.period}</span>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-semibold text-primary uppercase tracking-wider">
+                      {project.subcategory}
+                    </span>
+                    <span className={`text-xs ${textMuted}`}>
+                      {project.period}
+                    </span>
                   </div>
-                  
-                  <h3 
-                    className="text-xl font-bold mb-2 group-hover:text-primary-3 transition-colors"
-                    style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}
-                  >
+
+                  <h3 className={`text-xl font-bold mb-2 ${textPrimary}`}>
                     {project.title}
                   </h3>
-                  
-                  <p className="text-sm mb-4 leading-relaxed" style={{ color: 'var(--text-body)' }}>
+
+                  <p className={`text-sm ${textSecondary} line-clamp-2 mb-4`}>
                     {project.description}
                   </p>
 
-                  {/* Features List */}
-                  <div className="mb-4">
-                    <h4 className="text-xs font-semibold text-primary-3 mb-2">Key Features:</h4>
-                    <ul className="space-y-1">
-                      {project.features.slice(0, 3).map((feature, idx) => (
-                        <li key={idx} className="text-xs flex items-start gap-1.5" style={{ color: 'var(--text-muted)' }}>
-                          <span className="text-primary-3">▹</span>
-                          {feature.length > 80 ? feature.substring(0, 80) + "..." : feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.slice(0, 5).map((tech, idx) => (
-                      <span 
-                        key={idx}
-                        className={`px-2 py-1 rounded-md text-[10px] ${
-                          isDarkMode
-                            ? 'bg-bg-2 border border-border text-text-muted'
-                            : 'bg-gray-100 border border-gray-200 text-gray-600'
-                        }`}
+                  {/* Tech Stack Tags */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tech.slice(0, 3).map((tech) => (
+                      <span
+                        key={tech}
+                        className={`text-xs px-2 py-1 rounded-md ${tagBg} ${tagText}`}
                       >
                         {tech}
                       </span>
                     ))}
-                    {project.tech.length > 5 && (
-                      <span className="px-2 py-1 text-[10px] text-primary-3">
-                        +{project.tech.length - 5} more
+                    {project.tech.length > 3 && (
+                      <span className={`text-xs px-2 py-1 rounded-md bg-primary/20 text-primary`}>
+                        +{project.tech.length - 3}
                       </span>
                     )}
                   </div>
 
                   {/* View Details Button */}
                   <button
-                    onClick={() => setSelectedProject(project)}
-                    className={`mt-5 w-full py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
-                      isDarkMode
-                        ? 'border border-border text-text-body hover:border-primary hover:text-primary-3'
-                        : 'border border-gray-200 text-gray-600 hover:border-primary hover:text-primary-3'
-                    }`}
+                    className={`w-full py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 ${isDarkMode
+                      ? 'bg-gray-700 text-gray-300 hover:bg-primary hover:text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-primary hover:text-white'
+                      }`}
                   >
-                    View Details →
+                    View Details
+                    <FiArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </motion.div>
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
 
-        {/* View All Projects Button */}
-        <motion.div 
-          className="text-center mt-[60px]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <Link href="#" className="btn-primary">
-            View All Projects →
-          </Link>
-        </motion.div>
+        {/* Empty State */}
+        <AnimatePresence>
+          {filteredProjects.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-center py-20"
+            >
+              <p className="text-6xl mb-4">🔍</p>
+              <h3 className={`text-2xl font-bold mb-2 ${textPrimary}`}>
+                No projects found
+              </h3>
+              <p className={textMuted}>Try another filter category</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Project Details Modal */}
+      {/* Project Modal */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className={`rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-y-auto ${
-                isDarkMode ? 'bg-bg-card border border-border' : 'bg-white border border-gray-200'
-              }`}
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className={`${cardBg} rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col ${borderColor} border`}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className={`sticky top-0 p-5 flex justify-between items-center ${
-                isDarkMode ? 'bg-bg-card border-b border-border' : 'bg-white border-b border-gray-200'
-              }`}>
-                <h3 className="text-xl font-bold" style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}>
-                  {selectedProject.title}
-                </h3>
+              {/* Modal Image */}
+              <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-primary/20 to-primary/5">
+                <Image
+                  src={selectedProject.image}
+                  alt={selectedProject.title}
+                  fill
+                  className="object-cover object-top"
+                />
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className={`w-8 h-8 rounded-full transition-colors ${
-                    isDarkMode
-                      ? 'bg-bg-2 text-text-muted hover:text-white'
-                      : 'bg-gray-100 text-gray-600 hover:text-gray-900'
-                  }`}
+                  className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors"
                 >
                   ✕
                 </button>
               </div>
-              
-              <div className="p-6">
-                <div className="mb-6">
-                  <span className="text-xs text-primary-3 bg-primary/10 px-3 py-1 rounded-full">
-                    {selectedProject.subcategory}
-                  </span>
-                  <span className="text-xs ml-3" style={{ color: 'var(--text-muted)' }}>{selectedProject.period}</span>
+
+              {/* Modal Content */}
+              <div className="flex-1 overflow-y-auto p-6 md:p-8">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                  <div>
+                    <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${textPrimary}`}>
+                      {selectedProject.title}
+                    </h3>
+                    <p className="text-primary font-medium">
+                      {selectedProject.subcategory} • {selectedProject.period}
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <a
+                      href={selectedProject.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+                    >
+                      <FiExternalLink className="w-4 h-4" />
+                      Live Demo
+                    </a>
+                    <a
+                      href={selectedProject.githubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${isDarkMode
+                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                      <FiGithub className="w-4 h-4" />
+                      GitHub
+                    </a>
+                  </div>
                 </div>
-                
-                <p className="mb-6 leading-relaxed" style={{ color: 'var(--text-body)' }}>
+
+                <p className={`${textSecondary} mb-6 leading-relaxed`}>
                   {selectedProject.description}
                 </p>
-                
-                <h4 className="text-sm font-semibold mb-3" style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}>
-                  📋 All Features:
-                </h4>
-                <ul className="space-y-2 mb-6">
-                  {selectedProject.features.map((feature, idx) => (
-                    <li key={idx} className="text-sm flex items-start gap-2" style={{ color: 'var(--text-body)' }}>
-                      <span className="text-primary-3 mt-1">▹</span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                
-                <h4 className="text-sm font-semibold mb-3" style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}>
-                  ⚙️ Tech Stack:
-                </h4>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {selectedProject.tech.map((tech, idx) => (
-                    <span 
-                      key={idx} 
-                      className={`px-3 py-1.5 rounded-lg text-sm ${
-                        isDarkMode
-                          ? 'bg-bg-2 border border-border text-text-body'
-                          : 'bg-gray-100 border border-gray-200 text-gray-700'
-                      }`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
+
+                {/* Features */}
+                <div className="mb-6">
+                  <h4 className={`font-semibold mb-3 ${textPrimary}`}>Key Features</h4>
+                  <ul className="space-y-2">
+                    {selectedProject.features.map((feature, idx) => (
+                      <motion.li
+                        key={idx}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className={`flex items-start gap-2 text-sm ${textSecondary}`}
+                      >
+                        <span className="text-primary mt-1">▹</span>
+                        {feature}
+                      </motion.li>
+                    ))}
+                  </ul>
                 </div>
-                
-                <h4 className="text-sm font-semibold mb-3" style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}>
-                  💡 Challenges & Solutions:
-                </h4>
-                <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-body)' }}>
-                  {selectedProject.challenges}
-                </p>
-                
-                <div className="flex gap-4 pt-4 border-t" style={{ borderColor: isDarkMode ? 'var(--border)' : '#e5e7eb' }}>
-                  <Link href={selectedProject.liveLink} className="btn-primary flex-1 text-center">
-                    Live Demo 🌐
-                  </Link>
-                  <Link href={selectedProject.githubLink} target="_blank" className="btn-secondary flex-1 text-center">
-                    GitHub ⌘
-                  </Link>
+
+                {/* Tech Stack */}
+                <div className="mb-6">
+                  <h4 className={`font-semibold mb-3 ${textPrimary}`}>Tech Stack</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className={`text-sm px-3 py-1 rounded-lg ${tagBg} ${tagText}`}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Challenge & Solution */}
+                <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
+                  <h4 className={`font-semibold mb-2 ${textPrimary}`}>Challenge</h4>
+                  <p className={`text-sm mb-4 ${textSecondary}`}>
+                    {selectedProject.challenges}
+                  </p>
+                  <h4 className={`font-semibold mb-2 ${textPrimary}`}>Solution</h4>
+                  <p className={`text-sm ${textSecondary}`}>
+                    {selectedProject.solution}
+                  </p>
                 </div>
               </div>
             </motion.div>
