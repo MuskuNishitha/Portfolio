@@ -48,7 +48,7 @@ export const metadata = {
     siteName: "Nishitha Portfolio",
     images: [
       {
-        url: "/profile.jpg",
+        url: "https://res.cloudinary.com/db7ysyonw/image/upload/v1774774517/ProfileMain_gzqney.jpg",
         width: 800,
         height: 800,
         alt: "Nishitha Reddy Musku",
@@ -61,12 +61,12 @@ export const metadata = {
     card: "summary_large_image",
     title: "Nishitha Portfolio",
     description: "React Native Developer",
-    images: ["/profile.jpg"],
+    images: [`https://res.cloudinary.com/db7ysyonw/image/upload/v1774774517/ProfileMain_gzqney.jpg`],
   },
 
   icons: {
-    icon: "/profile.jpg",
-    apple: "/profile.jpg",
+    icon: "https://res.cloudinary.com/db7ysyonw/image/upload/v1774774517/ProfileMain_gzqney.jpg",
+    apple: "https://res.cloudinary.com/db7ysyonw/image/upload/v1774774517/ProfileMain_gzqney.jpg",
   },
 
   robots: {
