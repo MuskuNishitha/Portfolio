@@ -24,6 +24,15 @@ const russoOne = Russo_One({
   display: "swap",
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#111827" },
+  ],
+};
+
 export const metadata = {
   metadataBase: new URL(BASE_URL),
 
@@ -48,30 +57,34 @@ export const metadata = {
   publisher: "Nishitha Reddy Musku",
 
   openGraph: {
-    title: "Nishitha Reddy Musku Portfolio",
+    title: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
     description:
-      "Explore projects, skills, and experience in React Native, MERN Stack, and frontend development.",
+      "Explore projects, skills, and experience in React Native, MERN Stack, and frontend development. Building scalable mobile and web applications.",
     url: BASE_URL,
-    siteName: "Nishitha Portfolio",
+    siteName: "Nishitha Reddy Musku Portfolio",
     images: [
       {
-        url: "/og-image.jpg", // Use local or properly versioned image
+        url: `${BASE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Nishitha Reddy Musku Portfolio",
+        alt: "Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio",
+        type: "image/jpeg",
+        secureUrl: `${BASE_URL}/og-image.jpg`,
       },
     ],
     locale: "en_IN",
     type: "website",
+    determiner: "auto",
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Nishitha Reddy Musku Portfolio",
+    title: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
     description:
-      "React Native & MERN Stack Developer building scalable apps.",
-    creator: "@nishitha_reddy", // Update with actual handle
-    images: ["/og-image.jpg"],
+      "Portfolio of Nishitha Reddy Musku - React Native & MERN Stack Developer building scalable apps with modern UI/UX.",
+    creator: "@nishithareddy",
+    site: "@nishithareddy",
+    images: [`${BASE_URL}/og-image.jpg`],
   },
 
   robots: {
@@ -87,25 +100,34 @@ export const metadata = {
 
   alternates: {
     canonical: BASE_URL,
+    languages: {
+      "en-US": BASE_URL,
+    },
   },
 
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico"],
   },
 
   manifest: "/site.webmanifest",
+  
   category: "technology",
-};
+  
+  verification: {
+    google: "your-google-verification-code", // Add your Google Search Console code
+  },
 
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#111827" },
-  ],
+  other: {
+    "facebook-domain-verification": "your-facebook-verification-code", // Optional
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -136,9 +158,9 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        {/* Structured Data */}
+        {/* Structured Data - Person */}
         <Script
-          id="json-ld"
+          id="person-json-ld"
           type="application/ld+json"
           strategy="afterInteractive"
         >
@@ -147,18 +169,79 @@ export default function RootLayout({ children }) {
             "@type": "Person",
             name: "Nishitha Reddy Musku",
             url: BASE_URL,
-            image:
-              "https://res.cloudinary.com/db7ysyonw/image/upload/v1774774517/ProfileMain_gzqney.jpg",
-            jobTitle: "React Native & MERN Stack Developer",
+            image: `${BASE_URL}/profile.jpg`,
             sameAs: [
-              "https://github.com/MuskuNishitha", // Update actual URL
-              "https://www.linkedin.com/in/musku-nishitha-7a535b36b", // Update actual URL
+              "https://github.com/muskunishitha",
+              "https://linkedin.com/in/muskunishitha",
+              "https://twitter.com/nishithareddy",
             ],
+            jobTitle: "React Native & MERN Stack Developer",
             worksFor: {
               "@type": "Organization",
-              name: "Freelancer / Developer",
+              name: "Freelance Developer",
             },
-            knowsAbout: ["React Native", "MERN Stack", "TypeScript", "Node.js"],
+            knowsAbout: [
+              "React Native",
+              "MERN Stack",
+              "TypeScript",
+              "Node.js",
+              "Express.js",
+              "MongoDB",
+              "Next.js",
+            ],
+            alumniOf: {
+              "@type": "EducationalOrganization",
+              name: "Your University Name",
+            },
+            description:
+              "React Native & MERN Stack Developer specializing in building scalable mobile and web applications with modern technologies.",
+          })}
+        </Script>
+
+        {/* Structured Data - Website */}
+        <Script
+          id="website-json-ld"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Nishitha Reddy Musku Portfolio",
+            url: BASE_URL,
+            description:
+              "Portfolio of Nishitha Reddy Musku, React Native & MERN Stack Developer",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: `${BASE_URL}/search?q={search_term_string}`,
+              "query-input": "required name=search_term_string",
+            },
+          })}
+        </Script>
+
+        {/* Structured Data - BreadcrumbList */}
+        <Script
+          id="breadcrumb-json-ld"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: BASE_URL,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Portfolio",
+                item: `${BASE_URL}/portfolio`,
+              },
+            ],
           })}
         </Script>
 
