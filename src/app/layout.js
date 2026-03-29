@@ -6,7 +6,8 @@ import ScrollTop from "@/global/ScrollTop";
 import ThemeProvider from "@/components/ThemeProvider";
 import { Providers } from "@/components/ReduxProvider";
 import CustomCursor from "@/components/CustomCursor";
-// import DotsBackground from "@/global/DotsBackground";
+
+const BASE_URL = 'https://muskunishitha.vercel.app';
 
 const sora = Sora({
   subsets: ["latin"],
@@ -21,14 +22,62 @@ const russoOne = Russo_One({
 });
 
 export const metadata = {
-  title: "Nishitha Reddy Musku | React Native, MERN Stack & Frontend Developer",
+  metadataBase: new URL(BASE_URL),
+
+  title: {
+    default: "Nishitha Reddy Musku | React Native & MERN Stack Developer",
+    template: "%s | Nishitha Reddy Musku",
+  },
+
   description:
-    "React Native, MERN Stack & Frontend Developer with 2 years of experience building scalable mobile apps and modern full-stack web applications using MongoDB, Express.js, React.js, Node.js, HTML, CSS, and JavaScript.",
+    "React Native, MERN Stack & Frontend Developer with 2+ years of experience building scalable apps.",
+
+  keywords: [
+    "React Native Developer",
+    "MERN Stack Developer",
+    "Frontend Developer",
+  ],
+
+  authors: [{ name: "Nishitha Reddy Musku", url: BASE_URL }],
+  creator: "Nishitha Reddy Musku",
+
+  openGraph: {
+    title: "Nishitha Reddy Musku Portfolio",
+    description: "React Native & MERN Stack Developer",
+    url: BASE_URL,
+    siteName: "Nishitha Portfolio",
+    images: [
+      {
+        url: "/profile.jpg",
+        width: 800,
+        height: 800,
+        alt: "Nishitha Reddy Musku",
+      },
+    ],
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Nishitha Portfolio",
+    description: "React Native Developer",
+    images: ["/profile.jpg"],
+  },
+
   icons: {
-    icon: "/ProfileMain.png",
+    icon: "/profile.jpg",
+    apple: "/profile.jpg",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  alternates: {
+    canonical: BASE_URL,
   },
 };
-
 
 export default function RootLayout({ children }) {
   return (
@@ -57,14 +106,12 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
-        {/* <DotsBackground /> */}
-        <div className="fixed inset-0 pointer-events-none z-[9999] opacity-40 noise-bg" />
-        <Providers> {/* Wrap everything with Providers */}
+        <Providers>
           <ThemeProvider>
             <Header />
             <main>{children}</main>
             <Footer />
-            {/* <ScrollTop /> */}
+            <ScrollTop />
             <CustomCursor />
           </ThemeProvider>
         </Providers>
