@@ -5,12 +5,12 @@ import { useTheme } from "@/components/ThemeProvider";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  FiMail, 
-  FiSun, 
-  FiMoon, 
-  FiMenu, 
-  FiX, 
+import {
+  FiMail,
+  FiSun,
+  FiMoon,
+  FiMenu,
+  FiX,
   FiArrowRight,
   FiHome,
   FiUser,
@@ -89,7 +89,7 @@ export default function Header() {
     { name: "Services", path: "/services", icon: FiSettings },
     { name: "Portfolio", path: "/Portfolio", icon: FiFolder },
     { name: "Resume", path: "/Resume", icon: FiFileText },
-    { name: "Blog", path: "/Blog", icon: FiBookOpen },
+    // { name: "Blog", path: "/Blog", icon: FiBookOpen },
     { name: "Contact", path: "/Contact", icon: FiMailIcon },
   ];
 
@@ -132,7 +132,11 @@ export default function Header() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
     if (!validateForm()) {
       setTimeout(() => {
         setSubmitStatus({ type: "", message: "" });
@@ -165,7 +169,11 @@ export default function Header() {
           message: "✓ Message sent successfully! I'll get back to you within 24 hours."
         });
         setFormData({ name: "", email: "", phone: "", message: "" });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
         // Auto close modal after 2 seconds on success
         setTimeout(() => {
           setIsModalOpen(false);
@@ -180,7 +188,11 @@ export default function Header() {
         type: "error",
         message: error.message || "Network error. Please check your connection and try again."
       });
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
       // Clear error after 4 seconds
       setTimeout(() => {
         setSubmitStatus({ type: "", message: "" });
@@ -226,20 +238,20 @@ export default function Header() {
 
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.95, y: -20 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
+    visible: {
+      opacity: 1,
+      scale: 1,
       y: 0,
-      transition: { 
-        type: "spring", 
-        damping: 25, 
+      transition: {
+        type: "spring",
+        damping: 25,
         stiffness: 300,
-        duration: 0.4 
+        duration: 0.4
       }
     },
-    exit: { 
-      opacity: 0, 
-      scale: 0.95, 
+    exit: {
+      opacity: 0,
+      scale: 0.95,
       y: -20,
       transition: { duration: 0.3 }
     }
@@ -262,22 +274,30 @@ export default function Header() {
         variants={headerVariants}
         initial="initial"
         animate="animate"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
             ? isDarkMode
               ? "bg-gray-900/95 backdrop-blur-xl shadow-2xl border-b border-gray-800/50"
               : "bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-200/50"
             : "bg-transparent"
-        }`}
+          }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
+<<<<<<< HEAD
             <Link 
               href="/" 
               className="group relative flex-shrink-0" 
               onClick={() => handleNavClick("/")}
             >
               <motion.div 
+=======
+            <Link
+              href="/"
+              className="group relative flex-shrink-0"
+              onClick={() => handleNavClick("/")}
+            >
+              <motion.div
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                 className="relative w-[90px] sm:w-[110px] lg:w-[130px] h-[40px] sm:h-[55px] lg:h-[65px] transition-all duration-300 group-hover:scale-105"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -300,26 +320,24 @@ export default function Header() {
                   key={item.name}
                   href={item.path}
                   onClick={() => handleNavClick(item.path)}
-                  className={`relative px-3 xl:px-4 py-2 text-sm xl:text-base font-medium transition-all duration-300 group ${
-                    activeItem === item.path
+                  className={`relative px-3 xl:px-4 py-2 text-sm xl:text-base font-medium transition-all duration-300 group ${activeItem === item.path
                       ? "text-primary"
                       : isDarkMode
-                      ? "text-gray-300 hover:text-primary"
-                      : "text-gray-700 hover:text-primary"
-                  }`}
+                        ? "text-gray-300 hover:text-primary"
+                        : "text-gray-700 hover:text-primary"
+                    }`}
                 >
                   <span className="relative z-10">{item.name}</span>
-                  
+
                   {activeItem === item.path && (
                     <motion.span
                       layoutId="activeNav"
-                      className={`absolute inset-0 rounded-lg ${
-                        isDarkMode ? "bg-primary/20" : "bg-primary/10"
-                      }`}
+                      className={`absolute inset-0 rounded-lg ${isDarkMode ? "bg-primary/20" : "bg-primary/10"
+                        }`}
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
-                  
+
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-1/2" />
                 </Link>
               ))}
@@ -332,13 +350,17 @@ export default function Header() {
                   key={item.name}
                   href={item.path}
                   onClick={() => handleNavClick(item.path)}
+<<<<<<< HEAD
                   className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 whitespace-nowrap ${
                     activeItem === item.path
+=======
+                  className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 whitespace-nowrap ${activeItem === item.path
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                       ? "text-primary"
                       : isDarkMode
-                      ? "text-gray-300 hover:text-primary"
-                      : "text-gray-700 hover:text-primary"
-                  }`}
+                        ? "text-gray-300 hover:text-primary"
+                        : "text-gray-700 hover:text-primary"
+                    }`}
                 >
                   {item.name}
                   {activeItem === item.path && (
@@ -353,11 +375,15 @@ export default function Header() {
               {navItems.length > 5 && (
                 <button
                   onClick={() => setMobileMenuOpen(true)}
+<<<<<<< HEAD
                   className={`px-2.5 py-2 text-xs font-medium transition-all hover:scale-105 whitespace-nowrap ${
                     isDarkMode
+=======
+                  className={`px-2.5 py-2 text-xs font-medium transition-all hover:scale-105 whitespace-nowrap ${isDarkMode
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                       ? "text-gray-300 hover:text-primary"
                       : "text-gray-700 hover:text-primary"
-                  }`}
+                    }`}
                 >
                   More...
                 </button>
@@ -369,11 +395,10 @@ export default function Header() {
               {/* Theme Toggle */}
               <motion.button
                 onClick={toggleTheme}
-                className={`relative w-8 h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                  isDarkMode
+                className={`relative w-8 h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${isDarkMode
                     ? "bg-gray-800 border border-gray-700"
                     : "bg-gray-100 border border-gray-200"
-                }`}
+                  }`}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 aria-label="Toggle theme"
@@ -391,34 +416,35 @@ export default function Header() {
                   )}
                 </motion.div>
               </motion.button>
-
-              {/* Hire Me Button */}
               <motion.button
                 onClick={openModal}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+<<<<<<< HEAD
                 className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold rounded-full py-2 px-4 lg:py-2.5 lg:px-6 xl:py-3 xl:px-7 overflow-hidden transition-all duration-300 hover:shadow-xl text-sm lg:text-base"
+=======
+                className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-2)] text-white font-semibold rounded-full py-2 px-4 lg:py-2.5 lg:px-6 xl:py-3 xl:px-7 overflow-hidden transition-all duration-300 hover:shadow-xl text-sm lg:text-base"
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
               >
                 <span className="relative z-10">Hire Me!</span>
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary"
+                  className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-2)]"
                   initial={{ x: "100%" }}
                   whileHover={{ x: 0 }}
                   transition={{ duration: 0.3 }}
                 />
                 <span className="relative z-10 flex-shrink-0 w-4 h-4 lg:w-5 lg:h-5 bg-white rounded-full grid place-items-center">
-                  <FiArrowRight className="w-2.5 h-2.5 lg:w-3 lg:h-3 text-primary" />
+                  <FiArrowRight className="w-2.5 h-2.5 lg:w-3 lg:h-3" style={{ color: 'var(--primary)' }} />
                 </span>
               </motion.button>
             </div>
 
             {/* Mobile Menu Button */}
             <motion.button
-              className={`md:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors ${
-                isDarkMode
+              className={`md:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors ${isDarkMode
                   ? "hover:bg-gray-800"
                   : "hover:bg-gray-100"
-              }`}
+                }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               whileTap={{ scale: 0.95 }}
               aria-label="Toggle menu"
@@ -446,22 +472,20 @@ export default function Header() {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
-            
+
             {/* Menu Panel */}
             <motion.div
               variants={mobileMenuVariants}
               initial="closed"
               animate="open"
               exit="closed"
-              className={`fixed right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl z-50 md:hidden ${
-                isDarkMode ? "bg-gray-900" : "bg-white"
-              }`}
+              className={`fixed right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl z-50 md:hidden ${isDarkMode ? "bg-gray-900" : "bg-white"
+                }`}
             >
               <div className="flex flex-col h-full">
                 {/* Header */}
-                <div className={`flex items-center justify-between p-5 sm:p-6 border-b ${
-                  isDarkMode ? "border-gray-800" : "border-gray-200"
-                }`}>
+                <div className={`flex items-center justify-between p-5 sm:p-6 border-b ${isDarkMode ? "border-gray-800" : "border-gray-200"
+                  }`}>
                   <div className="relative w-24 h-12 sm:w-28 sm:h-14">
                     <Image
                       src={getLogoPath()}
@@ -473,11 +497,10 @@ export default function Header() {
                   </div>
                   <motion.button
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`p-2 rounded-full transition-colors ${
-                      isDarkMode
+                    className={`p-2 rounded-full transition-colors ${isDarkMode
                         ? "hover:bg-gray-800"
                         : "hover:bg-gray-100"
-                    }`}
+                      }`}
                     whileTap={{ scale: 0.9 }}
                   >
                     <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? "text-gray-200" : "text-gray-800"}`} />
@@ -500,19 +523,17 @@ export default function Header() {
                         <Link
                           href={item.path}
                           onClick={() => handleNavClick(item.path)}
-                          className={`flex items-center gap-3 sm:gap-4 py-3.5 sm:py-4 px-3 sm:px-4 rounded-xl transition-all duration-300 mb-2 group ${
-                            isActive
+                          className={`flex items-center gap-3 sm:gap-4 py-3.5 sm:py-4 px-3 sm:px-4 rounded-xl transition-all duration-300 mb-2 group ${isActive
                               ? isDarkMode
                                 ? "bg-primary/20 text-primary"
                                 : "bg-primary/10 text-primary"
                               : isDarkMode
-                              ? "text-gray-300 hover:bg-gray-800"
-                              : "text-gray-700 hover:bg-gray-100"
-                          }`}
+                                ? "text-gray-300 hover:bg-gray-800"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`}
                         >
-                          <Icon className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
-                            isActive ? "text-primary" : isDarkMode ? "text-gray-400 group-hover:text-primary" : "text-gray-500 group-hover:text-primary"
-                          }`} />
+                          <Icon className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${isActive ? "text-primary" : isDarkMode ? "text-gray-400 group-hover:text-primary" : "text-gray-500 group-hover:text-primary"
+                            }`} />
                           <span className="text-sm sm:text-base font-medium flex-1">{item.name}</span>
                           {isActive && (
                             <motion.div
@@ -522,9 +543,8 @@ export default function Header() {
                             />
                           )}
                           {!isActive && (
-                            <FiChevronRight className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                              isDarkMode ? "text-gray-600" : "text-gray-400"
-                            } group-hover:translate-x-1 transition-transform`} />
+                            <FiChevronRight className={`w-4 h-4 sm:w-5 sm:h-5 ${isDarkMode ? "text-gray-600" : "text-gray-400"
+                              } group-hover:translate-x-1 transition-transform`} />
                           )}
                         </Link>
                       </motion.div>
@@ -532,12 +552,10 @@ export default function Header() {
                   })}
 
                   {/* Social Links in Mobile */}
-                  <div className={`mt-6 pt-4 border-t ${
-                    isDarkMode ? "border-gray-800" : "border-gray-200"
-                  }`}>
-                    <h3 className={`text-xs font-semibold uppercase tracking-wider mb-3 px-4 ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
+                  <div className={`mt-6 pt-4 border-t ${isDarkMode ? "border-gray-800" : "border-gray-200"
                     }`}>
+                    <h3 className={`text-xs font-semibold uppercase tracking-wider mb-3 px-4 ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                      }`}>
                       Connect With Me
                     </h3>
                     <div className="flex gap-2 sm:gap-3 px-4">
@@ -547,11 +565,10 @@ export default function Header() {
                           href={social.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`p-2.5 sm:p-3 rounded-xl transition-all ${
-                            isDarkMode
+                          className={`p-2.5 sm:p-3 rounded-xl transition-all ${isDarkMode
                               ? "bg-gray-800 text-gray-400 hover:text-primary hover:bg-primary/20"
                               : "bg-gray-100 text-gray-600 hover:text-primary hover:bg-primary/10"
-                          }`}
+                            }`}
                           whileHover={{ scale: 1.05, y: -2 }}
                           whileTap={{ scale: 0.95 }}
                           initial={{ opacity: 0, y: 20 }}
@@ -566,50 +583,42 @@ export default function Header() {
                 </nav>
 
                 {/* Footer */}
-                <div className={`p-5 sm:p-6 border-t space-y-3 sm:space-y-4 ${
-                  isDarkMode ? "border-gray-800" : "border-gray-200"
-                }`}>
+                <div className={`p-5 sm:p-6 border-t space-y-3 sm:space-y-4 ${isDarkMode ? "border-gray-800" : "border-gray-200"
+                  }`}>
                   {/* Email */}
                   <a
                     href="mailto:mnishithareddy8765@gmail.com"
-                    className={`flex items-center gap-3 p-3 sm:p-4 rounded-xl transition-all group ${
-                      isDarkMode
+                    className={`flex items-center gap-3 p-3 sm:p-4 rounded-xl transition-all group ${isDarkMode
                         ? "bg-gray-800/50 hover:bg-primary/10"
                         : "bg-gray-50 hover:bg-primary/5"
-                    }`}
+                      }`}
                   >
-                    <div className={`p-2 rounded-lg shadow-sm ${
-                      isDarkMode ? "bg-gray-700" : "bg-white"
-                    }`}>
+                    <div className={`p-2 rounded-lg shadow-sm ${isDarkMode ? "bg-gray-700" : "bg-white"
+                      }`}>
                       <FiMail className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs ${
-                        isDarkMode ? "text-gray-400" : "text-gray-500"
-                      }`}>
+                      <p className={`text-xs ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                        }`}>
                         Email Me
                       </p>
-                      <p className={`text-xs sm:text-sm font-medium truncate transition-colors ${
-                        isDarkMode
+                      <p className={`text-xs sm:text-sm font-medium truncate transition-colors ${isDarkMode
                           ? "text-gray-300 group-hover:text-primary"
                           : "text-gray-700 group-hover:text-primary"
-                      }`}>
+                        }`}>
                         mnishithareddy8765@gmail.com
                       </p>
                     </div>
-                    <FiArrowRight className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all ${
-                      isDarkMode ? "text-gray-500 group-hover:text-primary group-hover:translate-x-1" : "text-gray-400 group-hover:text-primary group-hover:translate-x-1"
-                    }`} />
+                    <FiArrowRight className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all ${isDarkMode ? "text-gray-500 group-hover:text-primary group-hover:translate-x-1" : "text-gray-400 group-hover:text-primary group-hover:translate-x-1"
+                      }`} />
                   </a>
 
                   {/* Theme Toggle */}
-                  <div className={`flex items-center justify-between p-3 sm:p-4 rounded-xl ${
-                    isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
-                  }`}>
+                  <div className={`flex items-center justify-between p-3 sm:p-4 rounded-xl ${isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
+                    }`}>
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg shadow-sm ${
-                        isDarkMode ? "bg-gray-700" : "bg-white"
-                      }`}>
+                      <div className={`p-2 rounded-lg shadow-sm ${isDarkMode ? "bg-gray-700" : "bg-white"
+                        }`}>
                         {!isDarkMode ? (
                           <FiSun className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
                         ) : (
@@ -617,23 +626,20 @@ export default function Header() {
                         )}
                       </div>
                       <div>
-                        <p className={`text-xs ${
-                          isDarkMode ? "text-gray-400" : "text-gray-500"
-                        }`}>
+                        <p className={`text-xs ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                          }`}>
                           Theme
                         </p>
-                        <p className={`text-xs sm:text-sm font-medium ${
-                          isDarkMode ? "text-gray-300" : "text-gray-700"
-                        }`}>
+                        <p className={`text-xs sm:text-sm font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"
+                          }`}>
                           {isDarkMode ? "Dark Mode" : "Light Mode"}
                         </p>
                       </div>
                     </div>
                     <button
                       onClick={toggleTheme}
-                      className={`relative w-11 h-6 rounded-full p-1 transition-colors ${
-                        isDarkMode ? "bg-gray-600" : "bg-gray-300"
-                      }`}
+                      className={`relative w-11 h-6 rounded-full p-1 transition-colors ${isDarkMode ? "bg-gray-600" : "bg-gray-300"
+                        }`}
                     >
                       <motion.span
                         animate={{ x: isDarkMode ? 20 : 0 }}
@@ -684,6 +690,7 @@ export default function Header() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
+<<<<<<< HEAD
                 className={`w-full max-w-[95%] sm:max-w-md md:max-w-lg rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] sm:max-h-[85vh] flex flex-col ${
                   isDarkMode ? "bg-gray-900" : "bg-white"
                 }`}
@@ -703,21 +710,47 @@ export default function Header() {
                       <p className={`text-xs sm:text-sm mt-0.5 sm:mt-1 ${
                         isDarkMode ? "text-gray-400" : "text-gray-600"
                       }`}>
+=======
+                className={`w-full max-w-[95%] sm:max-w-md md:max-w-lg rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] sm:max-h-[85vh] flex flex-col ${isDarkMode ? "bg-gray-900" : "bg-white"
+                  }`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header - Sticky */}
+                <div className={`sticky top-0 z-10 px-4 sm:px-6 py-4 sm:py-5 border-b ${isDarkMode ? "border-gray-800 bg-gray-900" : "border-gray-200 bg-white"
+                  }`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className={`text-lg sm:text-xl font-bold ${isDarkMode ? "text-white" : "text-gray-900"
+                        }`}>
+                        Hire Me
+                      </h3>
+                      <p className={`text-xs sm:text-sm mt-0.5 sm:mt-1 ${isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`}>
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                         Fill out the form and I'll get back to you within 24 hours
                       </p>
                     </div>
                     <button
                       onClick={closeModal}
                       disabled={isSubmitting}
+<<<<<<< HEAD
                       className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
                         isDarkMode
+=======
+                      className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDarkMode
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                           ? "hover:bg-gray-800"
                           : "hover:bg-gray-100"
-                      } disabled:opacity-50`}
+                        } disabled:opacity-50`}
                     >
+<<<<<<< HEAD
                       <FiX className={`w-4 h-4 sm:w-5 sm:h-5 ${
                         isDarkMode ? "text-gray-400" : "text-gray-600"
                       }`} />
+=======
+                      <FiX className={`w-4 h-4 sm:w-5 sm:h-5 ${isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`} />
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                     </button>
                   </div>
                 </div>
@@ -726,6 +759,7 @@ export default function Header() {
                 <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 space-y-3 sm:space-y-4">
                   {/* Name Field */}
                   <div>
+<<<<<<< HEAD
                     <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
@@ -735,17 +769,30 @@ export default function Header() {
                       <FiUserIcon className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
+=======
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}>
+                      Full Name *
+                    </label>
+                    <div className="relative">
+                      <FiUserIcon className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`} />
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
                         required
+<<<<<<< HEAD
                         className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${
                           isDarkMode
+=======
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${isDarkMode
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
-                        }`}
+                          }`}
                         placeholder="John Doe"
                       />
                     </div>
@@ -753,6 +800,7 @@ export default function Header() {
 
                   {/* Email Field */}
                   <div>
+<<<<<<< HEAD
                     <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
@@ -762,17 +810,30 @@ export default function Header() {
                       <FiMail className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
+=======
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}>
+                      Email Address *
+                    </label>
+                    <div className="relative">
+                      <FiMail className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`} />
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
                         required
+<<<<<<< HEAD
                         className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${
                           isDarkMode
+=======
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${isDarkMode
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
-                        }`}
+                          }`}
                         placeholder="john@example.com"
                       />
                     </div>
@@ -780,6 +841,7 @@ export default function Header() {
 
                   {/* Phone Field */}
                   <div>
+<<<<<<< HEAD
                     <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
@@ -789,16 +851,29 @@ export default function Header() {
                       <FiPhone className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
+=======
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}>
+                      Phone Number (Optional)
+                    </label>
+                    <div className="relative">
+                      <FiPhone className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 ${isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`} />
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
+<<<<<<< HEAD
                         className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${
                           isDarkMode
+=======
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm sm:text-base ${isDarkMode
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
-                        }`}
+                          }`}
                         placeholder="+1 234 567 8900"
                       />
                     </div>
@@ -806,6 +881,7 @@ export default function Header() {
 
                   {/* Message Field */}
                   <div>
+<<<<<<< HEAD
                     <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${
                       isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}>
@@ -815,17 +891,30 @@ export default function Header() {
                       <FiMessageSquare className={`absolute left-3 top-3 w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         isDarkMode ? "text-gray-500" : "text-gray-400"
                       }`} />
+=======
+                    <label className={`block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 ${isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}>
+                      Message / Project Details *
+                    </label>
+                    <div className="relative">
+                      <FiMessageSquare className={`absolute left-3 top-3 w-3.5 h-3.5 sm:w-4 sm:h-4 ${isDarkMode ? "text-gray-500" : "text-gray-400"
+                        }`} />
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                       <textarea
                         name="message"
                         value={formData.message}
                         onChange={handleInputChange}
                         required
                         rows={4}
+<<<<<<< HEAD
                         className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none text-sm sm:text-base ${
                           isDarkMode
+=======
+                        className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-lg border transition-all focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none text-sm sm:text-base ${isDarkMode
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                             ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
                             : "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
-                        }`}
+                          }`}
                         placeholder="Tell me about your project or what you need help with..."
                       />
                     </div>
@@ -838,15 +927,19 @@ export default function Header() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
+<<<<<<< HEAD
                         className={`p-2.5 sm:p-3 rounded-lg flex items-start gap-2 text-xs sm:text-sm ${
                           submitStatus.type === "success"
+=======
+                        className={`p-2.5 sm:p-3 rounded-lg flex items-start gap-2 text-xs sm:text-sm ${submitStatus.type === "success"
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                             ? isDarkMode
                               ? "bg-green-900/20 text-green-400 border border-green-800"
                               : "bg-green-50 text-green-700 border border-green-200"
                             : isDarkMode
-                            ? "bg-red-900/20 text-red-400 border border-red-800"
-                            : "bg-red-50 text-red-700 border border-red-200"
-                        }`}
+                              ? "bg-red-900/20 text-red-400 border border-red-800"
+                              : "bg-red-50 text-red-700 border border-red-200"
+                          }`}
                       >
                         {submitStatus.type === "success" ? (
                           <FiCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5" />
@@ -882,12 +975,18 @@ export default function Header() {
                 </form>
 
                 {/* Footer - Sticky */}
+<<<<<<< HEAD
                 <div className={`sticky bottom-0 px-4 sm:px-6 py-3 sm:py-4 border-t ${
                   isDarkMode ? "border-gray-800 bg-gray-800/30" : "border-gray-200 bg-gray-50"
                 }`}>
                   <p className={`text-[10px] sm:text-xs text-center ${
                     isDarkMode ? "text-gray-400" : "text-gray-500"
+=======
+                <div className={`sticky bottom-0 px-4 sm:px-6 py-3 sm:py-4 border-t ${isDarkMode ? "border-gray-800 bg-gray-800/30" : "border-gray-200 bg-gray-50"
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
                   }`}>
+                  <p className={`text-[10px] sm:text-xs text-center ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                    }`}>
                     I'll respond within 24 hours. Your information is safe with me.
                   </p>
                 </div>

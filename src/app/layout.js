@@ -138,6 +138,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
+<<<<<<< HEAD
         {/* Theme Script */}
         <Script id="theme-script" strategy="beforeInteractive">
           {`
@@ -157,6 +158,35 @@ export default function RootLayout({ children }) {
             })();
           `}
         </Script>
+=======
+      <Script id="theme-script" strategy="beforeInteractive">
+  {`
+    (function() {
+      try {
+        // Handle theme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else if (savedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        }
+
+        // Handle primary color
+        const savedColor = localStorage.getItem('primary-color');
+        if (savedColor) {
+          document.documentElement.setAttribute('data-primary', savedColor);
+        } else {
+          document.documentElement.setAttribute('data-primary', 'purple');
+        }
+      } catch (e) {
+        console.error('Theme initialization failed:', e);
+      }
+    })();
+  `}
+</Script>
+>>>>>>> 89dd205 (updated portfolio theme change  layout ---nishitha_new)
 
         {/* Structured Data - Person */}
         <Script

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Light mode - default */
+    /* Light mode - default primary (purple) */
     --primary: #8750f7;
     --primary-2: #6c3fd4;
     --primary-3: #a97bff;
@@ -18,6 +18,7 @@
     --tj-theme-h3-primary-1: #814cec;
     --tj-theme-h4-primary-1: #240F31;
     --tj-theme-secondary: #2a1454;
+    
     /* Light theme colors */
     --bg: #ffffff;
     --bg-2: #f8fafc;
@@ -29,14 +30,95 @@
     --text-body: #334155;
     --text-muted: #64748b;
     --text-heading: #0f172a;
-        --tj-ff-body: "Sora", sans-serif;
+    --tj-ff-body: "Sora", sans-serif;
     --tj-ff-heading: "Sora", sans-serif;
     --tj-ff-russo: "Russo One", sans-serif;
     --tj-ff-fontawesome: "Font Awesome 6 Pro";
   }
 
+  /* Primary Color Variants */
+  :root[data-primary="purple"] {
+    --primary: #8750f7;
+    --primary-2: #6c3fd4;
+    --primary-3: #a97bff;
+    --tj-theme-primary: #8750f7;
+    --tj-theme-primary-2: #9b8dff;
+    --tj-theme-primary-3: #4654f9;
+    --tj-theme-h3-primary-1: #814cec;
+  }
+
+  :root[data-primary="pink"] {
+    --primary: #ec489a;
+    --primary-2: #db2777;
+    --primary-3: #f472b6;
+    --tj-theme-primary: #ec489a;
+    --tj-theme-primary-2: #f9a8d4;
+    --tj-theme-primary-3: #f472b6;
+    --tj-theme-h3-primary-1: #db2777;
+  }
+
+  :root[data-primary="blue"] {
+    --primary: #3b82f6;
+    --primary-2: #2563eb;
+    --primary-3: #60a5fa;
+    --tj-theme-primary: #3b82f6;
+    --tj-theme-primary-2: #93c5fd;
+    --tj-theme-primary-3: #60a5fa;
+    --tj-theme-h3-primary-1: #2563eb;
+  }
+
+  :root[data-primary="red"] {
+    --primary: #ef4444;
+    --primary-2: #dc2626;
+    --primary-3: #f87171;
+    --tj-theme-primary: #ef4444;
+    --tj-theme-primary-2: #fca5a5;
+    --tj-theme-primary-3: #f87171;
+    --tj-theme-h3-primary-1: #dc2626;
+  }
+
+  :root[data-primary="yellow"] {
+    --primary: #eab308;
+    --primary-2: #ca8a04;
+    --primary-3: #facc15;
+    --tj-theme-primary: #eab308;
+    --tj-theme-primary-2: #fde047;
+    --tj-theme-primary-3: #facc15;
+    --tj-theme-h3-primary-1: #ca8a04;
+  }
+
+  :root[data-primary="orange"] {
+    --primary: #f97316;
+    --primary-2: #ea580c;
+    --primary-3: #fb923c;
+    --tj-theme-primary: #f97316;
+    --tj-theme-primary-2: #fdba74;
+    --tj-theme-primary-3: #fb923c;
+    --tj-theme-h3-primary-1: #ea580c;
+  }
+
+  :root[data-primary="green"] {
+    --primary: #22c55e;
+    --primary-2: #16a34a;
+    --primary-3: #4ade80;
+    --tj-theme-primary: #22c55e;
+    --tj-theme-primary-2: #86efac;
+    --tj-theme-primary-3: #4ade80;
+    --tj-theme-h3-primary-1: #16a34a;
+  }
+
+  :root[data-primary="cyan"] {
+    --primary: #06b6d4;
+    --primary-2: #0891b2;
+    --primary-3: #22d3ee;
+    --tj-theme-primary: #06b6d4;
+    --tj-theme-primary-2: #67e8f9;
+    --tj-theme-primary-3: #22d3ee;
+    --tj-theme-h3-primary-1: #0891b2;
+  }
+
   .dark {
-    /* Dark theme colors */
+    /* Dark theme colors (primary colors will inherit from root) */
     --bg: #0c1115;
     --bg-2: #0e1418;
     --bg-3: #10171c;
@@ -60,18 +142,12 @@
     border-radius: 4px;
   }
 
-  /* body {
+  body {
     background-color: var(--bg);
     color: var(--text-body);
+    font-family: var(--tj-ff-body);
     transition: background-color 0.3s ease, color 0.3s ease;
-
-  } */
-   body {
-  background-color: var(--bg);
-  color: var(--text-body);
-  font-family: var(--tj-ff-body);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+  }
 }
 
 @layer components {
@@ -81,26 +157,30 @@
 
   .btn-primary {
     @apply inline-flex items-center gap-2 px-9 py-4 
-    bg-gradient-to-r from-[#8750f7] to-[#2a1454] 
+    bg-gradient-to-r from-[var(--primary)] to-[var(--primary-2)] 
     bg-[length:200%] rounded-[50px] font-bold text-sm text-white 
     border-none cursor-pointer transition-all duration-300 
-    hover:bg-right hover:-translate-y-0.5 
-    hover:shadow-[0_8px_32px_rgba(135,80,247,0.45)];
+    hover:bg-right hover:-translate-y-0.5;
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 8px 32px rgba(var(--primary-rgb), 0.45);
   }
 
   .btn-secondary {
     @apply inline-flex items-center gap-2 px-[34px] py-[15px] 
     bg-transparent rounded-[50px] font-bold text-sm 
-    border-2 border-[#8750f7] 
+    border-2 border-[var(--primary)] 
     transition-all duration-300 backdrop-blur 
-    hover:border-[#8750f7] hover:bg-[#8750f7] hover:bg-opacity-10 
+    hover:border-[var(--primary)] hover:bg-[var(--primary)] hover:bg-opacity-10 
     hover:-translate-y-0.5;
     color: var(--text-body);
   }
 
   .section-label {
     @apply inline-block text-xs font-bold tracking-[3px] 
-    uppercase text-[#a97bff] mb-3.5;
+    uppercase text-[var(--primary-3)] mb-3.5;
   }
 
   .section-title {
@@ -115,7 +195,7 @@
   }
 
   .section-divider {
-    @apply w-[60px] h-[3px] bg-[#8750f7] 
+    @apply w-[60px] h-[3px] bg-[var(--primary)] 
     rounded-[3px] my-4 mb-10;
   }
 
@@ -129,9 +209,9 @@
   }
   
   .social-link:hover {
-    border-color: #8750f7;
-    color: #8750f7;
-    background-color: rgba(135, 80, 247, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: rgba(var(--primary-rgb), 0.1);
   }
 }
 
@@ -141,15 +221,15 @@
   }
 
   .glow {
-    filter: drop-shadow(0 0 24px rgba(135,80,247,0.4));
+    filter: drop-shadow(0 0 24px rgba(var(--primary-rgb), 0.4));
   }
 
   .glow-text {
-    text-shadow: 0 0 40px rgba(135,80,247,0.5);
+    text-shadow: 0 0 40px rgba(var(--primary-rgb), 0.5);
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-[#8750f7] to-[#2a1454] 
+    @apply bg-gradient-to-r from-[var(--primary)] to-[var(--primary-2)] 
     bg-clip-text text-transparent;
   }
 
@@ -174,8 +254,8 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(135,80,247,0.3); }
-    50% { box-shadow: 0 0 50px rgba(135,80,247,0.7); }
+    0%, 100% { box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.3); }
+    50% { box-shadow: 0 0 50px rgba(var(--primary-rgb), 0.7); }
   }
 
   @keyframes spin {
@@ -192,6 +272,35 @@
   .animate-spin-slow-reverse { animation: spin 30s linear infinite reverse; }
 }
 
+/* Add RGB variables for transparency effects */
+:root {
+  --primary-rgb: 135, 80, 247;
+}
 
-/* hero */
+:root[data-primary="pink"] {
+  --primary-rgb: 236, 72, 153;
+}
 
+:root[data-primary="blue"] {
+  --primary-rgb: 59, 130, 246;
+}
+
+:root[data-primary="red"] {
+  --primary-rgb: 239, 68, 68;
+}
+
+:root[data-primary="yellow"] {
+  --primary-rgb: 234, 179, 8;
+}
+
+:root[data-primary="orange"] {
+  --primary-rgb: 249, 115, 22;
+}
+
+:root[data-primary="green"] {
+  --primary-rgb: 34, 197, 94;
+}
+
+:root[data-primary="cyan"] {
+  --primary-rgb: 6, 182, 212;
+}

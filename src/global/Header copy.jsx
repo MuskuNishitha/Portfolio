@@ -41,7 +41,7 @@ export default function Header() {
     { name: "Services", path: "/services" },
     { name: "Portfolio", path: "/Portfolio" },
     { name: "Resume", path: "/Resume" },
-    { name: "Blog", path: "/Blog" },
+    // { name: "Blog", path: "/Blog" },
     { name: "Contact", path: "/Contact" },
   ];
 

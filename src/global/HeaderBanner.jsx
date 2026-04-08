@@ -20,18 +20,6 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
 
   const bgImage = backgroundImage || "/assets/breadcrumb-bg.jpg";
 
-  // Function to scroll to next section
-  const scrollToNextSection = () => {
-    const nextSection = document.getElementById('about') || document.querySelector('section:not(.header-banner)');
-    if (nextSection) {
-      nextSection.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  };
-
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -281,46 +269,6 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
               />
             </div>
           </motion.div>
-
-          {/* Clickable Scroll Indicator */}
-          {/* <motion.button
-            variants={itemVariants}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:flex flex-col items-center gap-2 cursor-pointer group focus:outline-none"
-            onClick={scrollToNextSection}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{
-              y: [0, 10, 0],
-            }}
-            transition={{
-              y: {
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            }}
-          >
-            <span className={`text-xs ${subtitleColor} transition-colors duration-300 group-hover:text-primary`}>
-              Scroll Down
-            </span>
-            <motion.div
-              className={`p-2 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-black/10'} backdrop-blur-sm group-hover:bg-primary/20 transition-all duration-300`}
-            >
-              <svg
-                className={`w-5 h-5 ${arrowColor} transition-colors duration-300 group-hover:text-primary`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7-7-7m14-5l-7 7-7-7"
-                />
-              </svg>
-            </motion.div>
-          </motion.button> */}
         </div>
       </div>
     </motion.section>
