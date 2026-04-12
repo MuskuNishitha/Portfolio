@@ -2,131 +2,135 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiChevronDown, FiCheck } from 'react-icons/fi';
-
-const colorThemes = [
-  { id: 'purple', name: 'Purple', color: '#8750f7', gradient: 'from-purple-500 to-purple-700' },
-  { id: 'pink', name: 'Pink', color: '#ec489a', gradient: 'from-pink-500 to-pink-700' },
-  { id: 'blue', name: 'Blue', color: '#3b82f6', gradient: 'from-blue-500 to-blue-700' },
-  { id: 'red', name: 'Red', color: '#ef4444', gradient: 'from-red-500 to-red-700' },
-  { id: 'yellow', name: 'Yellow', color: '#eab308', gradient: 'from-yellow-500 to-yellow-700' },
-  { id: 'orange', name: 'Orange', color: '#f97316', gradient: 'from-orange-500 to-orange-700' },
-  { id: 'green', name: 'Green', color: '#22c55e', gradient: 'from-green-500 to-green-700' },
-  { id: 'cyan', name: 'Cyan', color: '#06b6d4', gradient: 'from-cyan-500 to-cyan-700' },
+const colors = [
+  { id: 'blue', color: '#3b82f6' },
+  { id: 'green', color: '#10b981' },
+  { id: 'purple', color: '#8b5cf6' },
+  { id: 'red', color: '#ef4444' },
+  { id: 'orange', color: '#f59e0b' },
+  { id: 'pink', color: '#ec489a' },
 ];
 
-export default function ColorPicker() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentColor, setCurrentColor] = useState('purple');
-  const [mounted, setMounted] = useState(false);
+export default function PremiumColorPicker() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('purple');
 
   useEffect(() => {
-    setMounted(true);
-    // Load saved color preference
-    const savedColor = localStorage.getItem('primary-color');
-    if (savedColor && colorThemes.some(theme => theme.id === savedColor)) {
-      setCurrentColor(savedColor);
-      document.documentElement.setAttribute('data-primary', savedColor);
-    } else {
-      document.documentElement.setAttribute('data-primary', 'purple');
+    const saved = localStorage.getItem('primary-color');
+    if (saved) {
+      setActive(saved);
+      document.documentElement.setAttribute('data-primary', saved);
     }
   }, []);
 
-  const handleColorChange = (colorId) => {
-    setCurrentColor(colorId);
-    document.documentElement.setAttribute('data-primary', colorId);
-    localStorage.setItem('primary-color', colorId);
-    setIsOpen(false);
+  const changeColor = (id) => {
+    setActive(id);
+    document.documentElement.setAttribute('data-primary', id);
+    localStorage.setItem('primary-color', id);
   };
-
-  const currentTheme = colorThemes.find(theme => theme.id === currentColor);
-
-  if (!mounted) return null;
 
   return (
     <div className="relative">
+
+      {/* FLOATING BUTTON */}
       <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/50"
+        onClick={() => setOpen(!open)}
+        whileHover={{ scale: 1.15, rotate: 10 }}
+        whileTap={{ scale: 0.9 }}
+        className="fixed bottom-6 right-6 z-50 p-4 rounded-full text-white"
         style={{
-          backgroundColor: 'var(--bg-card)',
-          border: '1px solid var(--border-2)',
+          background: 'linear-gradient(135deg, #8b5cf6, #ec489a)',
+          boxShadow: '0 10px 30px rgba(139,92,246,0.6)',
         }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label="Change primary color"
       >
-        <div 
-          className="w-5 h-5 rounded-full"
-          style={{ backgroundColor: currentTheme?.color }}
-        />
-        <span className="text-sm hidden sm:inline" style={{ color: 'var(--text-body)' }}>
-          {currentTheme?.name}
-        </span>
-        <FiChevronDown 
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          style={{ color: 'var(--text-muted)' }}
-        />
+        <span>🎨</span>
       </motion.button>
 
+      {/* BACKDROP */}
       <AnimatePresence>
-        {isOpen && (
+        {open && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40"
-              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setOpen(false)}
             />
+
+            {/* MODAL */}
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="absolute right-0 mt-2 w-48 rounded-xl shadow-2xl z-50 overflow-hidden"
-              style={{
-                backgroundColor: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-              }}
+              initial={{ opacity: 0, scale: 0.7, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.7, y: 40 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+              className="fixed z-50 inset-0 flex items-center justify-center"
             >
-              <div className="p-2">
-                <p className="text-xs font-semibold uppercase tracking-wider px-3 py-2" 
-                   style={{ color: 'var(--text-muted)' }}>
-                  Choose Color
+              <div
+                className="p-6 rounded-3xl w-72"
+                style={{
+                  background: 'rgba(20,20,30,0.85)',
+                  backdropFilter: 'blur(25px)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+                }}
+              >
+                {/* TITLE */}
+                <h3 className="text-white text-center mb-6 tracking-widest text-sm opacity-70">
+                  CHOOSE COLOR
+                </h3>
+
+                {/* GRID */}
+                <div className="grid grid-cols-4 gap-5 justify-items-center">
+                  {colors.map((item, i) => (
+                    <motion.div
+                      key={item.id}
+                      onClick={() => changeColor(item.id)}
+                      whileHover={{ scale: 1.25 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="relative cursor-pointer"
+                    >
+                      {/* GLOW RING */}
+                      {active === item.id && (
+                        <motion.div
+                          layoutId="activeRing"
+                          className="absolute -inset-2 rounded-full"
+                          style={{
+                            background: `radial-gradient(circle, ${item.color}55, transparent)`,
+                          }}
+                        />
+                      )}
+
+                      {/* OUTER BORDER */}
+                      {active === item.id && (
+                        <motion.div
+                          layoutId="borderRing"
+                          className="absolute -inset-1 rounded-full border-2 border-white"
+                        />
+                      )}
+
+                      {/* COLOR DOT */}
+                      <motion.div
+                        className="w-10 h-10 rounded-full"
+                        style={{
+                          background: item.color,
+                          boxShadow:
+                            active === item.id
+                              ? `0 0 20px ${item.color}, 0 0 40px ${item.color}66`
+                              : '0 5px 15px rgba(0,0,0,0.5)',
+                        }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: i * 0.05 }}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* FOOTER */}
+                <p className="text-center text-xs text-gray-400 mt-6">
+                  Customize your theme
                 </p>
-                {colorThemes.map((theme) => (
-                  <button
-                    key={theme.id}
-                    onClick={() => handleColorChange(theme.id)}
-                    className="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all group"
-                    style={{
-                      color: currentColor === theme.id ? 'var(--primary)' : 'var(--text-body)',
-                      backgroundColor: currentColor === theme.id ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (currentColor !== theme.id) {
-                        e.currentTarget.style.backgroundColor = 'rgba(var(--primary-rgb), 0.05)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (currentColor !== theme.id) {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                      }
-                    }}
-                  >
-                    <div 
-                      className="w-5 h-5 rounded-full shadow-sm"
-                      style={{ backgroundColor: theme.color }}
-                    />
-                    <span className="flex-1 text-left text-sm font-medium">
-                      {theme.name}
-                    </span>
-                    {currentColor === theme.id && (
-                      <FiCheck className="w-4 h-4" />
-                    )}
-                  </button>
-                ))}
               </div>
             </motion.div>
           </>

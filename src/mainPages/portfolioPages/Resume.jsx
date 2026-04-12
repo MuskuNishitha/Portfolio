@@ -157,7 +157,7 @@ export default function Resume() {
   };
 
   return (
-    <>
+    <div className="min-h-screen mt-20">
       <HeaderBanner title={"Resume"} />
       <section 
         id="resume" 
@@ -523,6 +523,6 @@ export default function Resume() {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
