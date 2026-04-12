@@ -46,11 +46,11 @@ const MainPage = () => {
               <span className="text-red-500 font-[cursive]">Alimi Mousaad</span>
             </h2>
             <h1 className="text-3xl md:text-5xl font-bold mt-2">
-              I'm a{" "}
+              I&apos;m a{" "}
               <span className="text-red-500">Graphic Designer</span>
             </h1>
             <p className="mt-4 text-gray-600 text-sm md:text-base leading-relaxed">
-              I'm a web Designer with extensive experience for over 10 years. My
+              I&apos;m a web Designer with extensive experience for over 10 years. My
               expertise is to create and website design, graphic design, and many
               more...
             </p>

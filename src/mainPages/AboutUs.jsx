@@ -41,7 +41,6 @@ export default function AboutUs() {
     { name: "Redux Toolkit", percentage: 88, icon: "🔄", color: "#764ABC" },
     { name: "Tailwind CSS", percentage: 90, icon: "🎨", color: "#06B6D4" },
     { name: "JavaScript", percentage: 89, icon: "🟡", color: "#F7DF1E" },
-    { name: "TypeScript", percentage: 75, icon: "🔷", color: "#3178C6" }
   ];
 
   const education = [

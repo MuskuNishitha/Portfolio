@@ -5,6 +5,7 @@ import { useTheme } from "@/components/ThemeProvider";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import DotBurst from "@/components/DotBurst";
 import { 
   FiMail, 
   FiSun, 
@@ -37,6 +38,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState("/");
+  const [navBurst, setNavBurst] = useState({ path: "", id: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -101,6 +103,14 @@ export default function Header() {
   const handleNavClick = (path) => {
     setActiveItem(path);
     setMobileMenuOpen(false);
+  };
+
+  const triggerNavDots = (path) => {
+    const id = Date.now();
+    setNavBurst({ path, id });
+    window.setTimeout(() => {
+      setNavBurst((prev) => (prev.id === id ? { path: "", id: 0 } : prev));
+    }, 600);
   };
 
   const handleInputChange = (e) => {
@@ -298,7 +308,10 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.path}
-                  onClick={() => handleNavClick(item.path)}
+                  onClick={() => {
+                    triggerNavDots(item.path);
+                    handleNavClick(item.path);
+                  }}
                   className={`relative px-3 xl:px-4 py-2 text-sm xl:text-base font-medium transition-all duration-300 group ${
                     activeItem === item.path
                       ? "text-primary"
@@ -325,13 +338,16 @@ export default function Header() {
             </nav>
 
             {/* Tablet Navigation */}
-            <nav className="hidden md:flex lg:hidden items-center gap-1">
+            <nav className="hidden md:flex lg:hidden items-center gap-1 overflow-x-auto no-scrollbar max-w-[56vw]">
               {navItems.slice(0, 5).map((item) => (
                 <Link
                   key={item.name}
                   href={item.path}
-                  onClick={() => handleNavClick(item.path)}
-                  className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 whitespace-nowrap ${
+                  onClick={() => {
+                    triggerNavDots(item.path);
+                    handleNavClick(item.path);
+                  }}
+                  className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
                     activeItem === item.path
                       ? "text-primary"
                       : isDarkMode
@@ -396,7 +412,7 @@ export default function Header() {
                 onClick={openModal}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold rounded-full py-2 px-4 lg:py-2.5 lg:px-6 xl:py-3 xl:px-7 overflow-hidden transition-all duration-300 hover:shadow-xl text-sm lg:text-base"
+                className="hidden lg:inline-flex group relative items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold rounded-full py-2 px-4 lg:py-2.5 lg:px-6 xl:py-3 xl:px-7 overflow-hidden transition-all duration-300 hover:shadow-xl text-sm lg:text-base"
               >
                 <span className="relative z-10">Hire Me!</span>
                 <motion.span
@@ -498,7 +514,12 @@ export default function Header() {
                       >
                         <Link
                           href={item.path}
-                          onClick={() => handleNavClick(item.path)}
+                          onClick={() => {
+                            triggerNavDots(item.path);
+                            // give a tiny time for dots animation before menu closes
+                            setActiveItem(item.path);
+                            window.setTimeout(() => setMobileMenuOpen(false), 220);
+                          }}
                           className={`flex items-center gap-3 sm:gap-4 py-3.5 sm:py-4 px-3 sm:px-4 rounded-xl transition-all duration-300 mb-2 group ${
                             isActive
                               ? isDarkMode
@@ -509,9 +530,20 @@ export default function Header() {
                               : "text-gray-700 hover:bg-gray-100"
                           }`}
                         >
-                          <Icon className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
-                            isActive ? "text-primary" : isDarkMode ? "text-gray-400 group-hover:text-primary" : "text-gray-500 group-hover:text-primary"
-                          }`} />
+                          <span className="relative grid place-items-center w-6 h-6 sm:w-7 sm:h-7">
+                            <Icon
+                              className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
+                                isActive
+                                  ? "text-primary"
+                                  : isDarkMode
+                                  ? "text-gray-400 group-hover:text-primary"
+                                  : "text-gray-500 group-hover:text-primary"
+                              }`}
+                            />
+                            {navBurst.path === item.path && navBurst.id !== 0 && (
+                              <DotBurst seed={navBurst.id} />
+                            )}
+                          </span>
                           <span className="text-sm sm:text-base font-medium flex-1">{item.name}</span>
                           {isActive && (
                             <motion.div
@@ -702,7 +734,7 @@ export default function Header() {
                       <p className={`text-xs sm:text-sm mt-0.5 sm:mt-1 ${
                         isDarkMode ? "text-gray-400" : "text-gray-600"
                       }`}>
-                        Fill out the form and I'll get back to you within 24 hours
+                        Fill out the form and I&apos;ll get back to you within 24 hours
                       </p>
                     </div>
                     <button
@@ -887,7 +919,7 @@ export default function Header() {
                   <p className={`text-[10px] sm:text-xs text-center ${
                     isDarkMode ? "text-gray-400" : "text-gray-500"
                   }`}>
-                    I'll respond within 24 hours. Your information is safe with me.
+                    I&apos;ll respond within 24 hours. Your information is safe with me.
                   </p>
                 </div>
               </motion.div>

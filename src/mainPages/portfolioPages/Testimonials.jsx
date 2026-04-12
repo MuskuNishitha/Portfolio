@@ -56,7 +56,7 @@ export default function Testimonials() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-7">
-                  <div className="text-4xl text-primary opacity-70 leading-none">"</div>
+                  <div className="text-4xl text-primary opacity-70 leading-none">&quot;</div>
                   <div className="flex items-center gap-3.5">
                     <div className={`w-13 h-13 rounded-full bg-gradient-to-r ${testimonial.bg} flex items-center justify-center font-extrabold text-lg text-white flex-shrink-0`}>
                       {testimonial.initials}

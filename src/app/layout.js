@@ -6,6 +6,7 @@ import ScrollTop from "@/global/ScrollTop";
 import ThemeProvider from "@/components/ThemeProvider";
 import { Providers } from "@/components/ReduxProvider";
 import CustomCursor from "@/components/CustomCursor";
+import RouteTransition from "@/components/RouteTransition";
 import Script from "next/script";
 
 const BASE_URL = "https://muskunishitha.vercel.app";
@@ -64,12 +65,12 @@ export const metadata = {
     siteName: "Nishitha Reddy Musku Portfolio",
     images: [
       {
-        url: `${BASE_URL}/og-image.jpg`,
+        url: `${BASE_URL}/resized_image.png`,
         width: 1200,
         height: 630,
         alt: "Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio",
-        type: "image/jpeg",
-        secureUrl: `${BASE_URL}/og-image.jpg`,
+        type: "image/png",
+        secureUrl: `${BASE_URL}/resized_image.png`,
       },
     ],
     locale: "en_IN",
@@ -84,7 +85,7 @@ export const metadata = {
       "Portfolio of Nishitha Reddy Musku - React Native & MERN Stack Developer building scalable apps with modern UI/UX.",
     creator: "@nishithareddy",
     site: "@nishithareddy",
-    images: [`${BASE_URL}/og-image.jpg`],
+    images: [`${BASE_URL}/resized_image.png`],
   },
 
   robots: {
@@ -107,9 +108,9 @@ export const metadata = {
 
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/resized_image.png", sizes: "any" },
+      { url: "/resized_image.png", sizes: "16x16", type: "image/png" },
+      { url: "/resized_image.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
@@ -118,9 +119,9 @@ export const metadata = {
   },
 
   manifest: "/site.webmanifest",
-  
+
   category: "technology",
-  
+
   verification: {
     google: "your-google-verification-code", // Add your Google Search Console code
   },
@@ -138,8 +139,8 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
-      <Script id="theme-script" strategy="beforeInteractive">
-  {`
+        <Script id="theme-script" strategy="beforeInteractive">
+          {`
     (function() {
       try {
         // Handle theme
@@ -164,7 +165,7 @@ export default function RootLayout({ children }) {
       }
     })();
   `}
-</Script>
+        </Script>
 
         {/* Structured Data - Person */}
         <Script
@@ -191,7 +192,6 @@ export default function RootLayout({ children }) {
             knowsAbout: [
               "React Native",
               "MERN Stack",
-              "TypeScript",
               "Node.js",
               "Express.js",
               "MongoDB",
@@ -255,6 +255,7 @@ export default function RootLayout({ children }) {
 
         <Providers>
           <ThemeProvider>
+            <RouteTransition />
             <Header />
             <main>{children}</main>
             <Footer />

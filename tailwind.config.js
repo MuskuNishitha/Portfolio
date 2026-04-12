@@ -3,6 +3,10 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sora: ["var(--font-sora)", "Sora", "sans-serif"],
+        russo: ["var(--font-russo)", "Russo One", "sans-serif"],
+      },
       colors: {
         primary: "var(--primary)",
         "primary-2": "var(--primary-2)",

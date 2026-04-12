@@ -1,11 +1,17 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 
 const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
   const { isDarkMode } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Wait for component to mount to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Dynamic styles based on theme with smooth transitions
   const overlayColor = isDarkMode 
@@ -68,15 +74,57 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
     }),
   };
 
+  // Don't render animations until mounted to avoid hydration issues
+  if (!mounted) {
+    return (
+      <section 
+        className="relative bg-cover bg-center overflow-hidden header-banner pt-16 sm:pt-20 lg:pt-24 min-h-[240px] sm:min-h-[280px] lg:min-h-[320px]"
+        style={{ 
+          backgroundImage: `url('${bgImage}')`,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div className={`absolute inset-0 ${overlayColor}`} />
+        <div className="container-custom relative z-10 w-full py-10 sm:py-12 lg:py-14">
+          <div className="text-center">
+            <h1 className={`text-3xl md:text-5xl lg:text-8xl xl:text-7xl font-bold ${titleColor} mb-4 select-none`}>
+              {title}
+            </h1>
+            {subtitle && (
+              <p className={`text-base md:text-lg lg:text-xl ${subtitleColor} mb-6 max-w-2xl mx-auto`}>
+                {subtitle}
+              </p>
+            )}
+            <div className="flex items-center justify-center gap-2 md:gap-3 text-base md:text-lg">
+              <Link href="/" className={`${linkColor} ${linkHoverColor} transition-all duration-300 inline-flex items-center gap-1`}>
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Home</span>
+              </Link>
+              <span className={`${arrowColor} text-base md:text-lg font-light`}>
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+              <span className={`${titleColor} font-semibold relative inline-block`}>
+                {title}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <motion.section 
-      className="relative bg-cover bg-center overflow-hidden header-banner"
+      className="relative bg-cover bg-center overflow-hidden header-banner pt-16 sm:pt-20 lg:pt-24 min-h-[240px] sm:min-h-[280px] lg:min-h-[320px]"
       style={{ 
         backgroundImage: `url('${bgImage}')`,
-        backgroundAttachment: "fixed",
-        minHeight: "10vh",
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
       }}
       initial="hidden"
       animate="visible"
@@ -98,9 +146,9 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
         className="absolute inset-0"
         animate={{
           background: [
-            "radial-gradient(circle at 20% 50%, rgba(135,80,247,0.2) 0%, transparent 50%)",
-            "radial-gradient(circle at 80% 50%, rgba(135,80,247,0.2) 0%, transparent 50%)",
-            "radial-gradient(circle at 20% 50%, rgba(135,80,247,0.2) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 50%, rgba(135,80,247,0.22) 0%, transparent 55%)",
+            "radial-gradient(circle at 80% 50%, rgba(135,80,247,0.22) 0%, transparent 55%)",
+            "radial-gradient(circle at 20% 50%, rgba(135,80,247,0.22) 0%, transparent 55%)",
           ],
         }}
         transition={{
@@ -110,9 +158,9 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
         }}
       />
 
-      {/* Floating Particles with Theme Colors */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(30)].map((_, i) => (
+      {/* Floating Particles with Theme Colors - Reduced count for performance */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
             custom={i}
@@ -121,44 +169,44 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
             animate="visible"
             className="absolute rounded-full"
             style={{
-              width: `${Math.random() * 15 + 3}px`,
-              height: `${Math.random() * 15 + 3}px`,
+              width: `${Math.random() * 10 + 2}px`,
+              height: `${Math.random() * 10 + 2}px`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               background: isDarkMode 
-                ? `rgba(135, 80, 247, ${0.1 + Math.random() * 0.2})`
-                : `rgba(135, 80, 247, ${0.15 + Math.random() * 0.25})`,
+                ? `rgba(135,80,247, ${0.08 + Math.random() * 0.12})`
+                : `rgba(135,80,247, ${0.12 + Math.random() * 0.18})`,
               filter: "blur(1px)",
             }}
           />
         ))}
       </div>
 
-      {/* Shimmer Effect */}
+      {/* Shimmer Effect - Only on larger screens for performance */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 hidden lg:block pointer-events-none"
         animate={{
           x: ["-100%", "100%"],
-          opacity: [0, 0.3, 0],
+          opacity: [0, 0.15, 0],
         }}
         transition={{
-          duration: 3,
+          duration: 4,
           repeat: Infinity,
           delay: 1,
           ease: "easeInOut",
         }}
         style={{
-          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
           transform: "skewX(-20deg)",
         }}
       />
 
-      <div className="container-custom relative z-10 w-full py-15 md:py-30 lg:py-12">
+      <div className="container-custom relative z-10 w-full py-8 sm:py-10 lg:py-12">
         <div className="text-center">
           {/* Title with Theme Transition */}
           <motion.h1
             variants={itemVariants}
-            className={`text-3xl md:text-5xl lg:text-8xl xl:text-7xl font-bold ${titleColor} mb-4 select-none transition-colors duration-300`}
+            className={`text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold ${titleColor} mb-4 select-none transition-colors duration-300`}
           >
             {title.split('').map((char, index) => (
               <motion.span
@@ -166,7 +214,7 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
-                  delay: index * 0.03,
+                  delay: Math.min(index * 0.02, 0.5), // Cap the delay
                   duration: 0.3,
                   ease: "easeOut"
                 }}
@@ -190,7 +238,7 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
           {/* Breadcrumb Navigation */}
           <motion.div
             variants={itemVariants}
-            className="flex items-center justify-center gap-2 md:gap-3 text-base md:text-lg"
+            className="flex items-center justify-center gap-2 md:gap-3 text-base md:text-lg flex-wrap"
           >
             <Link
               href="/"
@@ -214,12 +262,12 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
             </Link>
             
             <motion.span 
-              className={`${arrowColor} text-base md:text-lg font-light transition-colors duration-300`}
+              className={`${arrowColor} text-base md:text-lg font-light`}
               animate={{ 
-                x: [0, 5, 0],
+                x: [0, 3, 0],
               }}
               transition={{
-                duration: 1,
+                duration: 1.5,
                 repeat: Infinity,
                 repeatType: "reverse",
               }}
@@ -238,7 +286,7 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-left"
+                className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary origin-left"
                 style={{
                   boxShadow: "0 0 8px rgba(135,80,247,0.6)",
                 }}
@@ -249,11 +297,11 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
           {/* Decorative Elements with Theme Colors */}
           <motion.div
             variants={itemVariants}
-            className="flex justify-center mt-8"
+            className="flex justify-center mt-6 sm:mt-8"
           >
             <div className="relative">
               <motion.div 
-                className="w-12 h-1 bg-primary rounded-full"
+                className="w-12 h-0.5 bg-primary rounded-full"
                 animate={{
                   scaleX: [1, 1.2, 1],
                   opacity: [0.6, 1, 0.6],
@@ -265,7 +313,7 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
                 }}
               />
               <motion.div 
-                className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-1 rounded-full"
+                className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-0.5 rounded-full"
                 style={{
                   background: isDarkMode ? "rgba(135,80,247,0.8)" : "rgba(135,80,247,1)",
                 }}
@@ -281,46 +329,6 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
               />
             </div>
           </motion.div>
-
-          {/* Clickable Scroll Indicator */}
-          {/* <motion.button
-            variants={itemVariants}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:flex flex-col items-center gap-2 cursor-pointer group focus:outline-none"
-            onClick={scrollToNextSection}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{
-              y: [0, 10, 0],
-            }}
-            transition={{
-              y: {
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            }}
-          >
-            <span className={`text-xs ${subtitleColor} transition-colors duration-300 group-hover:text-primary`}>
-              Scroll Down
-            </span>
-            <motion.div
-              className={`p-2 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-black/10'} backdrop-blur-sm group-hover:bg-primary/20 transition-all duration-300`}
-            >
-              <svg
-                className={`w-5 h-5 ${arrowColor} transition-colors duration-300 group-hover:text-primary`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7-7-7m14-5l-7 7-7-7"
-                />
-              </svg>
-            </motion.div>
-          </motion.button> */}
         </div>
       </div>
     </motion.section>

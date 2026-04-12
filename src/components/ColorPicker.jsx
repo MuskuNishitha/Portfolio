@@ -1,17 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FiCheck, FiDroplet } from 'react-icons/fi';
+
 const colors = [
+  { id: 'purple', color: '#8750f7' },
   { id: 'blue', color: '#3b82f6' },
-  { id: 'green', color: '#10b981' },
-  { id: 'purple', color: '#8b5cf6' },
-  { id: 'red', color: '#ef4444' },
-  { id: 'orange', color: '#f59e0b' },
   { id: 'pink', color: '#ec489a' },
+  { id: 'green', color: '#10b981' },
+  { id: 'yellow', color: '#eab308' },
+  { id: 'orange', color: '#f97316' },
+  { id: 'cyan', color: '#06b6d4' },
+  { id: 'red', color: '#ef4444' },
 ];
 
 export default function PremiumColorPicker() {
+  const containerRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('purple');
 
@@ -23,72 +28,106 @@ export default function PremiumColorPicker() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const onPointerDown = (e) => {
+      const el = containerRef.current;
+      if (!el) return;
+      if (!el.contains(e.target)) setOpen(false);
+    };
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
   const changeColor = (id) => {
     setActive(id);
     document.documentElement.setAttribute('data-primary', id);
     localStorage.setItem('primary-color', id);
+    setTimeout(() => setOpen(false), 180);
   };
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
 
       {/* FLOATING BUTTON */}
       <motion.button
         onClick={() => setOpen(!open)}
-        whileHover={{ scale: 1.15, rotate: 10 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 right-6 z-50 p-4 rounded-full text-white"
+        whileHover={{ scale: 1.12, rotate: 8 }}
+        whileTap={{ scale: 0.92 }}
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+        className="z-50 p-3.5 rounded-full text-white focus:outline-none focus:ring-2 focus:ring-primary/60"
         style={{
-          background: 'linear-gradient(135deg, #8b5cf6, #ec489a)',
-          boxShadow: '0 10px 30px rgba(139,92,246,0.6)',
+          background: 'linear-gradient(135deg, var(--primary), var(--primary-2))',
+          boxShadow: '0 10px 30px rgba(var(--primary-rgb),0.45)',
         }}
+        aria-label="Open color picker"
+        aria-expanded={open}
       >
-        <span>🎨</span>
+        <FiDroplet className="w-5 h-5" />
       </motion.button>
 
-      {/* BACKDROP */}
+      {/* POPOVER */}
       <AnimatePresence>
         {open && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black z-40"
-              onClick={() => setOpen(false)}
-            />
-
-            {/* MODAL */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.7, y: 40 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.7, y: 40 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-              className="fixed z-50 inset-0 flex items-center justify-center"
-            >
-              <div
-                className="p-6 rounded-3xl w-72"
-                style={{
-                  background: 'rgba(20,20,30,0.85)',
-                  backdropFilter: 'blur(25px)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
-                }}
-              >
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.98, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -8, scale: 0.98, filter: 'blur(6px)' }}
+            transition={{ type: 'spring', stiffness: 360, damping: 26 }}
+            className="absolute right-0 top-[calc(100%+12px)] z-50 p-5 rounded-3xl w-[300px] origin-top-right"
+            style={{
+              backgroundColor: 'var(--bg-card)',
+              backdropFilter: 'blur(22px)',
+              border: '1px solid var(--border-2)',
+              boxShadow: '0 24px 80px rgba(0,0,0,0.35)',
+            }}
+            role="dialog"
+            aria-modal="false"
+            aria-label="Color picker"
+          >
                 {/* TITLE */}
-                <h3 className="text-white text-center mb-6 tracking-widest text-sm opacity-70">
+                <h3
+                  className="text-center mb-6 tracking-widest text-sm opacity-80 select-none"
+                  style={{ color: 'var(--text-heading)' }}
+                >
                   CHOOSE COLOR
                 </h3>
 
                 {/* GRID */}
-                <div className="grid grid-cols-4 gap-5 justify-items-center">
+                <motion.div
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+                  }}
+                  className="grid grid-cols-4 gap-5 justify-items-center"
+                >
                   {colors.map((item, i) => (
                     <motion.div
                       key={item.id}
                       onClick={() => changeColor(item.id)}
-                      whileHover={{ scale: 1.25 }}
-                      whileTap={{ scale: 0.9 }}
+                      whileHover={{ scale: 1.18, y: -2 }}
+                      whileTap={{ scale: 0.92 }}
+                      variants={{
+                        hidden: { opacity: 0, scale: 0.8, y: 6 },
+                        show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 420, damping: 24 } },
+                      }}
                       className="relative cursor-pointer"
+                      role="button"
+                      aria-label={`Select ${item.id} theme`}
                     >
                       {/* GLOW RING */}
                       {active === item.id && (
@@ -98,6 +137,7 @@ export default function PremiumColorPicker() {
                           style={{
                             background: `radial-gradient(circle, ${item.color}55, transparent)`,
                           }}
+                          transition={{ type: 'spring', stiffness: 520, damping: 34 }}
                         />
                       )}
 
@@ -106,6 +146,7 @@ export default function PremiumColorPicker() {
                         <motion.div
                           layoutId="borderRing"
                           className="absolute -inset-1 rounded-full border-2 border-white"
+                          transition={{ type: 'spring', stiffness: 520, damping: 34 }}
                         />
                       )}
 
@@ -119,21 +160,30 @@ export default function PremiumColorPicker() {
                               ? `0 0 20px ${item.color}, 0 0 40px ${item.color}66`
                               : '0 5px 15px rgba(0,0,0,0.5)',
                         }}
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: i * 0.05 }}
+                        animate={active === item.id ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+                        transition={{ duration: 0.28 }}
                       />
+
+                      {active === item.id && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.7 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ type: 'spring', stiffness: 450, damping: 26 }}
+                          className="absolute inset-0 flex items-center justify-center text-white"
+                        >
+                          <FiCheck className="w-4 h-4 drop-shadow" />
+                        </motion.div>
+                      )}
                     </motion.div>
                   ))}
-                </div>
+                </motion.div>
 
                 {/* FOOTER */}
-                <p className="text-center text-xs text-gray-400 mt-6">
-                  Customize your theme
+                <p className="text-center text-xs mt-6" style={{ color: 'var(--text-muted)' }}>
+                  Select a color to apply instantly
                 </p>
-              </div>
-            </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

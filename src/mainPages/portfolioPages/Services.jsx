@@ -1,15 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import HeaderBanner from '@/global/HeaderBanner'
 import { useTheme } from '@/components/ThemeProvider'
+import { fetchServicesContent } from '@/lib/publicApi' // Create this API function
 
 export default function Services() {
   const [activeService, setActiveService] = useState(0)
+  const [servicesData, setServicesData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const { isDarkMode } = useTheme()
 
-  const servicesData = {
+  // Default/fallback data in case API fails
+  const defaultServicesData = {
     title: "My Quality Services",
     subtitle: "What I Do",
     description: "I transform your ideas into scalable web and mobile solutions that drive engagement and deliver results.",
@@ -36,6 +41,55 @@ export default function Services() {
       }
     ]
   }
+
+  useEffect(() => {
+    let cancelled = false
+
+    const loadServices = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        // Try to fetch from API, fallback to default data
+        let data
+        try {
+          data = await fetchServicesContent()
+        } catch (err) {
+          console.warn('Failed to fetch services from API, using default data:', err)
+          data = defaultServicesData
+        }
+        
+        if (!cancelled) {
+          // Validate and merge data with defaults
+          setServicesData({
+            title: data?.title || defaultServicesData.title,
+            subtitle: data?.subtitle || defaultServicesData.subtitle,
+            description: data?.description || defaultServicesData.description,
+            services: Array.isArray(data?.services) && data.services.length > 0 
+              ? data.services 
+              : defaultServicesData.services
+          })
+        }
+      } catch (err) {
+        if (!cancelled) {
+          console.error('Error loading services:', err)
+          setError(err.message || 'Failed to load services')
+          // Use default data on error
+          setServicesData(defaultServicesData)
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    }
+
+    loadServices()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -64,6 +118,62 @@ export default function Services() {
   const iconVariants = {
     initial: { rotate: 0 },
     hover: { rotate: 45, transition: { duration: 0.3 } }
+  }
+
+  // Loading state
+  if (loading) {
+    return (
+      <section 
+        id="services" 
+        className={`py-[100px] transition-colors duration-300 ${
+          isDarkMode ? 'bg-bg-2' : 'bg-gray-50'
+        }`}
+      >
+        <HeaderBanner title={"Services"} />
+        <div className="container-custom">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+              <p className="mt-4" style={{ color: 'var(--text-muted)' }}>Loading services...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Error state (still shows content with default data)
+  if (error && !servicesData) {
+    return (
+      <section 
+        id="services" 
+        className={`py-[100px] transition-colors duration-300 ${
+          isDarkMode ? 'bg-bg-2' : 'bg-gray-50'
+        }`}
+      >
+        <HeaderBanner title={"Services"} />
+        <div className="container-custom">
+          <div className="text-center py-12">
+            <div className="text-red-500 text-6xl mb-4">⚠️</div>
+            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-heading)' }}>
+              Unable to Load Services
+            </h3>
+            <p className="mb-4" style={{ color: 'var(--text-muted)' }}>{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="btn-primary"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Safety check
+  if (!servicesData || !servicesData.services) {
+    return null
   }
 
   return (
@@ -171,7 +281,7 @@ export default function Services() {
                   }}
                   transition={{ duration: 0.4 }}
                 >
-                  {service.num}
+                  {service.num || String(index + 1).padStart(2, '0')}
                 </motion.span>
                 <h3 
                   className="text-xl font-bold m-0 transition-colors duration-300"
@@ -179,7 +289,7 @@ export default function Services() {
                     color: isDarkMode ? 'white' : 'var(--text-heading)'
                   }}
                 >
-                  {service.name}
+                  {service.name || 'Service Name'}
                 </h3>
               </div>
               
@@ -193,7 +303,7 @@ export default function Services() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {service.desc}
+                  {service.desc || 'Service description goes here'}
                 </motion.p>
               </AnimatePresence>
               

@@ -6,115 +6,56 @@ import Image from 'next/image'
 import { useTheme } from '@/components/ThemeProvider'
 import { FiArrowRight, FiGithub, FiExternalLink } from 'react-icons/fi'
 import HeaderBanner from '@/global/HeaderBanner'
+import { fetchPortfolioContent } from '@/lib/publicApi'
 
 export default function Portfolio() {
   const [filter, setFilter] = useState('all')
   const [selectedProject, setSelectedProject] = useState(null)
   const [mounted, setMounted] = useState(false)
-  const [hoveredCard, setHoveredCard] = useState(null)
+  const [content, setContent] = useState(null)
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
   const { isDarkMode } = useTheme()
 
-  useEffect(() => { setMounted(true) }, [])
+  useEffect(() => {
+    setMounted(true)
+    let cancelled = false
+    fetchPortfolioContent().then((data) => {
+      if (!cancelled) setContent(data)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
-  const categories = [
-    { id: 'all', name: 'All Work', count: 4 },
-    { id: 'ecommerce', name: 'Web Development', count: 3 },
-    { id: 'mobile', name: 'Applications', count: 1 },
-    { id: 'dashboard', name: 'Dashboards', count: 1 },
-  ]
+  const projects = content?.projects || []
+  const categories = (() => {
+    const baseCategories = Array.isArray(content?.categories) && content.categories.length
+      ? content.categories
+      : []
 
-  const projects = [
-    {
-      id: 1,
-      title: 'EWShopping',
-      category: 'ecommerce',
-      subcategory: 'Web Development',
-      period: 'Jun 2024 – Present',
-      image: '/assets/projects/Ewshooping.png',
-      description: 'Full-scale multi-vendor e-commerce platform with customer website, admin panel, seller panel, and mobile app.',
-      features: [
-        'Next.js customer website with 20% improved SEO and performance',
-        'Admin & Seller dashboards with React (Vite) and Tailwind CSS',
-        'Cross-platform mobile app with React Native',
-        'Firebase for real-time updates, reducing data sync delay by 50%',
-        'Hostinger deployment with 99% uptime',
-      ],
-      tech: ['Next.js', 'React.js', 'React Native', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Firebase'],
-      liveLink: 'https://ewshopping-demo.vercel.app',
-      githubLink: 'https://github.com/MuskuNishitha/ewshopping',
-      challenges: 'Implementing real-time inventory sync across multiple vendors and platforms simultaneously.',
-      solution: 'Implemented WebSocket connections and optimised DB queries to ensure real-time synchronisation with 99.9% accuracy.',
-    },
-    {
-      id: 2,
-      title: 'KiranaWorld',
-      category: 'ecommerce',
-      subcategory: 'Web Development',
-      period: 'Apr 2025 – Present',
-      image: '/assets/projects/KiranaWorld.png',
-      description: 'Grocery e-commerce platform enabling online orders of fruits, vegetables, and household essentials.',
-      features: [
-        'Responsive customer website with React.js (Vite), improving UX by 30%',
-        'Admin Panel for efficient inventory and order management',
-        'Cross-platform mobile app with React Native',
-        'Scalable backend with Node.js, Express.js, and MongoDB',
-        'Smooth checkout experience across all platforms',
-      ],
-      tech: ['React.js', 'React Native', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Redux Toolkit'],
-      liveLink: 'https://kiranaworld-demo.vercel.app',
-      githubLink: 'https://github.com/MuskuNishitha/kiranaworld',
-      challenges: 'Managing real-time inventory updates and preventing overselling during peak hours.',
-      solution: 'Implemented optimistic updates with rollback mechanisms and used Redis caching for inventory management.',
-    },
-    {
-      id: 3,
-      title: 'POT Dashboard',
-      category: 'dashboard',
-      subcategory: 'Dashboard',
-      period: 'Nov 2025 – Jan 2026',
-      image: '/assets/projects/POT.png',
-      description: 'Mobile dashboard for visualising construction project metrics including cost, manpower, and progress.',
-      features: [
-        'Dynamic charts and graphs for real-time decision-making',
-        'Responsive UI for mobile and tablet, improving field usability by 40%',
-        'State management with Redux Toolkit',
-        'Real-time data visualisation with Chart.js',
-        'Project cost and resource tracking with export capabilities',
-      ],
-      tech: ['React Native', 'Redux Toolkit', 'Chart.js', 'Node.js', 'Express.js', 'MongoDB', 'Socket.io'],
-      liveLink: 'https://pot-dashboard-demo.vercel.app',
-      githubLink: 'https://github.com/MuskuNishitha/pot-dashboard',
-      challenges: 'Creating smooth, real-time chart updates with large datasets on mobile devices.',
-      solution: 'Implemented server-side data aggregation and used memoisation for efficient re-renders.',
-    },
-    {
-      id: 4,
-      title: 'Primera Dental Hub',
-      category: 'ecommerce',
-      subcategory: 'Web Development',
-      period: 'Jul 2025 – Present',
-      image: '/assets/projects/Primeradental.png',
-      description: 'Specialised dental e-commerce platform for products, instruments, and equipment.',
-      features: [
-        'Next.js customer website with improved performance and SEO',
-        'Firebase Authentication for secure login and email verification',
-        'Admin Panel with React (Vite) and Tailwind CSS',
-        'Cross-platform mobile apps (Customer & Service) with React Native',
-        'SMS and email notifications for orders and authentication',
-      ],
-      tech: ['Next.js', 'React.js', 'React Native', 'Node.js', 'Express.js', 'MongoDB', 'Firebase', 'Tailwind CSS'],
-      liveLink: 'https://primera-dental-demo.vercel.app',
-      githubLink: 'https://github.com/MuskuNishitha/primera-dental',
-      challenges: 'Implementing role-based access for customer and service provider apps with secure authentication.',
-      solution: 'Used JWT with refresh tokens and implemented RBAC (Role-Based Access Control) system.',
-    },
-  ]
+    const uniqueFromProjects = Array.from(
+      new Map(
+        projects
+          .map((p) => p?.category)
+          .filter(Boolean)
+          .map((id) => [id, { id, name: id }]),
+      ).values(),
+    )
+
+    const raw = baseCategories.length ? baseCategories : uniqueFromProjects
+
+    const withCounts = raw.map((cat) => ({
+      ...cat,
+      count: projects.filter((p) => p.category === cat.id).length,
+    }))
+
+    return [{ id: 'all', name: 'All Work', count: projects.length }, ...withCounts]
+  })()
 
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter)
 
-  if (!mounted) return null
+  if (!mounted || !content) return null
 
   // Theme-based colors matching your header
   const bgColor = isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
@@ -126,37 +67,39 @@ export default function Portfolio() {
   const tagBg = isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
   const tagText = isDarkMode ? 'text-gray-300' : 'text-gray-600'
   const activeFilterBg = isDarkMode ? 'bg-primary/20' : 'bg-primary/10'
-  const activeFilterText = 'text-primary'
   const inactiveFilterText = isDarkMode ? 'text-gray-400' : 'text-gray-500'
 
   return (
 
 
-    <div >
+    <div   className={` min-h-screen py-[100px] transition-colors duration-300 ${
+        isDarkMode ? 'bg-bg-2' : 'bg-gray-50'
+      }`}>
       <HeaderBanner title={"Portfolio"} />
       <section
         ref={sectionRef}
-        className={`${bgColor} py-20 lg:py-28 relative overflow-hidden transition-colors duration-300`}
+        className={`${bgColor} py-12 sm:py-16 lg:py-24 relative overflow-hidden transition-colors duration-300`}
         style={{ minHeight: '100vh' }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
-            className="mb-12 text-center sm:text-left"
+            className="mb-10 sm:mb-12 text-center sm:text-left"
           // initial={{ opacity: 0, y: 26 }}
           // animate={isInView ? { opacity: 1, y: 0 } : {}}
           // transition={{ duration: 0.55 }}
           >
-            <p className={`text-primary font-semibold text-sm uppercase ${isDarkMode ? 'text-[#fff]' : 'text-[#000]'} tracking-wider mb-3`}>            My Work
+            <span className="section-label">My Work</span>
+            <h2 className="section-title">Portfolio</h2>
+            <p className="section-desc mx-auto sm:mx-0">
+              A curated set of projects showcasing modern UI, smooth animations, and scalable full-stack builds.
             </p>
-            <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${isDarkMode ? 'text-[#fff]' : 'text-[#000]'} mb-4`}>            Portfolio
-            </h2>
-            <div className="w-20 h-1 bg-primary rounded-full mx-auto sm:mx-0" />
+            <div className="section-divider mx-auto sm:mx-0" />
           </motion.div>
 
           {/* Filter Bar */}
           <motion.div
 
-            className={`flex flex-wrap justify-center sm:justify-start gap-2 mb-12 pb-4 border-b ${borderColor}`}
+            className={`flex flex-nowrap overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible justify-start gap-2 sm:gap-3 mb-10 sm:mb-12 pb-4 border-b ${borderColor}`}
           >
             {categories.map((cat) => {
               const active = filter === cat.id
@@ -164,9 +107,9 @@ export default function Portfolio() {
                 <button
                   key={cat.id}
                   onClick={() => setFilter(cat.id)}
-                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${active
-                    ? `${activeFilterBg} ${activeFilterText}`
-                    : `${inactiveFilterText} hover:${activeFilterText} hover:${activeFilterBg}`
+                  className={`relative px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 flex-shrink-0 ${active
+                    ? `${activeFilterBg} text-primary`
+                    : `${inactiveFilterText} hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/20`
                     }`}
                 >
                   <span className="relative z-10 flex items-center gap-2">
@@ -198,7 +141,7 @@ export default function Portfolio() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8"
             >
               {filteredProjects.map((project, idx) => (
                 <motion.div
@@ -206,16 +149,11 @@ export default function Portfolio() {
                   initial={{ opacity: 0, y: 38 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.42, delay: idx * 0.07 }}
-                  onMouseEnter={() => setHoveredCard(project.id)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  className={`${cardBg} rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${hoveredCard === project.id
-                    ? 'shadow-2xl transform -translate-y-2'
-                    : 'shadow-lg'
-                    } ${borderColor} border`}
+                  className={`${cardBg} group rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-2 ${borderColor} border`}
                   onClick={() => setSelectedProject(project)}
                 >
                   {/* Image Container */}
-                  <div className="relative w-full h-56 overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                  <div className="relative w-full h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -225,8 +163,7 @@ export default function Portfolio() {
                     />
 
                     {/* Hover Overlay */}
-                    <div className={`absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-4 ${hoveredCard === project.id ? 'opacity-100' : ''
-                      }`}>
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:flex items-center justify-center gap-4">
                       <a
                         href={project.liveLink}
                         target="_blank"
@@ -249,7 +186,7 @@ export default function Portfolio() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
+                  <div className="p-5 sm:p-6">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-xs font-semibold text-primary uppercase tracking-wider">
                         {project.subcategory}
@@ -267,9 +204,36 @@ export default function Portfolio() {
                       {project.description}
                     </p>
 
+                    {/* Mobile Actions */}
+                    <div className="sm:hidden flex gap-3 mb-4">
+                      <a
+                        href={project.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex-1 px-3 py-2 bg-primary text-white rounded-lg transition-colors flex items-center justify-center gap-2"
+                      >
+                        <FiExternalLink className="w-4 h-4" />
+                        Live
+                      </a>
+                      <a
+                        href={project.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className={`flex-1 px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 ${isDarkMode
+                          ? 'bg-gray-700 text-gray-200'
+                          : 'bg-gray-100 text-gray-800'
+                          }`}
+                      >
+                        <FiGithub className="w-4 h-4" />
+                        Code
+                      </a>
+                    </div>
+
                     {/* Tech Stack Tags */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tech.slice(0, 3).map((tech) => (
+                      {project.tech.slice(0, 4).map((tech) => (
                         <span
                           key={tech}
                           className={`text-xs px-2 py-1 rounded-md ${tagBg} ${tagText}`}
@@ -277,9 +241,9 @@ export default function Portfolio() {
                           {tech}
                         </span>
                       ))}
-                      {project.tech.length > 3 && (
+                      {project.tech.length > 4 && (
                         <span className={`text-xs px-2 py-1 rounded-md bg-primary/20 text-primary`}>
-                          +{project.tech.length - 3}
+                          +{project.tech.length - 4}
                         </span>
                       )}
                     </div>
@@ -348,14 +312,15 @@ export default function Portfolio() {
                   <button
                     onClick={() => setSelectedProject(null)}
                     className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors"
+                    aria-label="Close"
                   >
                     ✕
                   </button>
                 </div>
 
                 {/* Modal Content */}
-                <div className="flex-1 overflow-y-auto p-6 md:p-8">
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                <div className="flex-1 overflow-y-auto p-5 sm:p-6 md:p-8">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                     <div>
                       <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${textPrimary}`}>
                         {selectedProject.title}
@@ -364,12 +329,12 @@ export default function Portfolio() {
                         {selectedProject.subcategory} • {selectedProject.period}
                       </p>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                       <a
                         href={selectedProject.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto"
                       >
                         <FiExternalLink className="w-4 h-4" />
                         Live Demo
@@ -378,7 +343,7 @@ export default function Portfolio() {
                         href={selectedProject.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${isDarkMode
+                        className={`px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 w-full sm:w-auto ${isDarkMode
                           ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}

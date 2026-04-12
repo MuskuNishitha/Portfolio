@@ -254,7 +254,7 @@ export function Testimonials() {
           <div>
             <div className="bg-[#111820] border border-[#1b2227] rounded-2xl p-9">
               <div className="flex items-center justify-between mb-7">
-                <div className="text-[#8750f7] text-4xl opacity-70 leading-none font-serif">"</div>
+                <div className="text-[#8750f7] text-4xl opacity-70 leading-none font-serif">&quot;</div>
                 <div className="flex items-center gap-3">
                   <div className={`w-13 h-13 w-12 h-12 rounded-full bg-gradient-to-br ${testimonials[active].gradient} flex items-center justify-center text-white font-extrabold text-base`}>
                     {testimonials[active].initials}
@@ -350,7 +350,7 @@ export function Contact() {
           {/* Form */}
           <div>
             <span className="section-label">Contact Me</span>
-            <h2 className="section-title">Let's Work Together!</h2>
+            <h2 className="section-title">Let&apos;s Work Together!</h2>
             <div className="section-divider" />
             <form onSubmit={handleSubmit} className="mt-2">
               <div className="grid grid-cols-2 gap-5 mb-5">

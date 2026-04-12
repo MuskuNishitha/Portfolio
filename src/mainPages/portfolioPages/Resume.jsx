@@ -3,77 +3,120 @@
 import HeaderBanner from "@/global/HeaderBanner";
 import { motion } from "framer-motion";
 import { useTheme } from "@/components/ThemeProvider";
+import { useEffect, useState } from "react";
+import { fetchResumeContent } from "@/lib/publicApi";
 
 export default function Resume() {
   const { isDarkMode } = useTheme();
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const experiences = [
-    {
-      time: "Jun 2024 – Present",
-      title: "MERN Stack & React Native Developer",
-      place: "AI Apps Hub Private Limited (formerly Dexterous Technology), Hyderabad",
-      achievements: [
-        "Delivered 3+ scalable web and mobile applications, improving user engagement and product reach",
-        "Optimized backend APIs, reducing response time by 40%",
-        "Designed secure authentication and file management systems using JWT and REST APIs",
-        "Built responsive UIs using React.js, React Native, Next.js, and Redux Toolkit",
-        "Integrated Firebase Cloud Messaging and Google Maps API"
-      ]
-    },
-    {
-      time: "Apr 2024 – May 2024",
-      title: "Intern",
-      place: "AI Apps Hub Private Limited (formerly Dexterous Technology), Hyderabad",
-      achievements: [
-        "Developed responsive frontend components using HTML, CSS, and JavaScript",
-        "Supported API integration and backend development using Node.js and Express.js",
-        "Debugged UI/functional issues, improving application stability",
-        "Gained hands-on experience in full-stack development and Agile workflows"
-      ]
-    }
-  ];
+  useEffect(() => {
+    let cancelled = false;
+    
+    const loadContent = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchResumeContent();
+        
+        if (!cancelled) {
+          // Check if data is valid
+          if (data && typeof data === 'object') {
+            setContent(data);
+          } else {
+            // Set default empty structure if data is invalid
+            setContent({
+              experiences: [],
+              education: [],
+              certifications: []
+            });
+            console.warn('Invalid resume content received:', data);
+          }
+        }
+      } catch (err) {
+        if (!cancelled) {
+          console.error('Failed to fetch resume content:', err);
+          setError(err.message || 'Failed to load resume content');
+          // Set default empty structure to prevent crashes
+          setContent({
+            experiences: [],
+            education: [],
+            certifications: []
+          });
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
 
-  const education = [
-    {
-      time: "Aug 2020 – Jun 2023",
-      title: "Bachelor of Business Administration (BBA)",
-      place: "A.V. College of Arts, Science & Commerce, Hyderabad",
-      cgpa: "CGPA: 8.42/10"
-    },
-    {
-      time: "Aug 2018 – Jun 2020",
-      title: "Intermediate (MPC)",
-      place: "Sri Aryabhata Junior College, Kamareddy",
-      cgpa: "CGPA: 9.2/10"
-    }
-  ];
+    loadContent();
 
-  const certifications = [
-    {
-      title: "Full Stack Java Developer",
-      issuer: "JSPiders, Punjagutta",
-      year: "2023",
-      icon: "☕"
-    },
-    {
-      title: "Best Performer of the Month",
-      issuer: "AI Apps Hub Private Limited",
-      year: "2024",
-      icon: "🏆"
-    },
-    {
-      title: "Zero Critical Bugs Achievement",
-      issuer: "AI Apps Hub Private Limited",
-      year: "2024",
-      icon: "🐛"
-    },
-    {
-      title: "95%+ Task Completion",
-      issuer: "AI Apps Hub Private Limited",
-      year: "2024",
-      icon: "✅"
-    }
-  ];
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      // <div className="min-h-screen">
+      <div 
+      
+      >
+        <HeaderBanner title={"Resume"} />
+        <section className={`py-[50px] ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'}`}>
+          <div className="container-custom">
+            <div className="flex justify-center items-center min-h-[400px]">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+                <p className="mt-4" style={{ color: 'var(--text-muted)' }}>Loading resume content...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen">
+        <HeaderBanner title={"Resume"} />
+        <section className={`py-[50px] ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'}`}>
+          <div className="container-custom">
+            <div className="text-center py-12">
+              <div className="text-red-500 text-6xl mb-4">⚠️</div>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-heading)' }}>
+                Unable to Load Resume
+              </h3>
+              <p className="mb-4" style={{ color: 'var(--text-muted)' }}>{error}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="btn-primary"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // Safety check: if content is still null, don't render
+  if (!content) {
+    return null;
+  }
+
+  // Safe destructuring with fallbacks
+  const experiences = Array.isArray(content.experiences) ? content.experiences : [];
+  const education = Array.isArray(content.education) ? content.education : [];
+  const certifications = Array.isArray(content.certifications) ? content.certifications : [];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -157,7 +200,11 @@ export default function Resume() {
   };
 
   return (
-    <div className="min-h-screen mt-20">
+    <div
+      className={` min-h-screen py-[100px] transition-colors duration-300 ${
+        isDarkMode ? 'bg-bg-2' : 'bg-gray-50'
+      }`}
+    >
       <HeaderBanner title={"Resume"} />
       <section 
         id="resume" 
@@ -239,92 +286,100 @@ export default function Resume() {
                 </motion.span>
               </motion.div>
 
-              <motion.div
-                className="relative pl-7"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: { opacity: 1 },
-                }}
-              >
+              {experiences.length > 0 ? (
                 <motion.div
-                  className="absolute top-2 left-0 w-0.5 bottom-0 bg-gradient-to-b from-primary to-transparent origin-top"
-                  variants={timelineLineVariants}
-                />
-
-                {experiences.map((exp, i) => (
+                  className="relative pl-7"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: { opacity: 1 },
+                  }}
+                >
                   <motion.div
-                    key={i}
-                    className="relative pb-9 last:pb-0"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15 }}
-                    whileHover={{ x: 6 }}
-                  >
-                    <motion.div
-                      className="absolute left-[-35px] top-2 w-3.5 h-3.5 rounded-full bg-primary"
-                      style={{ 
-                        borderWidth: '4px',
-                        borderStyle: 'solid',
-                        borderColor: isDarkMode ? 'var(--bg-2)' : '#f3f4f6'
-                      }}
-                      variants={timelineDotVariants}
-                      animate="pulse"
-                    />
+                    className="absolute top-2 left-0 w-0.5 bottom-0 bg-gradient-to-b from-primary to-transparent origin-top"
+                    variants={timelineLineVariants}
+                  />
 
+                  {experiences.map((exp, i) => (
                     <motion.div
-                      className="text-xs font-semibold tracking-wide mb-1.5 uppercase"
-                      style={{ color: 'var(--primary-3)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
+                      key={i}
+                      className="relative pb-9 last:pb-0"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.1 }}
+                      transition={{ delay: i * 0.15 }}
+                      whileHover={{ x: 6 }}
                     >
-                      {exp.time}
+                      <motion.div
+                        className="absolute left-[-35px] top-2 w-3.5 h-3.5 rounded-full bg-primary"
+                        style={{ 
+                          borderWidth: '4px',
+                          borderStyle: 'solid',
+                          borderColor: isDarkMode ? 'var(--bg-2)' : '#f3f4f6'
+                        }}
+                        variants={timelineDotVariants}
+                        animate="pulse"
+                      />
+
+                      <motion.div
+                        className="text-xs font-semibold tracking-wide mb-1.5 uppercase"
+                        style={{ color: 'var(--primary-3)' }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.15 + 0.1 }}
+                      >
+                        {exp.time || 'N/A'}
+                      </motion.div>
+
+                      <motion.div
+                        className="text-lg font-bold mb-1"
+                        style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.15 + 0.2 }}
+                      >
+                        {exp.title || 'Untitled'}
+                      </motion.div>
+
+                      <motion.div
+                        className="text-sm mb-2"
+                        style={{ color: 'var(--text-muted)' }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.15 + 0.3 }}
+                      >
+                        {exp.place || 'Unknown'}
+                      </motion.div>
+
+                      {/* Achievements List */}
+                      {exp.achievements && Array.isArray(exp.achievements) && exp.achievements.length > 0 && (
+                        <motion.ul
+                          className="space-y-1.5 mt-3"
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.15 + 0.4 }}
+                        >
+                          {exp.achievements.map((achievement, idx) => (
+                            <li key={idx} className="text-xs flex items-start gap-2" style={{ color: 'var(--text-body)' }}>
+                              <span className="text-primary-3 mt-0.5">▹</span>
+                              {achievement}
+                            </li>
+                          ))}
+                        </motion.ul>
+                      )}
                     </motion.div>
-
-                    <motion.div
-                      className="text-lg font-bold mb-1"
-                      style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.2 }}
-                    >
-                      {exp.title}
-                    </motion.div>
-
-                    <motion.div
-                      className="text-sm mb-2"
-                      style={{ color: 'var(--text-muted)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.3 }}
-                    >
-                      {exp.place}
-                    </motion.div>
-
-                    {/* Achievements List */}
-                    <motion.ul
-                      className="space-y-1.5 mt-3"
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.4 }}
-                    >
-                      {exp.achievements.map((achievement, idx) => (
-                        <li key={idx} className="text-xs flex items-start gap-2" style={{ color: 'var(--text-body)' }}>
-                          <span className="text-primary-3 mt-0.5">▹</span>
-                          {achievement}
-                        </li>
-                      ))}
-                    </motion.ul>
-                  </motion.div>
-                ))}
-              </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <div className="text-center py-8" style={{ color: 'var(--text-muted)' }}>
+                  No work experience to display
+                </div>
+              )}
             </motion.div>
 
             {/* Education & Certifications */}
@@ -357,87 +412,95 @@ export default function Resume() {
                 </motion.span>
               </motion.div>
 
-              <motion.div
-                className="relative pl-7 mb-12"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: { opacity: 1 },
-                }}
-              >
+              {education.length > 0 ? (
                 <motion.div
-                  className="absolute top-2 left-0 w-0.5 bottom-0 bg-gradient-to-b from-primary to-transparent origin-top"
-                  variants={timelineLineVariants}
-                />
-
-                {education.map((edu, i) => (
+                  className="relative pl-7 mb-12"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: { opacity: 1 },
+                  }}
+                >
                   <motion.div
-                    key={i}
-                    className="relative pb-9 last:pb-0"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15 }}
-                    whileHover={{ x: 6 }}
-                  >
-                    <motion.div
-                      className="absolute left-[-35px] top-2 w-3.5 h-3.5 rounded-full bg-primary"
-                      style={{ 
-                        borderWidth: '4px',
-                        borderStyle: 'solid',
-                        borderColor: isDarkMode ? 'var(--bg-2)' : '#f3f4f6'
-                      }}
-                      variants={timelineDotVariants}
-                      animate="pulse"
-                    />
+                    className="absolute top-2 left-0 w-0.5 bottom-0 bg-gradient-to-b from-primary to-transparent origin-top"
+                    variants={timelineLineVariants}
+                  />
 
+                  {education.map((edu, i) => (
                     <motion.div
-                      className="text-xs font-semibold tracking-wide mb-1.5 uppercase"
-                      style={{ color: 'var(--primary-3)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
+                      key={i}
+                      className="relative pb-9 last:pb-0"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.1 }}
+                      transition={{ delay: i * 0.15 }}
+                      whileHover={{ x: 6 }}
                     >
-                      {edu.time}
-                    </motion.div>
+                      <motion.div
+                        className="absolute left-[-35px] top-2 w-3.5 h-3.5 rounded-full bg-primary"
+                        style={{ 
+                          borderWidth: '4px',
+                          borderStyle: 'solid',
+                          borderColor: isDarkMode ? 'var(--bg-2)' : '#f3f4f6'
+                        }}
+                        variants={timelineDotVariants}
+                        animate="pulse"
+                      />
 
-                    <motion.div
-                      className="text-lg font-bold mb-1"
-                      style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.2 }}
-                    >
-                      {edu.title}
-                    </motion.div>
+                      <motion.div
+                        className="text-xs font-semibold tracking-wide mb-1.5 uppercase"
+                        style={{ color: 'var(--primary-3)' }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.15 + 0.1 }}
+                      >
+                        {edu.time || 'N/A'}
+                      </motion.div>
 
-                    <motion.div
-                      className="text-sm"
-                      style={{ color: 'var(--text-muted)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.3 }}
-                    >
-                      {edu.place}
-                    </motion.div>
+                      <motion.div
+                        className="text-lg font-bold mb-1"
+                        style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.15 + 0.2 }}
+                      >
+                        {edu.title || 'Untitled'}
+                      </motion.div>
 
-                    <motion.div
-                      className="text-xs mt-1"
-                      style={{ color: 'var(--primary-3)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.35 }}
-                    >
-                      {edu.cgpa}
+                      <motion.div
+                        className="text-sm"
+                        style={{ color: 'var(--text-muted)' }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.15 + 0.3 }}
+                      >
+                        {edu.place || 'Unknown'}
+                      </motion.div>
+
+                      {edu.cgpa && (
+                        <motion.div
+                          className="text-xs mt-1"
+                          style={{ color: 'var(--primary-3)' }}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.15 + 0.35 }}
+                        >
+                          {edu.cgpa}
+                        </motion.div>
+                      )}
                     </motion.div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <div className="text-center py-8 mb-12" style={{ color: 'var(--text-muted)' }}>
+                  No education to display
+                </div>
+              )}
 
               {/* Certifications Section */}
               <motion.div
@@ -467,45 +530,53 @@ export default function Resume() {
                 </motion.span>
               </motion.div>
 
-              <div className="grid gap-4">
-                {certifications.map((cert, i) => (
-                  <motion.div
-                    key={i}
-                    className={`rounded-xl p-4 transition-all duration-300 ${
-                      isDarkMode
-                        ? 'bg-bg-card border border-border hover:border-primary'
-                        : 'bg-white border border-gray-200 shadow-sm hover:shadow-md hover:border-primary'
-                    }`}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    whileHover={{ y: -3, scale: 1.02 }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="text-2xl">{cert.icon}</div>
-                      <div className="flex-1">
-                        <h4 
-                          className="font-semibold mb-1"
-                          style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}
-                        >
-                          {cert.title}
-                        </h4>
-                        <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{cert.issuer}</p>
-                        <span 
-                          className="inline-block mt-2 text-xs px-2 py-0.5 rounded-full"
-                          style={{ 
-                            backgroundColor: isDarkMode ? 'rgba(135, 80, 247, 0.1)' : 'rgba(135, 80, 247, 0.08)',
-                            color: 'var(--primary-3)'
-                          }}
-                        >
-                          {cert.year}
-                        </span>
+              {certifications.length > 0 ? (
+                <div className="grid gap-4">
+                  {certifications.map((cert, i) => (
+                    <motion.div
+                      key={i}
+                      className={`rounded-xl p-4 transition-all duration-300 ${
+                        isDarkMode
+                          ? 'bg-bg-card border border-border hover:border-primary'
+                          : 'bg-white border border-gray-200 shadow-sm hover:shadow-md hover:border-primary'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                      whileHover={{ y: -3, scale: 1.02 }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="text-2xl">{cert.icon || '🏆'}</div>
+                        <div className="flex-1">
+                          <h4 
+                            className="font-semibold mb-1"
+                            style={{ color: isDarkMode ? 'white' : 'var(--text-heading)' }}
+                          >
+                            {cert.title || 'Untitled Certification'}
+                          </h4>
+                          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{cert.issuer || 'Unknown'}</p>
+                          {cert.year && (
+                            <span 
+                              className="inline-block mt-2 text-xs px-2 py-0.5 rounded-full"
+                              style={{ 
+                                backgroundColor: isDarkMode ? 'rgba(135, 80, 247, 0.1)' : 'rgba(135, 80, 247, 0.08)',
+                                color: 'var(--primary-3)'
+                              }}
+                            >
+                              {cert.year}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8" style={{ color: 'var(--text-muted)' }}>
+                  No certifications to display
+                </div>
+              )}
             </motion.div>
           </motion.div>
 

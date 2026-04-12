@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import ColorPicker from './ColorPicker'
+import { fetchSiteSettings } from '@/lib/publicApi'
 
 const ThemeContext = createContext()
 
@@ -45,6 +46,23 @@ export default function ThemeProvider({ children }) {
     } else {
       document.documentElement.setAttribute('data-primary', 'purple')
     }
+
+    // Optional: load defaults from backend/admin settings (applies only if user has no saved preference)
+    fetchSiteSettings().then((settings) => {
+      if (!settings) return
+
+      if (!savedTheme && (settings.defaultTheme === 'dark' || settings.defaultTheme === 'light')) {
+        const dark = settings.defaultTheme === 'dark'
+        setIsDarkMode(dark)
+        if (dark) document.documentElement.classList.add('dark')
+        else document.documentElement.classList.remove('dark')
+      }
+
+      if (!savedColor && typeof settings.defaultPrimaryColor === 'string' && settings.defaultPrimaryColor) {
+        document.documentElement.setAttribute('data-primary', settings.defaultPrimaryColor)
+        localStorage.setItem('primary-color', settings.defaultPrimaryColor)
+      }
+    })
   }, [])
 
   const toggleTheme = () => {

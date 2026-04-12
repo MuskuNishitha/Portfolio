@@ -162,7 +162,8 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen mt-20">
+    <div className={`py-[100px] transition-colors duration-300 ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'
+      }`}>
 
       <HeaderBanner title={"Contact US"} />
 
@@ -176,21 +177,21 @@ export default function Contact() {
       >
         {/* Background decorative elements */}
         <div className="absolute inset-0 pointer-events-none">
-          <div 
+          <div
             className="absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl"
             style={{
               background: `radial-gradient(circle, ${isDarkMode ? 'rgba(135,80,247,0.08)' : 'rgba(135,80,247,0.12)'} 0%, transparent 70%)`
             }}
           />
-          <div 
+          <div
             className="absolute bottom-20 right-10 w-72 h-72 rounded-full blur-3xl"
             style={{
               background: `radial-gradient(circle, ${isDarkMode ? 'rgba(59,130,246,0.08)' : 'rgba(59,130,246,0.1)'} 0%, transparent 70%)`
             }}
           />
-          
+
           {/* Grid pattern background */}
-          <div 
+          <div
             className="absolute inset-0 bg-[length:40px_40px] opacity-30"
             style={{
               backgroundImage: `linear-gradient(${isDarkMode ? 'rgba(135,80,247,0.03)' : 'rgba(135,80,247,0.04)'} 1px, transparent 1px), linear-gradient(90deg, ${isDarkMode ? 'rgba(135,80,247,0.03)' : 'rgba(135,80,247,0.04)'} 1px, transparent 1px)`
@@ -206,7 +207,7 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <span 
+            <span
               className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
               style={{
                 backgroundColor: isDarkMode ? 'rgba(135,80,247,0.2)' : 'rgba(135,80,247,0.1)',
@@ -215,13 +216,13 @@ export default function Contact() {
             >
               {content.subtitle || "Get In Touch"}
             </span>
-            <h2 
+            <h2
               className="text-4xl md:text-5xl font-bold mb-4"
               style={{ color: 'var(--text-heading)' }}
             >
               {content.title || "Let's Work Together!"}
             </h2>
-            <div 
+            <div
               className="w-24 h-1 mx-auto rounded-full"
               style={{
                 background: `linear-gradient(to right, var(--primary), var(--primary-2))`
@@ -237,14 +238,14 @@ export default function Contact() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div 
+              <div
                 className="rounded-3xl shadow-xl p-8 md:p-10 transition-colors duration-300"
                 style={{
                   backgroundColor: 'var(--bg-card)',
                   border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`
                 }}
               >
-                <h3 
+                <h3
                   className="text-2xl font-bold mb-6"
                   style={{ color: 'var(--text-heading)' }}
                 >
@@ -286,7 +287,7 @@ export default function Contact() {
                   <div className="grid md:grid-cols-2 gap-5">
                     {["firstName", "lastName"].map((field, index) => (
                       <div key={field} className="space-y-2">
-                        <label 
+                        <label
                           className="block text-sm font-semibold"
                           style={{ color: 'var(--text-body)' }}
                         >
@@ -298,8 +299,6 @@ export default function Contact() {
                             name={field}
                             value={formData[field]}
                             onChange={handleChange}
-                            onFocus={() => setFocusedField(field)}
-                            onBlur={() => setFocusedField(null)}
                             required
                             className="w-full px-4 py-3.5 rounded-xl outline-none transition-all duration-300 placeholder:text-gray-400"
                             style={{
@@ -308,10 +307,12 @@ export default function Contact() {
                               color: 'var(--text-heading)'
                             }}
                             onFocus={(e) => {
+                              setFocusedField(field);
                               e.currentTarget.style.borderColor = 'var(--primary)';
                               e.currentTarget.style.boxShadow = `0 0 0 4px ${isDarkMode ? 'rgba(135,80,247,0.2)' : 'rgba(135,80,247,0.1)'}`;
                             }}
                             onBlur={(e) => {
+                              setFocusedField(null);
                               e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
                               e.currentTarget.style.boxShadow = 'none';
                             }}
@@ -329,7 +330,7 @@ export default function Contact() {
                   <div className="grid md:grid-cols-2 gap-5">
                     {["email", "phone"].map((field) => (
                       <div key={field} className="space-y-2">
-                        <label 
+                        <label
                           className="block text-sm font-semibold"
                           style={{ color: 'var(--text-body)' }}
                         >
@@ -366,7 +367,7 @@ export default function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <label 
+                    <label
                       className="block text-sm font-semibold"
                       style={{ color: 'var(--text-body)' }}
                     >
@@ -403,7 +404,7 @@ export default function Contact() {
                     }
                     className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
                     style={{
-                      background: formStatus === "succeeded" 
+                      background: formStatus === "succeeded"
                         ? "linear-gradient(135deg, #22c55e, #16a34a)"
                         : "linear-gradient(135deg, var(--primary), var(--primary-2))"
                     }}
@@ -502,19 +503,19 @@ export default function Contact() {
               className="space-y-8"
             >
               <div>
-                <h3 
+                <h3
                   className="text-3xl md:text-4xl font-bold mb-4"
                   style={{ color: 'var(--text-heading)' }}
                 >
                   Get In Touch
                 </h3>
-                <p 
+                <p
                   className="leading-relaxed text-lg"
                   style={{ color: 'var(--text-body)' }}
                 >
-                  I'm always excited to hear about new projects and
+                  I&apos;m always excited to hear about new projects and
                   opportunities. Whether you have a question or just want to say
-                  hi, I'll get back to you!
+                  hi, I&apos;ll get back to you!
                 </p>
               </div>
 
@@ -531,7 +532,7 @@ export default function Contact() {
                   >
                     {item.link ? (
                       <a href={item.link} className="block">
-                        <div 
+                        <div
                           className="relative flex items-start gap-5 p-6 rounded-2xl transition-all duration-300"
                           style={{
                             backgroundColor: 'var(--bg-card)',
@@ -553,13 +554,13 @@ export default function Contact() {
                             {item.icon}
                           </div>
                           <div>
-                            <div 
+                            <div
                               className="text-sm font-medium mb-1"
                               style={{ color: 'var(--text-muted)' }}
                             >
                               {item.label}
                             </div>
-                            <div 
+                            <div
                               className="text-base font-semibold"
                               style={{ color: 'var(--text-heading)' }}
                             >
@@ -569,7 +570,7 @@ export default function Contact() {
                         </div>
                       </a>
                     ) : (
-                      <div 
+                      <div
                         className="relative flex items-start gap-5 p-6 rounded-2xl transition-all duration-300"
                         style={{
                           backgroundColor: 'var(--bg-card)',
@@ -583,13 +584,13 @@ export default function Contact() {
                           {item.icon}
                         </div>
                         <div>
-                          <div 
+                          <div
                             className="text-sm font-medium mb-1"
                             style={{ color: 'var(--text-muted)' }}
                           >
                             {item.label}
                           </div>
-                          <div 
+                          <div
                             className="text-base font-semibold"
                             style={{ color: 'var(--text-heading)' }}
                           >
@@ -604,7 +605,7 @@ export default function Contact() {
 
               {/* Social Links */}
               <div className="pt-6">
-                <h4 
+                <h4
                   className="text-sm font-semibold uppercase tracking-wider mb-4"
                   style={{ color: 'var(--text-muted)' }}
                 >
