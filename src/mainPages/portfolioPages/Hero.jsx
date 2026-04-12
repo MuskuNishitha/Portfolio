@@ -20,25 +20,25 @@ export default function Hero() {
     badge: "Welcome to my portfolio",
     headline: "Hi, I'm",
     summary: "Full-Stack Developer specializing in MERN stack with 2+ years of experience building scalable web applications.",
-    profileImageUrl: "/assets/profile-placeholder.jpg",
+    profileImageUrl: "/assets/ProfileMain.jpeg",
     resumeUrl: "/Musku_Nishitha_2yrs Mern_Resume.pdf",
     techStack: ["React", "Next.js", "Node.js", "MongoDB", "Express", "TypeScript"],
     socials: {
-      linkedin: "https://linkedin.com/in/yourusername",
-      github: "https://github.com/yourusername",
-      email: "mailto:your.email@example.com"
+      linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
+      github: "https://github.com/MuskuNishitha",
+      email: "mailto:mnishithareddy8765@gmail.com"
     }
   };
 
   useEffect(() => {
     let cancelled = false;
-    
+
     const loadHeroContent = async () => {
       try {
         setLoading(true);
         setError(null);
         const data = await fetchHeroContent();
-        
+
         if (!cancelled) {
           // Validate and merge data with defaults
           if (data && typeof data === 'object') {
@@ -122,8 +122,8 @@ export default function Hero() {
               Unable to Load Content
             </h3>
             <p className="mb-4" style={{ color: 'var(--text-muted)' }}>{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
+            <button
+              onClick={() => window.location.reload()}
               className="btn-primary"
             >
               Try Again
@@ -149,29 +149,29 @@ export default function Hero() {
       }}
     >
       {/* Background Elements */}
-      <div 
+      <div
         className="absolute inset-0 bg-[length:40px_40px] md:bg-[length:60px_60px]"
         style={{
           backgroundImage: `linear-gradient(${isDarkMode ? 'rgba(135,80,247,0.04)' : 'rgba(135,80,247,0.06)'} 1px, transparent 1px), linear-gradient(90deg, ${isDarkMode ? 'rgba(135,80,247,0.04)' : 'rgba(135,80,247,0.06)'} 1px, transparent 1px)`
         }}
       />
-      
-      <div 
+
+      <div
         className="absolute top-[-20%] right-[-30%] md:right-[-10%] w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full animate-float"
         style={{
           background: `radial-gradient(circle, ${isDarkMode ? 'rgba(135,80,247,0.18)' : 'rgba(135,80,247,0.1)'} 0%, transparent 70%)`
         }}
       />
-      
-      <div 
+
+      <div
         className="absolute bottom-[-20%] left-[-30%] md:left-[-10%] w-[350px] h-[350px] md:w-[500px] md:h-[500px] rounded-full"
         style={{
           background: `radial-gradient(circle, ${isDarkMode ? 'rgba(42,20,84,0.35)' : 'rgba(135,80,247,0.08)'} 0%, transparent 70%)`
         }}
       />
-      
+
       {/* Background Text - Hidden on mobile for better performance */}
-      <div 
+      <div
         className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-russo text-[clamp(80px,12vw,280px)] whitespace-nowrap pointer-events-none select-none tracking-[-2px] md:tracking-[-4px]"
         style={{
           color: 'transparent',
@@ -187,14 +187,14 @@ export default function Hero() {
           <div className="lg:hidden flex justify-center mb-8 animate-fade-up order-1">
             <div className="relative">
               {/* Decorative rings for mobile */}
-              <div 
+              <div
                 className="absolute w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] rounded-full border border-dashed animate-spin-slow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 style={{ borderColor: 'rgba(135, 80, 247, 0.3)' }}
               />
-              
+
               {/* Main image container */}
               <div className="w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] rounded-full bg-gradient-to-r from-[#8750f7] to-[#2a1454] p-[3px] animate-pulse-glow">
-                <div 
+                <div
                   className="w-full h-full rounded-full overflow-hidden relative"
                   style={{ backgroundColor: 'var(--bg-3)' }}
                 >
@@ -225,16 +225,16 @@ export default function Hero() {
                 {content.badge || "Welcome"}
               </span>
             </div>
-            
-            <h1 
+
+            <h1
               className="text-[clamp(38px,5vw,73px)] font-extrabold mb-4 md:mb-6 animate-fade-left [animation-delay:0.15s] leading-tight"
               style={{ color: 'var(--text-heading)' }}
             >
               {content.headline || "Hi, I'm"}{" "}
               <span className="gradient-text whitespace-nowrap">{content.name || "Nishitha"}</span>
             </h1>
-            
-            <p 
+
+            <p
               className="text-sm md:text-base leading-relaxed mb-6 md:mb-9 max-w-[460px] mx-auto lg:mx-0 animate-fade-left [animation-delay:0.3s] px-2 md:px-0"
               style={{ color: 'var(--text-body)' }}
             >
@@ -245,8 +245,8 @@ export default function Hero() {
             {content.techStack && content.techStack.length > 0 && (
               <div className="flex flex-wrap gap-2 md:gap-3 mb-6 md:mb-9 justify-center lg:justify-start animate-fade-left [animation-delay:0.4s] max-w-full">
                 {content.techStack.map((tech) => (
-                  <span 
-                    key={tech} 
+                  <span
+                    key={tech}
                     className="px-2.5 md:px-4 py-1.5 md:py-2 border rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
                     style={{
                       backgroundColor: 'var(--bg-card)',
@@ -280,10 +280,10 @@ export default function Hero() {
               )}
               <div className="flex items-center gap-2 md:gap-3">
                 {content.socials?.linkedin && (
-                  <a 
+                  <a
                     href={content.socials.linkedin}
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="social-link w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
                     title="LinkedIn"
                   >
@@ -291,10 +291,10 @@ export default function Hero() {
                   </a>
                 )}
                 {content.socials?.github && (
-                  <a 
+                  <a
                     href={content.socials.github}
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="social-link w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
                     title="GitHub"
                   >
@@ -302,7 +302,7 @@ export default function Hero() {
                   </a>
                 )}
                 {content.socials?.email && (
-                  <a 
+                  <a
                     href={content.socials.email}
                     className="social-link w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
                     title="Email"
@@ -316,26 +316,26 @@ export default function Hero() {
 
           {/* Desktop Image - Hidden on mobile */}
           <div className="hidden lg:flex justify-center relative animate-fade-right [animation-delay:0.3s] order-2">
-            <div 
+            <div
               className="absolute w-[380px] xl:w-[470px] h-[380px] xl:h-[470px] rounded-full border border-dashed animate-spin-slow"
               style={{ borderColor: 'rgba(135, 80, 247, 0.3)' }}
             >
-              <div className="absolute w-2.5 h-2.5 rounded-full top-[-5px] left-1/2 -translate-x-1/2" 
-                style={{ backgroundColor: 'var(--primary)', boxShadow: '0 0 12px var(--primary)' }} 
+              <div className="absolute w-2.5 h-2.5 rounded-full top-[-5px] left-1/2 -translate-x-1/2"
+                style={{ backgroundColor: 'var(--primary)', boxShadow: '0 0 12px var(--primary)' }}
               />
             </div>
-            
-            <div 
+
+            <div
               className="absolute w-[430px] xl:w-[530px] h-[430px] xl:h-[530px] rounded-full border border-dashed animate-spin-slow-reverse"
               style={{ borderColor: 'rgba(135, 80, 247, 0.3)' }}
             >
-              <div className="absolute w-2.5 h-2.5 rounded-full bottom-[-5px] left-1/2 -translate-x-1/2" 
-                style={{ backgroundColor: 'var(--primary-3)', boxShadow: '0 0 12px var(--primary-3)' }} 
+              <div className="absolute w-2.5 h-2.5 rounded-full bottom-[-5px] left-1/2 -translate-x-1/2"
+                style={{ backgroundColor: 'var(--primary-3)', boxShadow: '0 0 12px var(--primary-3)' }}
               />
             </div>
 
             <div className="w-[340px] xl:w-[420px] h-[340px] xl:h-[420px] rounded-full bg-gradient-to-r from-[#8750f7] to-[#2a1454] p-[3px] animate-pulse-glow">
-              <div 
+              <div
                 className="w-full h-full rounded-full overflow-hidden relative"
                 style={{ backgroundColor: 'var(--bg-3)' }}
               >

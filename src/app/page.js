@@ -1,14 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Blog from "@/mainPages/portfolioPages/Blog";
-import Contact from "@/mainPages/portfolioPages/Contact";
 import Hero from "@/mainPages/portfolioPages/Hero";
-import Portfolio from "@/mainPages/portfolioPages/Portfolio";
-import Resume from "@/mainPages/portfolioPages/Resume";
-import Services from "@/mainPages/portfolioPages/Services";
-import Skills from "@/mainPages/portfolioPages/Skills";
-import Testimonials from "@/mainPages/portfolioPages/Testimonials";
-import Counter from "@/mainPages/portfolioPages/Counter";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 60 },
