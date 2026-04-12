@@ -218,9 +218,90 @@ export const fallbackResume = {
       icon: "✅",
     },
   ],
+  resumeUrl: "/Musku_Nishitha_2yrs Mern_Resume.pdf",
 };
 
 export const fallbackSettings = {
   defaultTheme: "dark", // "dark" | "light"
   defaultPrimaryColor: "purple",
+};
+
+export const fallbackServices = {
+  title: "My Quality Services",
+  subtitle: "What I Do",
+  description:
+    "I transform ideas into scalable web and mobile solutions that are clean, fast, and reliable.",
+  services: [
+    {
+      num: "01",
+      name: "Full-Stack MERN Development",
+      desc: "Build end-to-end web applications with React.js, Next.js, Node.js, Express.js, and MongoDB.",
+    },
+    {
+      num: "02",
+      name: "Cross-Platform Mobile Apps",
+      desc: "Create React Native apps with smooth UI, API integration, and production-ready flows.",
+    },
+    {
+      num: "03",
+      name: "E-Commerce Platforms",
+      desc: "Develop modern commerce experiences with customer sites, admin panels, and mobile apps.",
+    },
+    {
+      num: "04",
+      name: "Dashboards & Analytics",
+      desc: "Ship admin dashboards and reporting tools that make data easy to manage and act on.",
+    },
+  ],
+};
+
+export const fallbackAbout = {
+  profile: {
+    firstName: "Musku",
+    lastName: "Nishitha",
+    role: [
+      "Frontend Developer",
+      "React.js Developer",
+      "MERN Stack Developer",
+      "Mobile App Developer",
+    ],
+    tagline: "React & React Native Developer | Building Modern Apps",
+    description:
+      "I am a passionate React and React Native developer with 2 years of experience in building modern web and mobile applications.",
+    birthdate: "2003-08-11",
+    available: true,
+    address: "Brahmanpally Kamareddy",
+    experience: "2",
+    nationality: "Indian",
+    completedProjects: "6",
+    happyCustomers: "3",
+    languages: ["English", "Telugu", "Hindi"],
+    email: "mnishithareddy8765@gmail.com",
+    phone: "7416264657",
+    freelance: true,
+    socialLinks: {
+      github: "https://github.com/MuskuNishitha",
+      linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
+      instagram: "mnishithareddy8765@gmail.com",
+    },
+  },
+  skills: [
+    { name: "React.js", percentage: 92, icon: "React" },
+    { name: "React Native", percentage: 88, icon: "Mobile" },
+    { name: "Next.js", percentage: 85, icon: "Next" },
+    { name: "Node.js", percentage: 86, icon: "Node" },
+    { name: "Express.js", percentage: 84, icon: "API" },
+    { name: "MongoDB", percentage: 82, icon: "DB" },
+    { name: "Redux Toolkit", percentage: 88, icon: "State" },
+    { name: "Tailwind CSS", percentage: 90, icon: "UI" },
+    { name: "JavaScript", percentage: 89, icon: "JS" },
+  ],
+  education: fallbackResume.education,
+  experience: fallbackResume.experiences,
+  stats: [
+    { value: "2+", label: "Years Experience", icon: "Work", color: "from-primary to-secondary" },
+    { value: "6+", label: "Projects Completed", icon: "Projects", color: "from-blue-500 to-cyan-500" },
+    { value: "3+", label: "Happy Clients", icon: "Clients", color: "from-green-500 to-emerald-500" },
+    { value: "Open", label: "Availability", icon: "Status", color: "from-orange-500 to-red-500" },
+  ],
 };

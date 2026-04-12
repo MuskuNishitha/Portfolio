@@ -32,7 +32,7 @@ import {
   FiAlertCircle
 } from "react-icons/fi";
 
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_URL = "";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -295,7 +295,7 @@ export default function Header() {
                   src={getLogoPath()}
                   alt="Logo"
                   fill
-                  className="object-contain"
+                  className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.18)]"
                   priority
                   sizes="(max-width: 640px) 200px, (max-width: 1024px) 250px, 250px"
                 />

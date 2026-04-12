@@ -71,9 +71,28 @@ export default function RouteTransition() {
     const handleClick = (e) => {
       const a = e.target.closest("a");
       if (!a) return;
-      if (a.href.startsWith(window.location.origin)) {
-        start();
+
+      const href = a.getAttribute("href") || "";
+      const url = a.href ? new URL(a.href, window.location.href) : null;
+      const isSameOrigin = url?.origin === window.location.origin;
+      const isDownload = a.hasAttribute("download");
+      const isNewTab =
+        a.getAttribute("target") === "_blank" ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.shiftKey ||
+        e.button === 1;
+      const isSamePage =
+        url &&
+        url.origin === window.location.origin &&
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search;
+
+      if (!href || href.startsWith("#") || isDownload || isNewTab || !isSameOrigin || isSamePage) {
+        return;
       }
+
+      start();
     };
 
     window.addEventListener("click", handleClick);

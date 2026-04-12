@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
+export const API_BASE_URL = "";
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +11,7 @@ export const apiClient = axios.create({
 });
 
 export function isApiConfigured() {
-  return Boolean(API_BASE_URL);
+  return true;
 }
 
 export function unwrapApiData(payload) {
@@ -21,4 +21,3 @@ export function unwrapApiData(payload) {
   if (typeof payload === "object" && payload.result != null) return payload.result;
   return payload;
 }
-

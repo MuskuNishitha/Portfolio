@@ -1,10 +1,20 @@
 import { apiClient, isApiConfigured, unwrapApiData } from "./apiClient";
 import {
+  fallbackAbout,
   fallbackHero,
   fallbackPortfolio,
   fallbackResume,
+  fallbackServices,
   fallbackSettings,
 } from "./publicContent";
+import { fetchExperiences, fetchMainProfile, fetchSkills, fetchWorks } from "./portfolioApi";
+import {
+  mapAboutContent,
+  mapHeroContent,
+  mapPortfolioContent,
+  mapResumeContent,
+  mapServicesContent,
+} from "./contentAdapters";
 
 async function safeGet(path, fallbackValue) {
   if (!isApiConfigured()) return fallbackValue;
@@ -18,17 +28,43 @@ async function safeGet(path, fallbackValue) {
 }
 
 export function fetchHeroContent() {
-  return safeGet("/api/v1/public/hero", fallbackHero);
+  return fetchMainProfile().then((profile) => mapHeroContent(profile || fallbackHero));
 }
 
-export function fetchPortfolioContent() {
-  return safeGet("/api/v1/public/portfolio", fallbackPortfolio);
+export async function fetchPortfolioContent() {
+  const works = await fetchWorks();
+  return mapPortfolioContent(works || fallbackPortfolio.projects);
 }
 
-export function fetchResumeContent() {
-  return safeGet("/api/v1/public/resume", fallbackResume);
+export async function fetchResumeContent() {
+  const [profile, experiences] = await Promise.all([
+    fetchMainProfile(),
+    fetchExperiences(),
+  ]);
+
+  return mapResumeContent(experiences, profile) || fallbackResume;
+}
+
+export async function fetchServicesContent() {
+  const [profile, works, skills] = await Promise.all([
+    fetchMainProfile(),
+    fetchWorks(),
+    fetchSkills(),
+  ]);
+
+  return mapServicesContent(profile, works, skills) || fallbackServices;
+}
+
+export async function fetchAboutContent() {
+  const [profile, experiences, skills] = await Promise.all([
+    fetchMainProfile(),
+    fetchExperiences(),
+    fetchSkills(),
+  ]);
+
+  return mapAboutContent(profile, experiences, skills) || fallbackAbout;
 }
 
 export function fetchSiteSettings() {
-  return safeGet("/api/v1/public/settings", fallbackSettings);
+  return Promise.resolve(fallbackSettings);
 }

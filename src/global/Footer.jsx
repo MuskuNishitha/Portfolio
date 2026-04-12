@@ -72,7 +72,7 @@ export default function Footer() {
                   alt="Musku Nishitha Reddy Logo"
                   fill
                   sizes="140px"
-                  className="object-contain"
+                  className="object-contain drop-shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
                   priority
                 />
               </div>

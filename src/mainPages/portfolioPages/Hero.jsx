@@ -117,7 +117,7 @@ export default function Hero() {
       >
         <div className="container-custom relative z-10 px-4 sm:px-6 lg:px-8">
           <div className="text-center py-12">
-            <div className="text-red-500 text-6xl mb-4">⚠️</div>
+            <div className="text-red-500 text-6xl mb-4">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</div>
             <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-heading)' }}>
               Unable to Load Content
             </h3>
@@ -272,10 +272,10 @@ export default function Hero() {
               {content.resumeUrl && (
                 <a
                   href={content.resumeUrl}
-                  download
+                  download="Musku_Nishitha_Resume.pdf"
                   className="btn-primary text-sm md:text-base px-5 md:px-6 py-2.5 md:py-3"
                 >
-                  Download CV ↓
+                  Download CV
                 </a>
               )}
               <div className="flex items-center gap-2 md:gap-3">

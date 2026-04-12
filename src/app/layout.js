@@ -117,9 +117,6 @@ export const metadata = {
     ],
     shortcut: ["/favicon.ico"],
   },
-
-  manifest: "/site.webmanifest",
-
   category: "technology",
 
   verification: {

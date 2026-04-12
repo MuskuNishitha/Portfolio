@@ -26,7 +26,7 @@ export default function ScrollToTopFooter() {
     };
     
     // Update progress value
-    const unsubscribe = scaleX.onChange(v => {
+    const unsubscribe = scaleX.on("change", (v) => {
       setProgress(v);
     });
     
@@ -51,9 +51,9 @@ export default function ScrollToTopFooter() {
   // Water wave animation variants
   const waveVariants = {
     animate: {
-      y: [0, -5, 0, 5, 0],
+      x: ["0%", "-8%", "0%"],
       transition: {
-        duration: 3,
+        duration: 4,
         repeat: Infinity,
         ease: "easeInOut",
       },
@@ -190,53 +190,39 @@ export default function ScrollToTopFooter() {
                   animate="animate"
                 >
                   {/* Main Wave */}
-                  <svg 
+                  <motion.svg 
                     className="w-full h-8" 
                     viewBox="0 0 1200 120" 
                     preserveAspectRatio="none"
+                    variants={waveVariants}
+                    animate="animate"
                   >
-                    <motion.path
+                    <path
                       d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
                       fill="rgba(135,80,247,0.6)"
-                      animate={{
-                        d: [
-                          "M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z",
-                          "M0,32L80,42.7C160,53,320,75,480,80C640,85,800,75,960,64C1120,53,1280,37,1360,29.3L1440,21L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z",
-                          "M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z",
-                        ],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
                     />
-                  </svg>
+                  </motion.svg>
                   
                   {/* Secondary Wave - Using primary-3 */}
-                  <svg 
+                  <motion.svg 
                     className="w-full h-6 -mt-4 opacity-60" 
                     viewBox="0 0 1200 120" 
                     preserveAspectRatio="none"
+                    animate={{
+                      x: ["-6%", "4%", "-6%"],
+                    }}
+                    transition={{
+                      duration: 3.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 0.4,
+                    }}
                   >
-                    <motion.path
+                    <path
                       d="M0,96L80,90.7C160,85,320,75,480,74.7C640,75,800,85,960,90.7C1120,96,1280,96,1360,96L1440,96L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
                       fill="rgba(168,85,247,0.5)"
-                      animate={{
-                        d: [
-                          "M0,96L80,90.7C160,85,320,75,480,74.7C640,75,800,85,960,90.7C1120,96,1280,96,1360,96L1440,96L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z",
-                          "M0,64L80,69.3C160,75,320,85,480,85.3C640,85,800,75,960,69.3C1120,64,1280,64,1360,64L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z",
-                          "M0,96L80,90.7C160,85,320,75,480,74.7C640,75,800,85,960,90.7C1120,96,1280,96,1360,96L1440,96L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z",
-                        ],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.5,
-                      }}
                     />
-                  </svg>
+                  </motion.svg>
                 </motion.div>
                 
                 {/* Floating Bubbles */}

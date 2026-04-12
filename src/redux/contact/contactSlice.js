@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_URL = "";
 console.log(API_URL, "API_URL");
 
 // Async thunk for submitting contact form
