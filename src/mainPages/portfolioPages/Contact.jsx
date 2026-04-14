@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import HeaderBanner from "@/global/HeaderBanner";
 import { useTheme } from "@/components/ThemeProvider";
-
+import { ContactSkeleton } from "@/components/SkeletonLoaders";
 import { FaGithub, FaLinkedin, FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { socialLinksArray, socialMediaLinks } from "@/global/SocialMediaLinks";
@@ -160,6 +160,15 @@ export default function Contact() {
       color: "from-amber-500 to-orange-500",
     },
   ];
+
+  if (contentLoading) {
+    return (
+      <>
+        <HeaderBanner title={"Contact US"} />
+        <ContactSkeleton />
+      </>
+    );
+  }
 
   return (
     <div className={`py-[100px] transition-colors duration-300 ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'

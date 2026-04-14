@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@/components/ThemeProvider";
 
-const MIN_VISIBLE_MS = 800;
+const MIN_VISIBLE_MS = 300;
 const WAVE_PX = 260;
 
 export default function RouteTransition() {
@@ -53,7 +53,7 @@ export default function RouteTransition() {
 
   // 🔥 FIRST LOAD (IMPORTANT)
   useEffect(() => {
-    const timer = setTimeout(stop, 900);
+    const timer = setTimeout(stop, 500);
     return () => clearTimeout(timer);
   }, []);
 

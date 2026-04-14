@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import HeaderBanner from '@/global/HeaderBanner'
 import { useTheme } from '@/components/ThemeProvider'
 import { fetchServicesContent } from '@/lib/publicApi'
+import { ServicesSkeleton } from '@/components/SkeletonLoaders'
 
 export default function Services() {
   const [activeService, setActiveService] = useState(0)
@@ -112,17 +113,10 @@ export default function Services() {
 
   if (loading) {
     return (
-      <section id="services" className={`py-[100px] transition-colors duration-300 ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'}`}>
+      <>
         <HeaderBanner title={'Services'} />
-        <div className="container-custom">
-          <div className="flex justify-center items-center min-h-[400px]">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
-              <p className="mt-4" style={{ color: 'var(--text-muted)' }}>Loading services...</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        <ServicesSkeleton />
+      </>
     )
   }
 
@@ -147,7 +141,19 @@ export default function Services() {
   }
 
   if (!servicesData || !servicesData.services) {
-    return null
+    return (
+      <section id="services" className={`py-[100px] transition-colors duration-300 ${isDarkMode ? 'bg-bg-2' : 'bg-gray-50'}`}>
+        <HeaderBanner title={'Services'} />
+        <div className="container-custom">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+              <p className="mt-4" style={{ color: 'var(--text-muted)' }}>Loading services...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (

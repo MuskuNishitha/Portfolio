@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/components/ThemeProvider";
 import { useEffect, useState } from "react";
 import { fetchResumeContent } from "@/lib/publicApi";
+import { ResumeSkeleton } from "@/components/SkeletonLoaders";
 
 export default function Resume() {
   const { isDarkMode } = useTheme();
@@ -59,19 +60,10 @@ export default function Resume() {
 
   if (loading) {
     return (
-      <div>
+      <>
         <HeaderBanner title={"Resume"} />
-        <section className={`py-[50px] ${isDarkMode ? "bg-bg-2" : "bg-gray-50"}`}>
-          <div className="container-custom">
-            <div className="flex justify-center items-center min-h-[400px]">
-              <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
-                <p className="mt-4" style={{ color: "var(--text-muted)" }}>Loading resume content...</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+        <ResumeSkeleton />
+      </>
     );
   }
 

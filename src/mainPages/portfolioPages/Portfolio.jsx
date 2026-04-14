@@ -7,11 +7,13 @@ import { useTheme } from '@/components/ThemeProvider'
 import { FiArrowRight, FiGithub, FiExternalLink } from 'react-icons/fi'
 import HeaderBanner from '@/global/HeaderBanner'
 import { fetchPortfolioContent } from '@/lib/publicApi'
+import { PortfolioSkeleton } from '@/components/SkeletonLoaders'
 
 export default function Portfolio() {
   const [filter, setFilter] = useState('all')
   const [selectedProject, setSelectedProject] = useState(null)
   const [mounted, setMounted] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [content, setContent] = useState(null)
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
@@ -21,7 +23,10 @@ export default function Portfolio() {
     setMounted(true)
     let cancelled = false
     fetchPortfolioContent().then((data) => {
-      if (!cancelled) setContent(data)
+      if (!cancelled) {
+        setContent(data)
+        setLoading(false)
+      }
     })
     return () => {
       cancelled = true
@@ -54,6 +59,15 @@ export default function Portfolio() {
   })()
 
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter)
+
+  if (loading) {
+    return (
+      <>
+        <HeaderBanner title={"Portfolio"} />
+        <PortfolioSkeleton />
+      </>
+    )
+  }
 
   if (!mounted || !content) return null
 

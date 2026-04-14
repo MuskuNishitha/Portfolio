@@ -5,22 +5,36 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/components/ThemeProvider";
 import { useEffect, useState } from "react";
 import { fetchAboutContent } from "@/lib/publicApi";
+import { AboutSkeleton } from "@/components/SkeletonLoaders";
 
 export default function AboutUs() {
   const { isDarkMode } = useTheme();
   const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
     fetchAboutContent().then((data) => {
-      if (!cancelled) setContent(data);
+      if (!cancelled) {
+        setContent(data);
+        setLoading(false);
+      }
     });
 
     return () => {
       cancelled = true;
     };
   }, []);
+
+  if (loading) {
+    return (
+      <>
+        <HeaderBanner title={"About Us"} />
+        <AboutSkeleton />
+      </>
+    );
+  }
 
   if (!content) return null;
 
