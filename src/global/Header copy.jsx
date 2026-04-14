@@ -264,6 +264,7 @@ export default function Header() {
     if (!mounted) return "/assets/white_bg.png";
     return isDarkMode ? "/assets/white_bg.png" : "/assets/black_bg.png";
   };
+  // helelo
 
   return (
     <>
