@@ -7,16 +7,18 @@ const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
 
 export default function Home() {
   return (
     <>
+      {/* ✅ SEO Heading (VERY IMPORTANT) */}
+      <h1 style={{ display: "none" }}>
+        Nishitha Reddy Musku - React Native & MERN Stack Developer Portfolio
+      </h1>
+
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -25,15 +27,6 @@ export default function Home() {
       >
         <Hero />
       </motion.div>
-
-      {/* <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={fadeInUp}
-      >
-        <Services />
-      </motion.div> */}
     </>
   );
 }

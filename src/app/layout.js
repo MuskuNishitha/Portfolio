@@ -120,7 +120,7 @@ export const metadata = {
   category: "technology",
 
   verification: {
-    google: "your-google-verification-code", // Add your Google Search Console code
+    google: "d0rdKhmxIWpDC4lXnL_h7Bynf697jpQDh5YzSgC2ZWo", // Add your Google Search Console code
   },
 
   other: {
@@ -163,7 +163,18 @@ export default function RootLayout({ children }) {
     })();
   `}
         </Script>
-
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-87R1TGZ3MT"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-87R1TGZ3MT');
+    `}
+        </Script>
         {/* Structured Data - Person */}
         <Script
           id="person-json-ld"
