@@ -48,7 +48,7 @@ const contactSlice = createSlice({
         {
           icon: "📍",
           label: "Address",
-          value: "Warne Park Street Pine, FL 33157",
+          value: "Sr nagar, Hyderabad, Telangana, India",
         },
       ],
       services: [

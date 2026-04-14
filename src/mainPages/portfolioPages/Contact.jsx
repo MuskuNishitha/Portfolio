@@ -156,7 +156,7 @@ export default function Contact() {
         </svg>
       ),
       label: "Address",
-      value: "Warne Park Street Pine, FL 33157",
+      value: "Sr nagar, Hyderabad, Telangana, India",
       color: "from-amber-500 to-orange-500",
     },
   ];

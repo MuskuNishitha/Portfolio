@@ -340,7 +340,7 @@ export function Contact() {
   const info = [
     { icon: '📞', label: 'Phone', value: '+01 123 654 8096' },
     { icon: '✉️', label: 'Email', value: 'gerolddesign@mail.com' },
-    { icon: '📍', label: 'Address', value: 'Warne Park Street Pine, FL 33157, New York' },
+    { icon: '📍', label: 'Address', value: 'Sr nagar, Hyderabad, Telangana, India' },
   ];
 
   return (
