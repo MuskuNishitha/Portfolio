@@ -17,7 +17,7 @@ const profilePayload = {
     "I am a passionate React and React Native developer with 2 years of experience in building modern web and mobile applications. I have worked on admin panels and complete app development using technologies like React, Node.js, and MongoDB. I enjoy creating clean UI designs and improving user experience. I am always eager to learn new technologies and grow as a developer.",
   profileImage: "/assets/ProfileMain.jpeg",
   birthdate: "2003-08-11",
-  resumeUrl: "/Musku_Nishitha_2yrs Mern_Resume.pdf",
+  resumeUrl: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
   available: true,
   address: "Brahmanpally Kamareddy",
   Experience: "2",

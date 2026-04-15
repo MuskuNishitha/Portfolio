@@ -458,7 +458,7 @@ export default function Resume() {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <a
-              href={content.resumeUrl || "/Musku_Nishitha_2yrs Mern_Resume.pdf"}
+              href={content.resumeUrl || "/Musku_Nishitha_2_Y.OE_Mernstack.pdf"}
               download="Musku_Nishitha_Resume.pdf"
               className="btn-primary inline-flex items-center gap-2"
             >

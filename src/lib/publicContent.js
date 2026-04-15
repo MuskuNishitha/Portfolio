@@ -14,7 +14,7 @@ export const fallbackHero = {
     "Redux Toolkit",
     "Tailwind CSS",
   ],
-  resumeUrl: "/Musku_Nishitha_2yrs Mern_Resume.pdf",
+  resumeUrl: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
   profileImageUrl: "/assets/ProfileMain.jpeg",
   socials: {
     linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b/",
@@ -218,7 +218,7 @@ export const fallbackResume = {
       icon: "✅",
     },
   ],
-  resumeUrl: "/Musku_Nishitha_2yrs Mern_Resume.pdf",
+  resumeUrl: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
 };
 
 export const fallbackSettings = {
