@@ -1,4 +1,4 @@
-// components/Footer.jsx (Updated)
+// components/Footer.jsx (Updated with FloatingChatButton)
 "use client";
 
 import Image from "next/image";
@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/components/ThemeProvider";
 import ScrollToTopFooter from "@/components/ScrollToTopFooter";
+import FloatingChatButton from "@/components/FloatingChatButton"; // Import the chat button
 
 const navigationItems = [
   { name: "Home", href: "/" },
@@ -164,8 +165,11 @@ export default function Footer() {
         </div>
       </footer>
 
-      {/* Scroll to Top Button with Water Effect */}
+      {/* Scroll to Top Button with Water Effect - Right Side */}
       <ScrollToTopFooter />
+      
+      {/* Floating Chat Button - Left Side */}
+      <FloatingChatButton />
     </>
   );
 }
