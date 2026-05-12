@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 
 const repeatItems = (items, copies = 2) =>
@@ -9,12 +9,15 @@ const repeatItems = (items, copies = 2) =>
     }))
   ).flat();
 
-const Spark = ({ outlined = false }) => (
+const Spark = ({ outlined = false, animated = false }) => (
   <span
     aria-hidden="true"
-    className={`moving-banner-spark ${outlined ? "moving-banner-spark-outline" : ""}`}
+    className={`inline-flex items-center justify-center text-2xl leading-none transition-all duration-500 ${
+      outlined ? "text-transparent [-webkit-text-stroke:1.5px_currentColor]" : ""
+    } ${animated ? "animate-pulse" : ""}`}
+    style={{ color: outlined ? undefined : "var(--primary)" }}
   >
-    <svg viewBox="0 0 24 24" className="moving-banner-spark-icon">
+    <svg viewBox="0 0 24 24" className="w-[1em] h-[1em] transition-transform duration-300 group-hover:scale-110">
       <path
         d="M12 2.8 14.7 9.3 21.2 12l-6.5 2.7L12 21.2l-2.7-6.5L2.8 12l6.5-2.7L12 2.8Z"
         fill="currentColor"
@@ -26,22 +29,23 @@ const Spark = ({ outlined = false }) => (
 const getBannerItems = (content) => {
   const name = (content?.name || "Musku Nishitha").toUpperCase();
   const badge = (content?.badge || "Full Stack Mern & React Native Developer").toUpperCase();
-  const stack = Array.isArray(content?.techStack) ? content.techStack.slice(0, 5) : [];
+  const stack = Array.isArray(content?.techStack) ? content.techStack.slice(0, 6) : [];
 
   const topItems = [
-    name,
+    `🔥 ${name}`,
     badge,
-    "OPEN TO WORK",
-    "2+ YEARS EXPERIENCE",
-    ...stack.map((item) => item.toUpperCase()),
+    "💼 OPEN TO WORK",
+    "📊 2+ YEARS",
+    ...stack.map((item) => `⚡ ${item.toUpperCase()}`),
   ];
 
   const bottomItems = [
-    "personal portfolio",
-    "mern stack developer",
-    "react native developer",
-    "scalable web applications",
-    "modern mobile apps",
+    "PORTFOLIO 2024",
+    "MERN STACK",
+    "REACT NATIVE",
+    "WEB3 READY",
+    "CLOUD NATIVE",
+    "API EXPERT",
   ];
 
   return {
@@ -53,32 +57,75 @@ const getBannerItems = (content) => {
 const MovingTextBanner = ({ content }) => {
   const { isDarkMode } = useTheme();
   const { topItems, bottomItems } = getBannerItems(content);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="moving-banner-shell">
-      <div className="moving-banner-bleed">
-        <div className="moving-banner-stage">
-          <div className="moving-banner-ribbon moving-banner-ribbon-back">
-            <div className="moving-banner-marquee moving-banner-marquee-back">
-              <div className="moving-banner-track">
+    <div 
+      className="relative w-full my-16 overflow-hidden group/banner"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Animated Background Gradients */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[200px] bg-gradient-to-r from-primary/20 via-primary/5 to-primary/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[150px] bg-gradient-to-r from-purple-500/10 via-primary/10 to-blue-500/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative">
+        {/* Bottom Ribbon */}
+        <div className="relative h-32 overflow-hidden mb-3">
+          <div
+            className={`absolute left-1/2 w-[150vw] min-w-[1300px] transform -translate-x-1/2 -rotate-3 top-8 overflow-hidden backdrop-blur-sm transition-all duration-700 ${
+              isDarkMode 
+                ? "bg-black/80 border border-white/10" 
+                : "bg-white/90 border border-gray-200"
+            } ${isHovered ? "shadow-2xl" : "shadow-xl"}`}
+            style={{ zIndex: 1 }}
+          >
+            <div className={`animate-marquee-slow ${isHovered ? "pause-animation" : ""}`}>
+              <div className="flex items-center py-4">
                 {bottomItems.map((item) => (
-                  <span key={item.id} className="moving-banner-chip moving-banner-chip-back">
-                    <span className="text-[#000]">{item.text}</span>
+                  <div
+                    key={item.id}
+                    className={`inline-flex items-center gap-5 mr-8 px-3 transition-all duration-300 ${
+                      isDarkMode ? "hover:text-primary" : "hover:text-primary"
+                    }`}
+                  >
+                    <span className="text-sm md:text-base font-bold tracking-wider font-mono uppercase whitespace-nowrap bg-gradient-to-r from-gray-600 to-gray-400 bg-clip-text text-transparent">
+                      {item.text}
+                    </span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
                     <Spark />
-                  </span>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="moving-banner-ribbon moving-banner-ribbon-front">
-            <div className="moving-banner-marquee moving-banner-marquee-front">
-              <div className="moving-banner-track">
+        {/* Top Ribbon with Glassmorphism */}
+        <div className="relative h-32 overflow-hidden">
+          <div
+            className={`absolute left-1/2 w-[150vw] min-w-[1300px] transform -translate-x-1/2 rotate-2 top-2 overflow-hidden transition-all duration-700 ${
+              isDarkMode
+                ? "bg-gradient-to-r from-gray-900 via-black to-gray-900 border border-primary/30 backdrop-blur-sm"
+                : "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border border-primary/30"
+            } ${isHovered ? "shadow-2xl shadow-primary/20 scale-[1.02]" : "shadow-xl"}`}
+            style={{ zIndex: 2 }}
+          >
+            <div className={`animate-marquee-fast ${isHovered ? "pause-animation" : ""}`}>
+              <div className="flex items-center py-4">
                 {topItems.map((item, index) => (
-                  <span key={item.id} className="moving-banner-chip moving-banner-chip-front">
-                    <span>{item.text}</span>
-                    <Spark outlined={index % 2 === 1} />
-                  </span>
+                  <div
+                    key={item.id}
+                    className="inline-flex items-center gap-5 mr-8 px-3 group cursor-pointer transition-all duration-300 hover:scale-105"
+                  >
+                    <span className="text-base md:text-lg lg:text-xl font-black tracking-tight font-sans uppercase whitespace-nowrap bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+                      {item.text}
+                    </span>
+                    <div className="w-px h-7 bg-gradient-to-b from-transparent via-primary/50 to-transparent" />
+                    <Spark outlined={index % 2 === 1} animated={index % 3 === 0} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -87,172 +134,50 @@ const MovingTextBanner = ({ content }) => {
       </div>
 
       <style jsx>{`
-        .moving-banner-shell {
-          position: relative;
-          width: 100%;
-          margin-top: 2.5rem;
-          padding: 2.5rem 0 1.5rem;
-          overflow: hidden;
+        @keyframes marquee-slow {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-33.333%);
+          }
         }
 
-        .moving-banner-bleed {
-          position: relative;
-          left: 50%;
-          width: 100vw;
-          margin-left: -50vw;
+        @keyframes marquee-fast {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-33.333%);
+          }
         }
 
-        .moving-banner-stage {
-          position: relative;
-          height: 10.5rem;
-          overflow: hidden;
-        }
-
-        .moving-banner-ribbon {
-          position: absolute;
-          left: 50%;
-          width: 132vw;
-          min-width: 1100px;
-          transform-origin: center;
-          overflow: hidden;
-          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-        }
-
-        .moving-banner-ribbon-back {
-          top: 2.75rem;
-          transform: translateX(-50%) rotate(-4.2deg);
-          background: ${isDarkMode ? "rgba(255, 255, 255, 0.94)" : "rgba(255, 255, 255, 0.96)"};
-          color: var(--text-heading);
-          z-index: 1;
-          border: 1px solid ${isDarkMode ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.05)"};
-        }
-
-        .moving-banner-ribbon-front {
-          top: 1.4rem;
-          transform: translateX(-50%) rotate(2.1deg);
-          background: ${isDarkMode ? "rgba(8, 8, 8, 0.98)" : "rgba(17, 17, 17, 0.96)"};
-          color: var(--primary);
-          z-index: 2;
-          border: 1px solid rgba(var(--primary-rgb), 0.2);
-        }
-
-        .moving-banner-marquee {
-          display: flex;
+        .animate-marquee-slow {
+          animation: marquee-slow 30s linear infinite;
           width: max-content;
-          white-space: nowrap;
-          will-change: transform;
         }
 
-        .moving-banner-marquee-back {
-          animation: movingBannerRight 26s linear infinite;
+        .animate-marquee-fast {
+          animation: marquee-fast 24s linear infinite;
+          width: max-content;
         }
 
-        .moving-banner-marquee-front {
-          animation: movingBannerLeft 22s linear infinite;
-        }
-
-        .moving-banner-track {
-          display: flex;
-          align-items: center;
-        }
-
-        .moving-banner-chip {
-          display: inline-flex;
-          align-items: center;
-          gap: 2rem;
-          padding: 1.1rem 0;
-          margin-right: 2.75rem;
-          font-family: var(--font-russo), "Russo One", sans-serif;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: -0.02em;
-        }
-
-        .moving-banner-chip-front {
-          font-size: clamp(1.2rem, 1.8vw, 2rem);
-          color: inherit;
-        }
-
-        .moving-banner-chip-back {
-          font-size: clamp(1.15rem, 1.65vw, 1.9rem);
-          color: var(--text-heading);
-        }
-
-        .moving-banner-spark {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 2rem;
-          line-height: 1;
-          color: var(--primary);
-        }
-
-        .moving-banner-spark-icon {
-          width: 1em;
-          height: 1em;
-        }
-
-        .moving-banner-ribbon-back .moving-banner-spark {
-          color: var(--primary);
-        }
-
-        .moving-banner-spark-outline {
-          -webkit-text-stroke: 1.5px currentColor;
-          color: transparent;
-        }
-
-        @keyframes movingBannerLeft {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-33.333%);
-          }
-        }
-
-        @keyframes movingBannerRight {
-          from {
-            transform: translateX(-33.333%);
-          }
-          to {
-            transform: translateX(0);
-          }
+        .pause-animation {
+          animation-play-state: paused;
         }
 
         @media (max-width: 768px) {
-          .moving-banner-shell {
-            margin-top: 2rem;
-            padding: 2rem 0 1rem;
+          .animate-marquee-slow {
+            animation-duration: 25s;
           }
+          .animate-marquee-fast {
+            animation-duration: 20s;
+          }
+        }
 
-          .moving-banner-stage {
-            height: 7.5rem;
-          }
-
-          .moving-banner-ribbon {
-            width: 180vw;
-            min-width: 860px;
-          }
-
-          .moving-banner-ribbon-back {
-            top: 2.3rem;
-            transform: translateX(-50%) rotate(-5.2deg);
-          }
-
-          .moving-banner-ribbon-front {
-            top: 1.1rem;
-            transform: translateX(-50%) rotate(3deg);
-          }
-
-          .moving-banner-chip {
-            gap: 1.35rem;
-            margin-right: 2rem;
-            padding: 0.8rem 0;
-          }
-
-          .moving-banner-spark {
-            font-size: 1.45rem;
-          }
+        /* Smooth gradient transitions */
+        .moving-banner-ribbon {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
       `}</style>
     </div>

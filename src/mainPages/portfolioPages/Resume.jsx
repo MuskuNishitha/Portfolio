@@ -426,7 +426,6 @@ export default function Resume() {
                       whileHover={{ y: -3, scale: 1.02 }}
                     >
                       <div className="flex items-start gap-3">
-                        <div className="text-2xl">{cert.icon || "Award"}</div>
                         <div className="flex-1">
                           <h4 className="font-semibold mb-1" style={{ color: isDarkMode ? "white" : "var(--text-heading)" }}>
                             {cert.title || "Untitled Certification"}

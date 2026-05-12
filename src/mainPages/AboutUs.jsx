@@ -163,7 +163,7 @@ export default function AboutUs() {
                   <motion.div key={`${skill.name}-${idx}`} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.05 }}>
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-lg">{skill.icon || skill.name?.charAt(0) || "S"}</span>
+                        {/* <span className="text-lg">{skill.icon || skill.name?.charAt(0) || "S"}</span> */}
                         <span className={`text-sm font-medium ${textPrimary}`}>{skill.name}</span>
                       </div>
                       <span className="text-sm font-bold text-primary-3">{skill.percentage || 0}%</span>

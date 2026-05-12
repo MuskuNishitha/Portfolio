@@ -28,10 +28,6 @@ const russoOne = Russo_One({
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#111827" },
-  ],
 };
 
 export const metadata = {
@@ -150,13 +146,30 @@ export default function RootLayout({ children }) {
           document.documentElement.classList.remove('dark');
         }
 
-        // Handle primary color
-        const savedColor = localStorage.getItem('primary-color');
-        if (savedColor) {
-          document.documentElement.setAttribute('data-primary', savedColor);
-        } else {
-          document.documentElement.setAttribute('data-primary', 'purple');
-        }
+const savedColor = localStorage.getItem('primary-color') || 'purple';
+
+const colors = {
+  purple: '#8750f7',
+  pink: '#ec489a',
+  blue: '#3b82f6',
+  red: '#ef4444',
+  yellow: '#eab308',
+  orange: '#f97316',
+  green: '#22c55e',
+  cyan: '#06b6d4'
+};
+
+document.documentElement.setAttribute('data-primary', savedColor);
+
+// 🔥 STATUS BAR COLOR
+let meta = document.querySelector("meta[name='theme-color']");
+if (!meta) {
+  meta = document.createElement('meta');
+  meta.name = "theme-color";
+  document.head.appendChild(meta);
+}
+const primaryColor = colors[savedColor] || '#8750f7';
+meta.setAttribute("content", primaryColor);
       } catch (e) {
         console.error('Theme initialization failed:', e);
       }

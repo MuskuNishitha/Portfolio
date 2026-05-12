@@ -9,6 +9,8 @@ import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 import { fetchHeroContent } from "@/lib/publicApi";
 import MovingTextBanner from "./MovingTextBanner";
 import Link from "next/link";
+import LetsWorkTogether from "./LetsWorkTogether";
+import SkillsHome from "./SkillsHome";
 
 export default function Hero() {
   const { isDarkMode } = useTheme();
@@ -286,7 +288,8 @@ export default function Hero() {
                       onMouseLeave={(e) => {
                         e.currentTarget.style.borderColor =
                           "rgba(135, 80, 247, 0.2)";
-                        e.currentTarget.style.backgroundColor = "var(--bg-card)";
+                        e.currentTarget.style.backgroundColor =
+                          "var(--bg-card)";
                       }}
                     >
                       {tech}
@@ -402,7 +405,9 @@ export default function Hero() {
         </div>
         <div>
           <Counter />
-          <MovingTextBanner content={content} />
+          {/* <MovingTextBanner content={content} /> */}
+          <SkillsHome />
+          <LetsWorkTogether />
         </div>
       </div>
     </section>

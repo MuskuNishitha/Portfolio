@@ -120,7 +120,7 @@ const HeaderBanner = ({ title, subtitle, backgroundImage }) => {
 
   return (
     <motion.section
-      className="relative bg-cover bg-center overflow-hidden header-banner pt-16 sm:pt-20 lg:pt-24 min-h-[240px] sm:min-h-[280px] lg:min-h-[320px]"
+      className="relative bg-cover bg-red-600 bg-center overflow-hidden header-banner pt-10 sm:pt-20 lg:pt-24 min-h-[240px] sm:min-h-[280px] lg:min-h-[320px]"
       style={{
         backgroundImage: `url('${bgImage}')`,
         display: "flex",

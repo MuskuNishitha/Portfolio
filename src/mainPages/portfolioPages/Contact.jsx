@@ -367,8 +367,8 @@ export default function Contact() {
                           }}
                           placeholder={
                             field === "email"
-                              ? "john@example.com"
-                              : "+1 234 567 890"
+                              ? "Enter Email Address"
+                              : "Enter your Mobile Number"
                           }
                         />
                       </div>
