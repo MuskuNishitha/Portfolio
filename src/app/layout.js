@@ -132,47 +132,89 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="font-sora overflow-x-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
-        <Script id="theme-script" strategy="beforeInteractive">
+        {/* Default theme-color meta tag */}
+        <meta name="theme-color" content="#8750f7" />
+        <Script id="theme-script" strategy="afterInteractive">
           {`
     (function() {
-      try {
-        // Handle theme
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-          document.documentElement.classList.add('dark');
-        } else if (savedTheme === 'light') {
-          document.documentElement.classList.remove('dark');
+      // Function to update theme color
+      function updateThemeColor() {
+        try {
+          const isDark = document.documentElement.classList.contains('dark');
+          const savedColor = localStorage.getItem('primary-color') || 'purple';
+          
+          const colors = {
+            purple: '#8750f7',
+            pink: '#ec489a',
+            blue: '#3b82f6',
+            red: '#ef4444',
+            yellow: '#eab308',
+            orange: '#f97316',
+            green: '#22c55e',
+            cyan: '#06b6d4'
+          };
+          
+          const darkColors = {
+            purple: '#2d1b66',
+            pink: '#831843',
+            blue: '#1e3a8a',
+            red: '#7f1d1d',
+            yellow: '#713f12',
+            orange: '#7c2d12',
+            green: '#14532d',
+            cyan: '#164e63'
+          };
+          
+          const themeColor = isDark ? (darkColors[savedColor] || '#2d1b66') : (colors[savedColor] || '#8750f7');
+          
+          let meta = document.querySelector("meta[name='theme-color']");
+          if (!meta) {
+            meta = document.createElement('meta');
+            meta.name = 'theme-color';
+            document.head.appendChild(meta);
+          }
+          meta.content = themeColor;
+          
+          console.log('Theme color updated:', themeColor, 'Dark mode:', isDark);
+        } catch(e) {
+          console.error('Theme color error:', e);
         }
-
-const savedColor = localStorage.getItem('primary-color') || 'purple';
-
-const colors = {
-  purple: '#8750f7',
-  pink: '#ec489a',
-  blue: '#3b82f6',
-  red: '#ef4444',
-  yellow: '#eab308',
-  orange: '#f97316',
-  green: '#22c55e',
-  cyan: '#06b6d4'
-};
-
-document.documentElement.setAttribute('data-primary', savedColor);
-
-// 🔥 STATUS BAR COLOR
-let meta = document.querySelector("meta[name='theme-color']");
-if (!meta) {
-  meta = document.createElement('meta');
-  meta.name = "theme-color";
-  document.head.appendChild(meta);
-}
-const primaryColor = colors[savedColor] || '#8750f7';
-meta.setAttribute("content", primaryColor);
-      } catch (e) {
-        console.error('Theme initialization failed:', e);
       }
+      
+      // Initial setup
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      }
+      
+      const savedColor = localStorage.getItem('primary-color') || 'purple';
+      document.documentElement.setAttribute('data-primary', savedColor);
+      
+      // Update theme color immediately
+      updateThemeColor();
+      
+      // Watch for class changes (dark mode toggle)
+      const observer = new MutationObserver(function() {
+        updateThemeColor();
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      
+      // Watch for localStorage changes
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'primary-color') {
+          document.documentElement.setAttribute('data-primary', e.newValue || 'purple');
+          updateThemeColor();
+        }
+      });
+      
+      // Also run when page becomes visible
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) updateThemeColor();
+      });
     })();
   `}
         </Script>
