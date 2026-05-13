@@ -65,7 +65,7 @@ export function Portfolio() {
 
   return (
     <section id="portfolio" className="py-24 bg-[#0c1115]">
-      <div className="max-w-[1180px] mx-auto px-6">
+      <div className="mx-auto px-6">
         <div className="text-center">
           <span className="section-label">My Work</span>
           <h2 className="section-title">My Recent Works</h2>

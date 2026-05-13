@@ -171,19 +171,19 @@ export default function Hero() {
     >
       {/* Background Elements */}
       <div
-        className="absolute inset-0 bg-[length:40px_40px] md:bg-[length:60px_60px]"
+        className="absolute inset-0 bg-[length:40px_40px] md:bg-[length:60px_60px] pointer-events-none"
         style={{
           backgroundImage: `linear-gradient(${isDarkMode ? "rgba(135,80,247,0.04)" : "rgba(135,80,247,0.06)"} 1px, transparent 1px), linear-gradient(90deg, ${isDarkMode ? "rgba(135,80,247,0.04)" : "rgba(135,80,247,0.06)"} 1px, transparent 1px)`,
         }}
       />
       <div
-        className="absolute top-[-20%] right-[-30%] md:right-[-10%] w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full animate-float"
+        className="absolute top-[-20%] right-[-30%] md:right-[-10%] w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full animate-float pointer-events-none"
         style={{
           background: `radial-gradient(circle, ${isDarkMode ? "rgba(135,80,247,0.18)" : "rgba(135,80,247,0.1)"} 0%, transparent 70%)`,
         }}
       />
       <div
-        className="absolute bottom-[-20%] left-[-30%] md:left-[-10%] w-[350px] h-[350px] md:w-[500px] md:h-[500px] rounded-full"
+        className="absolute bottom-[-20%] left-[-30%] md:left-[-10%] w-[350px] h-[350px] md:w-[500px] md:h-[500px] rounded-full pointer-events-none"
         style={{
           background: `radial-gradient(circle, ${isDarkMode ? "rgba(42,20,84,0.35)" : "rgba(135,80,247,0.08)"} 0%, transparent 70%)`,
         }}
@@ -200,7 +200,7 @@ export default function Hero() {
         {content.name?.toUpperCase() || "NISHITHA"}
       </div>
 
-      <div>
+      <div className="relative z-10">
         <div className="container relative z-10 px-16">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-[60px] items-center">
             {/* Mobile Image - Simple hover effect */}
@@ -211,7 +211,7 @@ export default function Hero() {
                   style={{ borderColor: "rgba(135, 80, 247, 0.3)" }}
                 />
 
-                <div className="w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] rounded-full bg-gradient-to-r from-[#8750f7] to-[#2a1454] p-[3px] transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-2">
+                <div className="w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] rounded-full bg-gradient-to-r from-primary to-secondary p-[3px]">
                   <div
                     className="w-full h-full rounded-full overflow-hidden relative"
                     style={{ backgroundColor: "var(--bg-3)" }}
@@ -380,7 +380,7 @@ export default function Hero() {
               </div>
 
               {/* Main image - Just scale and lift on hover */}
-              <div className="w-[340px] xl:w-[420px] h-[340px] xl:h-[420px] rounded-full bg-gradient-to-r from-[#8750f7] to-[#2a1454] p-[3px] transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-3 cursor-pointer">
+              <div className="w-[340px] xl:w-[420px] h-[340px] xl:h-[420px] rounded-full bg-gradient-to-r from-primary to-secondary p-[3px]">
                 <div
                   className="w-full h-full rounded-full overflow-hidden relative transition-all duration-300 group-hover:scale-102"
                   style={{ backgroundColor: "var(--bg-3)" }}
@@ -403,7 +403,7 @@ export default function Hero() {
             </div>
           </div>
         </div>
-        <div>
+        <div className="relative z-10">
           <Counter />
           {/* <MovingTextBanner content={content} /> */}
           <SkillsHome />

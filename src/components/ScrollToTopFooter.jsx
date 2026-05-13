@@ -10,28 +10,28 @@ export default function ScrollToTopFooter() {
   const { isDarkMode } = useTheme();
   const [showScrollTop, setShowScrollTop] = useState(false);
   const { scrollYProgress } = useScroll();
-  
+
   // Smooth spring animation for the progress
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
-  
+
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 300);
     };
-    
+
     // Update progress value
     const unsubscribe = scaleX.on("change", (v) => {
       setProgress(v);
     });
-    
+
     window.addEventListener("scroll", handleScroll);
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       unsubscribe();
@@ -44,7 +44,7 @@ export default function ScrollToTopFooter() {
 
   // Calculate the fill percentage for the water effect
   const fillPercentage = Math.round(progress * 100);
-  
+
   // Determine if it's mostly filled for styling
   const isMostlyFilled = fillPercentage > 80;
 
@@ -99,10 +99,10 @@ export default function ScrollToTopFooter() {
           whileTap={{ scale: 0.95 }}
         >
           {/* Outer Glow Effect */}
-          <motion.div 
+          <motion.div
             className={`absolute inset-0 rounded-full blur-xl transition-opacity duration-300 ${
-              isMostlyFilled 
-                ? "opacity-100" 
+              isMostlyFilled
+                ? "opacity-100"
                 : "opacity-0 group-hover:opacity-50"
             }`}
             animate={{
@@ -115,23 +115,26 @@ export default function ScrollToTopFooter() {
               ease: "easeInOut",
             }}
             style={{
-              background: `radial-gradient(circle, ${
-                isDarkMode ? "rgba(135,80,247,0.6)" : "rgba(135,80,247,0.4)"
-              } 0%, transparent 70%)`
+              background: `radial-gradient(circle, ${isDarkMode ? "rgba(var(--primary-rgb), 0.6)" : "rgba(var(--primary-rgb), 0.4)"} 0%, transparent 70%)`,
             }}
           />
-          
+
           {/* Main Button Container */}
           <div className="relative w-14 h-14">
             {/* SVG Circle Progress */}
-            <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+            <svg
+              className="absolute inset-0 w-full h-full transform -rotate-90"
+              viewBox="0 0 100 100"
+            >
               {/* Background Circle */}
               <circle
                 cx="50"
                 cy="50"
                 r="45"
                 fill="none"
-                stroke={isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}
+                stroke={
+                  isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
+                }
                 strokeWidth="8"
                 className="transition-colors duration-300"
               />
@@ -141,7 +144,7 @@ export default function ScrollToTopFooter() {
                 cy="50"
                 r="45"
                 fill="none"
-                stroke="#8750f7"
+                stroke="var(--primary)"
                 strokeWidth="8"
                 strokeLinecap="round"
                 style={{
@@ -151,12 +154,13 @@ export default function ScrollToTopFooter() {
                 className="transition-all duration-300"
               />
             </svg>
-            
+
             {/* Inner Button Background */}
-            <div className={`absolute inset-[6px] rounded-full overflow-hidden transition-all duration-300 ${
-              isDarkMode ? "bg-gray-900" : "bg-white"
-            } shadow-lg`}>
-              
+            <div
+              className={`absolute inset-[6px] rounded-full overflow-hidden transition-all duration-300 ${
+                isDarkMode ? "bg-gray-900" : "bg-white"
+              } shadow-lg`}
+            >
               {/* Water Filling Animation with Wave Effect */}
               <motion.div
                 className="absolute bottom-0 left-0 right-0 overflow-hidden"
@@ -168,7 +172,7 @@ export default function ScrollToTopFooter() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
               >
                 {/* Water Background - Using primary color */}
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 bg-primary"
                   style={{
                     opacity: 0.85,
@@ -182,7 +186,7 @@ export default function ScrollToTopFooter() {
                     ease: "linear",
                   }}
                 />
-                
+
                 {/* Water Waves - Using primary-3 for wave highlights */}
                 <motion.div
                   className="absolute bottom-0 left-0 right-0"
@@ -190,23 +194,23 @@ export default function ScrollToTopFooter() {
                   animate="animate"
                 >
                   {/* Main Wave */}
-                  <motion.svg 
-                    className="w-full h-8" 
-                    viewBox="0 0 1200 120" 
+                  <motion.svg
+                    className="w-full h-8"
+                    viewBox="0 0 1200 120"
                     preserveAspectRatio="none"
                     variants={waveVariants}
                     animate="animate"
                   >
                     <path
                       d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
-                      fill="rgba(135,80,247,0.6)"
+                      fill="rgba(var(--primary-rgb), 0.6)"
                     />
                   </motion.svg>
-                  
+
                   {/* Secondary Wave - Using primary-3 */}
-                  <motion.svg 
-                    className="w-full h-6 -mt-4 opacity-60" 
-                    viewBox="0 0 1200 120" 
+                  <motion.svg
+                    className="w-full h-6 -mt-4 opacity-60"
+                    viewBox="0 0 1200 120"
                     preserveAspectRatio="none"
                     animate={{
                       x: ["-6%", "4%", "-6%"],
@@ -220,11 +224,11 @@ export default function ScrollToTopFooter() {
                   >
                     <path
                       d="M0,96L80,90.7C160,85,320,75,480,74.7C640,75,800,85,960,90.7C1120,96,1280,96,1360,96L1440,96L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
-                      fill="rgba(168,85,247,0.5)"
+                      fill="rgba(var(--primary-rgb), 0.5)"
                     />
                   </motion.svg>
                 </motion.div>
-                
+
                 {/* Floating Bubbles */}
                 {[...Array(8)].map((_, i) => (
                   <motion.div
@@ -242,7 +246,7 @@ export default function ScrollToTopFooter() {
                     }}
                   />
                 ))}
-                
+
                 {/* Water Flow Effect */}
                 <motion.div
                   className="absolute inset-0 overflow-hidden"
@@ -251,7 +255,7 @@ export default function ScrollToTopFooter() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
                 </motion.div>
-                
+
                 {/* Water Surface Sparkle */}
                 <motion.div
                   className="absolute top-0 left-0 right-0 h-[2px]"
@@ -268,7 +272,7 @@ export default function ScrollToTopFooter() {
                   <div className="h-full w-full bg-gradient-to-r from-transparent via-primary-3 to-transparent" />
                 </motion.div>
               </motion.div>
-              
+
               {/* Water Droplets Effect */}
               <motion.div
                 className="absolute inset-0 pointer-events-none"
@@ -285,7 +289,7 @@ export default function ScrollToTopFooter() {
                   ease: "easeInOut",
                 }}
               />
-              
+
               {/* Water Ripple Effect */}
               <motion.div
                 className="absolute inset-0"
@@ -303,7 +307,7 @@ export default function ScrollToTopFooter() {
                 }}
               />
             </div>
-            
+
             {/* Arrow Icon with Water Drop Effect */}
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
@@ -317,13 +321,17 @@ export default function ScrollToTopFooter() {
                   ease: "easeInOut",
                 }}
               >
-                <FaArrowUp className={`w-5 h-5 transition-all duration-300 ${
-                  fillPercentage > 50 
-                    ? "text-white" 
-                    : isDarkMode ? "text-gray-400" : "text-gray-600"
-                }`} />
+                <FaArrowUp
+                  className={`w-5 h-5 transition-all duration-300 ${
+                    fillPercentage > 50
+                      ? "text-white"
+                      : isDarkMode
+                        ? "text-gray-400"
+                        : "text-gray-600"
+                  }`}
+                />
               </motion.div>
-              
+
               {/* Water Drop on Arrow */}
               {fillPercentage > 30 && (
                 <motion.div
@@ -343,7 +351,6 @@ export default function ScrollToTopFooter() {
                 </motion.div>
               )}
             </div>
-        
           </div>
         </motion.button>
       )}

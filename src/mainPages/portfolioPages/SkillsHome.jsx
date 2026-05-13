@@ -23,6 +23,8 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+const normalizeCategory = (value) => value.trim().toLowerCase();
+
 const categoryMeta = {
   Frontend: { color: "#8750f7", label: "Frontend", emoji: "🎨" },
   Backend: { color: "#22d3ee", label: "Backend", emoji: "⚙️" },
@@ -158,13 +160,35 @@ const SkillsHome = () => {
     "Integration",
     "Languages",
   ];
-  const allCategories = ["All", ...categoryOrder];
+  const skillCategories = Array.from(
+    new Set(skills.map((skill) => skill.category.trim()))
+  );
+  const orderedCategories = [
+    ...categoryOrder.filter((category) =>
+      skillCategories.some(
+        (skillCategory) =>
+          normalizeCategory(skillCategory) === normalizeCategory(category)
+      )
+    ),
+    ...skillCategories.filter(
+      (skillCategory) =>
+        !categoryOrder.some(
+          (category) =>
+            normalizeCategory(category) === normalizeCategory(skillCategory)
+        )
+    ),
+  ];
+  const allCategories = ["All", ...orderedCategories];
 
   // Filter skills based on active category
   const filteredSkills =
     activeCategory === "All"
       ? skills
-      : skills.filter((skill) => skill.category === activeCategory);
+      : skills.filter(
+          (skill) =>
+            normalizeCategory(skill.category) ===
+            normalizeCategory(activeCategory)
+        );
 
   // Group skills by category for "All" view
   const groupedMap = new Map();
@@ -175,7 +199,7 @@ const SkillsHome = () => {
     groupedMap.get(skill.category).push(skill);
   });
 
-  const groupedSkills = categoryOrder
+  const groupedSkills = orderedCategories
     .filter((cat) => groupedMap.has(cat))
     .map((cat) => ({
       category: cat,

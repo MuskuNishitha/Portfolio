@@ -26,17 +26,85 @@ export default function CustomCursor() {
   const trailPositions = useRef(Array(trailCount).fill({ x: 0, y: 0 }));
   const [trail, setTrail] = useState(Array(trailCount).fill({ x: 0, y: 0 }));
   
-  // Get theme-based colors
+  // State to track current primary color
+  const [primaryColor, setPrimaryColor] = useState('#8750f7');
+  const [primaryRgb, setPrimaryRgb] = useState('135, 80, 247');
+  
+  // Listen for primary color changes from CSS variables
+  useEffect(() => {
+    const updateColors = () => {
+      const root = document.documentElement;
+      
+      // Get primary color from CSS variable
+      const primaryVar = getComputedStyle(root).getPropertyValue('--primary').trim();
+      const primaryRgbVar = getComputedStyle(root).getPropertyValue('--primary-rgb').trim();
+      
+      if (primaryVar) {
+        setPrimaryColor(primaryVar);
+      }
+      
+      if (primaryRgbVar) {
+        setPrimaryRgb(primaryRgbVar);
+      } else {
+        // Fallback: extract RGB from hex color
+        const hex = primaryVar || '#8750f7';
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        setPrimaryRgb(`${r}, ${g}, ${b}`);
+      }
+    };
+    
+    // Update initially
+    updateColors();
+    
+    // Watch for attribute changes on html element (data-primary changes)
+    const observer = new MutationObserver(() => {
+      updateColors();
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-primary', 'class']
+    });
+    
+    // Also listen for custom event from ColorPicker
+    window.addEventListener('primaryColorChanged', updateColors);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('primaryColorChanged', updateColors);
+    };
+  }, []);
+  
+  // Get theme-based colors using CSS variables
   const getCursorColor = () => {
+    // Use the CSS variable with appropriate opacity
+    if (primaryRgb) {
+      return `rgba(${primaryRgb}, 1)`;
+    }
     return isDarkMode ? 'rgba(135, 80, 247, 1)' : 'rgba(135, 80, 247, 0.9)';
   };
   
   const getTrailColor = (opacity) => {
+    if (primaryRgb) {
+      return `rgba(${primaryRgb}, ${isDarkMode ? opacity : opacity * 0.8})`;
+    }
     return isDarkMode ? `rgba(135, 80, 247, ${opacity})` : `rgba(135, 80, 247, ${opacity * 0.8})`;
   };
   
   const getRingColor = () => {
+    if (primaryRgb) {
+      return `rgba(${primaryRgb}, ${isDarkMode ? 0.5 : 0.4})`;
+    }
     return isDarkMode ? 'rgba(135, 80, 247, 0.5)' : 'rgba(135, 80, 247, 0.4)';
+  };
+  
+  const getGlowColor = () => {
+    if (primaryRgb) {
+      return `0 0 ${isHovering ? '15px' : '8px'} rgba(${primaryRgb}, ${isHovering ? 0.8 : 0.5})`;
+    }
+    return `0 0 ${isHovering ? '15px' : '8px'} ${getCursorColor()}`;
   };
   
   useEffect(() => {
@@ -169,7 +237,7 @@ export default function CustomCursor() {
             width: isClicking ? 6 : (isHovering ? 10 : 8),
             height: isClicking ? 6 : (isHovering ? 10 : 8),
             backgroundColor: getCursorColor(),
-            boxShadow: `0 0 ${isHovering ? '15px' : '8px'} ${getCursorColor()}`,
+            boxShadow: getGlowColor(),
           }}
           animate={{
             scale: isClicking ? 0.8 : (isHovering ? 1.3 : 1),
