@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import HeaderBanner from '@/global/HeaderBanner'
 import { useTheme } from '@/components/ThemeProvider'
@@ -14,7 +14,7 @@ export default function Services() {
   const [error, setError] = useState(null)
   const { isDarkMode } = useTheme()
 
-  const defaultServicesData = {
+  const defaultServicesData = useMemo(() => ({
     title: 'My Quality Services',
     subtitle: 'What I Do',
     description:
@@ -45,7 +45,7 @@ export default function Services() {
         tags: ['Charts', 'Real-time', 'Redux', 'Analytics'],
       },
     ],
-  }
+  }), [])
 
   useEffect(() => {
     let cancelled = false
@@ -76,7 +76,7 @@ export default function Services() {
     }
     loadServices()
     return () => { cancelled = true }
-  }, [])
+  }, [defaultServicesData]) // Fixed: Added defaultServicesData dependency
 
   if (loading) {
     return (

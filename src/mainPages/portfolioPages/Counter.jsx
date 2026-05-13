@@ -1,35 +1,37 @@
-'use client'
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import CountUp from 'react-countup';
+import React, { useEffect, useRef, useState } from "react";
+import CountUp from "react-countup";
 
 const Counter = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    const currentRef = sectionRef.current; // ✅ store ref
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
 
   return (
-    <div ref={sectionRef} className='mt-20'>
+    <div ref={sectionRef} className="mt-20">
       <section>
         <div>
           <div>
@@ -41,7 +43,8 @@ const Counter = () => {
                   {isVisible && <CountUp end={2} duration={2.5} />}
                 </div>
                 <div className="text text-body text-center sm:text-left sm:ml-3 relative">
-                  Years of <br />Experience
+                  Years of <br />
+                  Experience
                 </div>
               </div>
 
@@ -52,7 +55,8 @@ const Counter = () => {
                   {isVisible && <CountUp end={4} duration={2.5} />}+
                 </div>
                 <div className="text text-body text-center sm:text-left sm:ml-3 relative">
-                  Project <br />Completed
+                  Project <br />
+                  Completed
                 </div>
               </div>
 
@@ -63,7 +67,8 @@ const Counter = () => {
                   {isVisible && <CountUp end={3} duration={2.5} />} +
                 </div>
                 <div className="text text-body text-center sm:text-left sm:ml-3 relative">
-                  Happy <br />Clients
+                  Happy <br />
+                  Clients
                 </div>
               </div>
 
@@ -74,7 +79,8 @@ const Counter = () => {
                   {isVisible && <CountUp end={1} duration={2.5} />}
                 </div>
                 <div className="text text-body text-center sm:text-left sm:ml-3 relative">
-                  Awards <br />Won
+                  Awards <br />
+                  Won
                 </div>
               </div>
             </div>

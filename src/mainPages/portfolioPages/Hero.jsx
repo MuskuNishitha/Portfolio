@@ -1,10 +1,8 @@
-// Hero.jsx - Clean version with simple hover effects
-
 "use client";
 import Image from "next/image";
 import Counter from "./Counter";
 import { useTheme } from "@/components/ThemeProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 import { fetchHeroContent } from "@/lib/publicApi";
 import MovingTextBanner from "./MovingTextBanner";
@@ -19,28 +17,31 @@ export default function Hero() {
   const [error, setError] = useState(null);
 
   // Default/fallback content in case API fails
-  const defaultContent = {
-    name: "Nishitha",
-    badge: "Welcome to my portfolio",
-    headline: "Hi, I'm",
-    summary:
-      "Full-Stack Developer specializing in MERN stack with 2+ years of experience building scalable web applications.",
-    profileImageUrl: "/assets/ProfileMain.jpeg",
-    resumeUrl: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
-    techStack: [
-      "React",
-      "Next.js",
-      "Node.js",
-      "MongoDB",
-      "Express",
-      "TypeScript",
-    ],
-    socials: {
-      linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
-      github: "https://github.com/MuskuNishitha",
-      email: "mailto:mnishithareddy8765@gmail.com",
-    },
-  };
+  const defaultContent = useMemo(
+    () => ({
+      name: "Nishitha",
+      badge: "Welcome to my portfolio",
+      headline: "Hi, I'm",
+      summary:
+        "Full-Stack Developer specializing in MERN stack with 2+ years of experience building scalable web applications.",
+      profileImageUrl: "/assets/ProfileMain.jpeg",
+      resumeUrl: "/Musku_Nishitha_2_Y.OE_Mernstack.pdf",
+      techStack: [
+        "React",
+        "Next.js",
+        "Node.js",
+        "MongoDB",
+        "Express",
+        "TypeScript",
+      ],
+      socials: {
+        linkedin: "https://www.linkedin.com/in/musku-nishitha-7a535b36b",
+        github: "https://github.com/MuskuNishitha",
+        email: "mailto:mnishithareddy8765@gmail.com",
+      },
+    }),
+    [],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -95,7 +96,7 @@ export default function Hero() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [defaultContent]); // Fixed: Added defaultContent dependency
 
   // Loading state
   if (loading) {

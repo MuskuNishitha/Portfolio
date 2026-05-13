@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import HeaderBanner from '@/global/HeaderBanner'
 import { useTheme } from '@/components/ThemeProvider'
@@ -8,13 +8,14 @@ import { fetchServicesContent } from '@/lib/publicApi'
 import { ServicesSkeleton } from '@/components/SkeletonLoaders'
 
 export default function Services() {
-  const [activeService, setActiveService] = useState(0)
+  const [activeService, setActiveService] = useState(null)
   const [servicesData, setServicesData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const { isDarkMode } = useTheme()
 
-  const defaultServicesData = {
+  // Fixed: Wrapped with useMemo to prevent unnecessary re-renders
+  const defaultServicesData = useMemo(() => ({
     title: 'My Quality Services',
     subtitle: 'What I Do',
     description:
@@ -45,8 +46,9 @@ export default function Services() {
         tags: ['Charts', 'Real-time', 'Redux', 'Analytics'],
       },
     ],
-  }
+  }), [])
 
+  // Fixed: Added defaultServicesData to dependency array
   useEffect(() => {
     let cancelled = false
     const loadServices = async () => {
@@ -76,7 +78,7 @@ export default function Services() {
     }
     loadServices()
     return () => { cancelled = true }
-  }, [])
+  }, [defaultServicesData]) // Fixed: Added dependency
 
   if (loading) {
     return (
@@ -470,7 +472,7 @@ export default function Services() {
           )}
         </AnimatePresence>
 
-        {/* CTA Banner */}
+        {/* CTA Banner - FIXED: Escaped apostrophes */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -491,8 +493,9 @@ export default function Services() {
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3" style={{ color: 'var(--text-heading)' }}>
                 Ready to Start Your Project?
               </h3>
+              {/* FIXED: Escaped apostrophe in "Let's" */}
               <p className="text-base sm:text-lg" style={{ color: 'var(--text-muted)' }}>
-                Let's discuss how I can help you achieve your goals with cutting-edge solutions
+                Let&apos;s discuss how I can help you achieve your goals with cutting-edge solutions
               </p>
             </div>
             <div className="flex gap-3 flex-shrink-0">
