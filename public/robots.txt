@@ -1,0 +1,15 @@
+# robots.txt for Nishitha Reddy Musku Portfolio
+# https://muskunishitha.vercel.app
+
+User-agent: *
+Allow: /
+
+# Disallow admin or system paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Sitemap
+Sitemap: https://muskunishitha.vercel.app/sitemap.xml
+
+# Crawl-delay: 10
