@@ -369,7 +369,7 @@ export default function Hero() {
                   <p
                     className="text-xs font-semibold"
                     style={{
-                      color: "var(--text-heading)",
+                      color: "#000",
                     }}
                   >
                     React.js

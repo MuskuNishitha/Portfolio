@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 
 export default function DotsBackground() {
   const [dimensions, setDimensions] = useState({ width: 1200, height: 800 });
-  
+
   useEffect(() => {
     setDimensions({
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
     });
-    
+
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
     };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Create dots with different properties
@@ -35,24 +35,7 @@ export default function DotsBackground() {
     blur: Math.random() * 2, // Random blur for depth
   }));
 
-  // Color palettes
-  const colors = {
-    primary: [
-      "rgba(147, 51, 234, 0.6)", // Purple
-      "rgba(236, 72, 153, 0.6)", // Pink
-      "rgba(59, 130, 246, 0.6)", // Blue
-    ],
-    secondary: [
-      "rgba(168, 85, 247, 0.5)", // Light Purple
-      "rgba(244, 114, 182, 0.5)", // Light Pink
-      "rgba(96, 165, 250, 0.5)", // Light Blue
-    ],
-    glow: [
-      "rgba(147, 51, 234, 0.3)",
-      "rgba(236, 72, 153, 0.3)",
-      "rgba(59, 130, 246, 0.3)",
-    ]
-  };
+
 
   // Generate star-like dots
   const stars = Array.from({ length: 50 }, (_, i) => ({
@@ -74,16 +57,51 @@ export default function DotsBackground() {
     delay: Math.random() * 8,
     duration: Math.random() * 20 + 20,
     opacity: Math.random() * 0.15 + 0.05,
-    color: i % 3 === 0 ? "rgba(147, 51, 234, 0.1)" : 
-           i % 3 === 1 ? "rgba(236, 72, 153, 0.1)" : 
-           "rgba(59, 130, 246, 0.1)",
+    color:
+      i % 3 === 0
+        ? "rgba(147, 51, 234, 0.1)"
+        : i % 3 === 1
+          ? "rgba(236, 72, 153, 0.1)"
+          : "rgba(59, 130, 246, 0.1)",
   }));
+const [primaryColor, setPrimaryColor] = useState("#eab308");
 
+useEffect(() => {
+  const updateColor = () => {
+    const color = getComputedStyle(document.documentElement)
+      .getPropertyValue("--primary")
+      .trim();
+
+    if (color) {
+      setPrimaryColor(color);
+    }
+  };
+
+  updateColor();
+
+  window.addEventListener("primaryColorChanged", updateColor);
+
+  return () => {
+    window.removeEventListener("primaryColorChanged", updateColor);
+  };
+}, []);
+const colors = {
+  primary: [
+    `rgba(${hexToRgb(primaryColor)}, 0.6)`,
+    `rgba(${hexToRgb(primaryColor)}, 0.45)`,
+    `rgba(${hexToRgb(primaryColor)}, 0.3)`,
+  ],
+  glow: [
+    `rgba(${hexToRgb(primaryColor)}, 0.3)`,
+    `rgba(${hexToRgb(primaryColor)}, 0.2)`,
+    `rgba(${hexToRgb(primaryColor)}, 0.15)`,
+  ],
+};
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
       {/* Gradient Overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-purple-900/10 dark:to-purple-900/20" />
-      
+
       {/* Large floating particles (background depth) */}
       {particles.map((particle) => (
         <motion.div
@@ -118,26 +136,34 @@ export default function DotsBackground() {
           style={{
             width: dot.size,
             height: dot.size,
-            background: dot.type === 0 
-              ? `radial-gradient(circle at 30% 30%, ${colors.primary[0]}, ${colors.glow[0]})`
-              : dot.type === 1
-              ? `radial-gradient(circle at 30% 30%, ${colors.primary[1]}, ${colors.glow[1]})`
-              : `radial-gradient(circle at 30% 30%, ${colors.primary[2]}, ${colors.glow[2]})`,
+            background:
+              dot.type === 0
+                ? `radial-gradient(circle at 30% 30%, ${colors.primary[0]}, ${colors.glow[0]})`
+                : dot.type === 1
+                  ? `radial-gradient(circle at 30% 30%, ${colors.primary[1]}, ${colors.glow[1]})`
+                  : `radial-gradient(circle at 30% 30%, ${colors.primary[2]}, ${colors.glow[2]})`,
             top: `${dot.y}%`,
             left: `${dot.x}%`,
             opacity: dot.opacity,
             filter: `blur(${dot.blur}px)`,
-            boxShadow: dot.type === 0
-              ? "0 0 10px rgba(147, 51, 234, 0.3)"
-              : dot.type === 1
-              ? "0 0 10px rgba(236, 72, 153, 0.3)"
-              : "0 0 10px rgba(59, 130, 246, 0.3)",
+            boxShadow:
+              dot.type === 0
+                ? "0 0 10px rgba(147, 51, 234, 0.3)"
+                : dot.type === 1
+                  ? "0 0 10px rgba(236, 72, 153, 0.3)"
+                  : "0 0 10px rgba(59, 130, 246, 0.3)",
           }}
           animate={{
             y: [0, -40, 0, 40, 0],
             x: [0, 30, -30, 30, 0],
             scale: [1, 1.3, 0.7, 1.2, 1],
-            opacity: [dot.opacity, dot.opacity * 1.5, dot.opacity * 0.5, dot.opacity * 1.2, dot.opacity],
+            opacity: [
+              dot.opacity,
+              dot.opacity * 1.5,
+              dot.opacity * 0.5,
+              dot.opacity * 1.2,
+              dot.opacity,
+            ],
           }}
           transition={{
             duration: dot.duration,
@@ -196,15 +222,24 @@ export default function DotsBackground() {
       {/* Connecting lines between nearby dots (optional) */}
       <svg className="absolute inset-0 w-full h-full">
         <defs>
-          <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient
+            id="line-gradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
             <stop offset="0%" stopColor="rgba(147, 51, 234, 0.1)" />
             <stop offset="50%" stopColor="rgba(236, 72, 153, 0.1)" />
             <stop offset="100%" stopColor="rgba(59, 130, 246, 0.1)" />
           </linearGradient>
         </defs>
-        {dots.slice(0, 20).map((dot, i) => (
+        {dots.slice(0, 20).map((dot, i) =>
           dots.slice(i + 1, i + 4).map((nextDot, j) => {
-            if (Math.abs(dot.x - nextDot.x) < 15 && Math.abs(dot.y - nextDot.y) < 15) {
+            if (
+              Math.abs(dot.x - nextDot.x) < 15 &&
+              Math.abs(dot.y - nextDot.y) < 15
+            ) {
               return (
                 <motion.line
                   key={`line-${dot.id}-${nextDot.id}`}
@@ -227,8 +262,8 @@ export default function DotsBackground() {
               );
             }
             return null;
-          })
-        ))}
+          }),
+        )}
       </svg>
 
       {/* Floating orbs */}
@@ -239,11 +274,12 @@ export default function DotsBackground() {
           style={{
             width: 300,
             height: 300,
-            background: i === 1 
-              ? "radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, transparent 70%)"
-              : i === 2
-              ? "radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%)"
-              : "radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)",
+            background:
+              i === 1
+                ? "radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, transparent 70%)"
+                : i === 2
+                  ? "radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%)"
+                  : "radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)",
             top: i === 1 ? "10%" : i === 2 ? "60%" : "30%",
             left: i === 1 ? "10%" : i === 2 ? "70%" : "40%",
           }}

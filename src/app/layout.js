@@ -270,7 +270,7 @@ export default function RootLayout({ children }) {
       function updateThemeColor() {
         try {
           const isDark = document.documentElement.classList.contains('dark');
-          const savedColor = document.documentElement.getAttribute('data-primary') || 'purple';
+          const savedColor = document.documentElement.getAttribute('data-primary') || 'yellow';
           
           const colors = {
             purple: '#8750f7', pink: '#ec489a', blue: '#3b82f6',
@@ -284,7 +284,9 @@ export default function RootLayout({ children }) {
             green: '#147a3a', cyan: '#047481'
           };
           
-          const themeColor = isDark ? (darkColors[savedColor] || '#4a2baa') : (colors[savedColor] || '#8750f7');
+const themeColor = isDark
+  ? (darkColors[savedColor] || darkColors.yellow)
+  : (colors[savedColor] || colors.yellow);
           
           let meta = document.querySelector("meta[name='theme-color']");
           if (!meta) {
@@ -304,7 +306,7 @@ export default function RootLayout({ children }) {
         document.documentElement.classList.remove('dark');
       }
       
-      const savedColor = localStorage.getItem('primary-color') || 'purple';
+      const savedColor = localStorage.getItem('primary-color') || 'yellow';
       document.documentElement.setAttribute('data-primary', savedColor);
       updateThemeColor();
       

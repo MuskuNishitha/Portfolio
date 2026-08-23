@@ -5,20 +5,20 @@
 @layer base {
   :root {
     /* Light mode - default primary (purple) */
-    --primary: #8750f7;
-    --primary-2: #6c3fd4;
-    --primary-3: #a97bff;
-    --secondary: #2a1454;
-    --accent: #ff6b6b;
-    
-    --tj-theme-primary: #8750f7;
-    --tj-theme-primary-1: #2400ff;
-    --tj-theme-primary-2: #9b8dff;
-    --tj-theme-primary-3: #4654f9;
-    --tj-theme-h3-primary-1: #814cec;
-    --tj-theme-h4-primary-1: #240F31;
-    --tj-theme-secondary: #2a1454;
-    
+       --primary: #eab308;
+  --primary-2: #ca8a04;
+  --primary-3: #facc15;
+
+  --secondary: #2a1454;
+  --accent: #ff6b6b;
+
+  --tj-theme-primary: #eab308;
+  --tj-theme-primary-1: #2400ff;
+  --tj-theme-primary-2: #fde047;
+  --tj-theme-primary-3: #facc15;
+  --tj-theme-h3-primary-1: #ca8a04;
+  --tj-theme-h4-primary-1: #240F31;
+  --tj-theme-secondary: #2a1454;
     /* Light theme colors */
     --bg: #ffffff;
     --bg-2: #f8fafc;
@@ -36,16 +36,15 @@
     --tj-ff-fontawesome: "Font Awesome 6 Pro";
   }
 
-  /* Primary Color Variants */
-  :root[data-primary="purple"] {
-    --primary: #8750f7;
-    --primary-2: #6c3fd4;
-    --primary-3: #a97bff;
-    --tj-theme-primary: #8750f7;
-    --tj-theme-primary-2: #9b8dff;
-    --tj-theme-primary-3: #4654f9;
-    --tj-theme-h3-primary-1: #814cec;
-  }
+:root[data-primary="yellow"] {
+  --primary: #eab308;
+  --primary-2: #ca8a04;
+  --primary-3: #facc15;
+  --tj-theme-primary: #eab308;
+  --tj-theme-primary-2: #fde047;
+  --tj-theme-primary-3: #facc15;
+  --tj-theme-h3-primary-1: #ca8a04;
+}
 
   :root[data-primary="pink"] {
     --primary: #ec489a;
@@ -76,6 +75,19 @@
     --tj-theme-primary-3: #f87171;
     --tj-theme-h3-primary-1: #dc2626;
   }
+  :root[data-primary="purple"] {
+  --primary: #8750f7;
+  --primary-2: #6c3fd4;
+  --primary-3: #a97bff;
+
+  --tj-theme-primary: #8750f7;
+  --tj-theme-primary-1: #2400ff;
+  --tj-theme-primary-2: #9b8dff;
+  --tj-theme-primary-3: #4654f9;
+  --tj-theme-h3-primary-1: #814cec;
+  --tj-theme-h4-primary-1: #240F31;
+  --tj-theme-secondary: #2a1454;
+}
 
   :root[data-primary="yellow"] {
     --primary: #eab308;
@@ -282,13 +294,14 @@
 
 /* Add RGB variables for transparency effects */
 :root {
-  --primary-rgb: 135, 80, 247;
+  --primary-rgb: 234, 179, 8;
 }
-
 :root[data-primary="pink"] {
   --primary-rgb: 236, 72, 153;
 }
-
+:root[data-primary="purple"] {
+  --primary-rgb: 135, 80, 247;
+}
 :root[data-primary="blue"] {
   --primary-rgb: 59, 130, 246;
 }
@@ -331,7 +344,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #8750f7;
+  background: var(--primary);
   filter: blur(8px);
   animation: pulse 1s ease-in-out infinite;
 }

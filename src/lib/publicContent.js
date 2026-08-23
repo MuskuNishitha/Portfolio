@@ -27,8 +27,9 @@ export const fallbackPortfolio = {
   categories: [
     { id: "all", name: "All Work" },
     { id: "ecommerce", name: "Web Development" },
-    // { id: "mobile", name: "Applications" },
+    // { id: "mobile", name: "Mobile Apps" },
     { id: "dashboard", name: "Dashboards" },
+    { id: "personal", name: "Personal Projects" },
   ],
   projects: [
     {
@@ -178,6 +179,94 @@ export const fallbackPortfolio = {
       solution:
         "Used aggregation and memoisation to reduce render work and payload size.",
     },
+
+    {
+      id: 5,
+      title: "Food Side",
+      category: "ecommerce",
+      subcategory: "Web Development",
+      period: "2024 - Present",
+      image: "/assets/projects/food_side.png",
+      description:
+        "Complete food delivery platform connecting customers with restaurants and delivery partners through a responsive website and three React Native mobile applications.",
+      features: [
+        "Food delivery website with restaurant discovery, food ordering, route selection, and delivery tracking",
+        "Customer mobile app for browsing restaurants, placing orders, and tracking deliveries",
+        "Delivery partner app for managing deliveries, shipments, trips, and completed orders",
+        "Rider-focused application for delivery management and real-time trip updates",
+        "Backend APIs built with Node.js, Express.js, and MongoDB",
+      ],
+      tech: [
+        "Next.js",
+        "React.js",
+        "React Native",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+      ],
+      liveLink: "https://foodside.co.in",
+      playstoreLinks: [
+        {
+          name: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.foodsidedelivery",
+        },
+        {
+          name: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.foodside",
+        },
+        {
+          name: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.foodsiderider",
+        },
+      ],
+      githubLink: "",
+      challenges:
+        "Managing multiple food delivery applications with different user roles while keeping order, delivery, and trip data synchronized.",
+      solution:
+        "Implemented reusable React Native components, REST APIs, centralized state management, and optimized MongoDB operations to maintain consistent data across customer and delivery applications.",
+    },
+    {
+      id: 6,
+      title: "Personal Portfolio",
+      category: "personal",
+      subcategory: "Next.js • Full Stack",
+      period: "Aug 2026 - Present",
+      image: "/assets/projects/portfolio.png",
+
+      description:
+        "Modern full-stack developer portfolio built with Next.js, featuring responsive UI, dynamic project presentation, interactive animations, theme customization, and SEO-focused architecture.",
+
+      features: [
+        "Built with Next.js using a responsive, component-based architecture for desktop, tablet, and mobile",
+        "Implemented dark/light mode with dynamic primary-color customization and smooth theme transitions",
+        "Integrated project filtering, animated sections, interactive cards, resume download, and responsive navigation",
+        "Implemented SEO optimization with metadata, Open Graph, sitemap, robots.txt, and structured content",
+        "Built backend functionality within Next.js for contact form handling and API integrations",
+        "Integrated webhook-based contact notifications for reliable form submissions",
+      ],
+
+      tech: [
+        "Next.js",
+        "React.js",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Node.js",
+        "REST API",
+        "SEO",
+      ],
+
+      liveLink: "https://muskunishitha.vercel.app",
+
+      githubLink: "https://github.com/MuskuNishitha/Portfolio",
+
+      playstoreLinks: [],
+
+      challenges:
+        "Creating a polished portfolio that combines animations, responsive layouts, dynamic theming, SEO, and backend functionality without affecting performance.",
+
+      solution:
+        "Built reusable Next.js components with responsive Tailwind CSS, Framer Motion animations, centralized theme handling, optimized rendering, SEO metadata, and Next.js API-based backend functionality.",
+    },
   ],
 };
 
@@ -274,7 +363,7 @@ export const fallbackResume = {
 
 export const fallbackSettings = {
   defaultTheme: "dark", // "dark" | "light"
-  defaultPrimaryColor: "purple",
+  defaultPrimaryColor: "yellow",
 };
 
 export const fallbackServices = {

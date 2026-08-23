@@ -27,22 +27,62 @@ export default function Projects() {
 
   return (
     <section
-      className={`relative min-h-screen overflow-hidden py-20 sm:py-24 px-4 transition-colors duration-300 ${
-        isDarkMode ? "bg-black text-white" : "bg-gray-50 text-gray-900"
+      className={`relative min-h-screen overflow-hidden py-20 sm:py-24 lg:py-28 px-4 transition-colors duration-500 ${
+        isDarkMode
+          ? "bg-gradient-to-b from-[#050816] via-[#070912] to-[#02040b] text-white"
+          : "bg-gradient-to-b from-gray-50 via-white to-gray-50 text-gray-900"
       }`}
     >
-      {/* BACKGROUND DECORATION */}
+      {/* =========================================================
+          BACKGROUND DECORATION
+      ========================================================= */}
+
       <div
-        className="pointer-events-none absolute top-20 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full opacity-20 blur-3xl"
+        className="pointer-events-none absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full blur-3xl opacity-10"
         style={{
           background: "var(--primary)",
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto">
-        {/* ================= HEADER ================= */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+      <div
+        className="pointer-events-none absolute top-[35%] -left-40 h-80 w-80 rounded-full blur-3xl opacity-[0.06]"
+        style={{
+          background: "var(--primary)",
+        }}
+      />
+
+      <div
+        className="pointer-events-none absolute bottom-0 -right-40 h-80 w-80 rounded-full blur-3xl opacity-[0.06]"
+        style={{
+          background: "var(--primary)",
+        }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-0 sm:px-2">
+        {/* =========================================================
+            HEADER
+        ========================================================= */}
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.3,
+          }}
+          transition={{
+            duration: 0.5,
+          }}
+          className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 lg:mb-20"
+        >
           {/* SMALL LABEL */}
+
           <div className="inline-flex items-center gap-2 mb-4">
             <span
               className="h-px w-8"
@@ -52,7 +92,7 @@ export default function Projects() {
             />
 
             <span
-              className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em]"
+              className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em]"
               style={{
                 color: "var(--primary)",
               }}
@@ -69,7 +109,13 @@ export default function Projects() {
           </div>
 
           {/* TITLE */}
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
+
+          <h2
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight"
+            style={{
+              color: "var(--text-heading)",
+            }}
+          >
             My{" "}
             <span
               style={{
@@ -80,19 +126,50 @@ export default function Projects() {
             </span>
           </h2>
 
+          {/* UNDERLINE */}
+
+          <div
+            className="w-20 h-1 mx-auto mt-5 rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, var(--primary), var(--primary-2))",
+            }}
+          />
+
           {/* DESCRIPTION */}
+
           <p
-            className={`mt-4 text-sm sm:text-base leading-relaxed ${
+            className={`mt-5 text-sm sm:text-base leading-relaxed ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >
             A selection of real-world web, mobile, e-commerce and dashboard
             applications built with modern technologies.
           </p>
-        </div>
+        </motion.div>
 
-        {/* ================= FILTER ================= */}
-        <div className="flex justify-center flex-wrap gap-2.5 sm:gap-3 mb-12">
+        {/* =========================================================
+            FILTER
+        ========================================================= */}
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 20,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: 0.5,
+          }}
+          className="flex justify-center flex-wrap gap-2.5 sm:gap-3 mb-12 sm:mb-16"
+        >
           {categories.map((category) => {
             const isActive = filter === category.id;
 
@@ -120,9 +197,12 @@ export default function Projects() {
               </button>
             );
           })}
-        </div>
+        </motion.div>
 
-        {/* ================= PROJECT GRID ================= */}
+        {/* =========================================================
+            PROJECT GRID
+        ========================================================= */}
+
         {filteredProjects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {filteredProjects.map((project, index) => {
@@ -139,7 +219,7 @@ export default function Projects() {
                     (app) =>
                       app &&
                       typeof app.url === "string" &&
-                      app.url.trim().length > 0,
+                      app.url.trim().length > 0
                   )
                 : [];
 
@@ -148,9 +228,12 @@ export default function Projects() {
               return (
                 <motion.article
                   key={project.id}
+                  /* =====================================================
+                     EXPERIENCE STYLE SCROLL ANIMATION
+                  ===================================================== */
                   initial={{
                     opacity: 0,
-                    y: 30,
+                    y: 40,
                   }}
                   whileInView={{
                     opacity: 1,
@@ -161,25 +244,52 @@ export default function Projects() {
                     amount: 0.15,
                   }}
                   transition={{
-                    duration: 0.45,
-                    delay: index * 0.08,
+                    duration: 0.55,
+                    delay: index * 0.1,
                   }}
+                  /* =====================================================
+                     EXPERIENCE STYLE HOVER
+                  ===================================================== */
                   whileHover={{
-                    y: -8,
+                    y: -6,
                   }}
-                  className={`group flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 ${
+                  className={`group relative flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 ${
                     isDarkMode
-                      ? "bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.06]"
-                      : "bg-white border-gray-200 hover:border-gray-300"
+                      ? "bg-white/[0.045] border-white/10 hover:border-white/20 hover:bg-white/[0.06]"
+                      : "bg-white border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-xl"
                   }`}
                   style={{
                     boxShadow: isDarkMode
-                      ? "0 20px 50px rgba(0,0,0,0.25)"
-                      : "0 20px 50px rgba(0,0,0,0.08)",
+                      ? "0 18px 50px rgba(0,0,0,0.22)"
+                      : undefined,
                   }}
                 >
-                  {/* ================= IMAGE ================= */}
-                  <div className="relative h-56 sm:h-60 overflow-hidden">
+                  {/* =====================================================
+                      TOP GLOW
+                  ===================================================== */}
+
+                  <div
+                    className="absolute top-0 left-0 right-0 h-px opacity-60 z-20"
+                    style={{
+                      background:
+                        "linear-gradient(to right, transparent, var(--primary), transparent)",
+                    }}
+                  />
+
+                  {/* =====================================================
+                      BACKGROUND PROJECT NUMBER
+                  ===================================================== */}
+
+                  <div
+                    className="pointer-events-none absolute -right-3 -top-7 text-[100px] sm:text-[120px] font-black leading-none opacity-[0.025] z-0"
+                    style={{
+                      color: "var(--primary)",
+                    }}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                <div className="relative h-56 sm:h-70 overflow-hidden z-10">
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -190,9 +300,11 @@ export default function Projects() {
                     />
 
                     {/* IMAGE OVERLAY */}
+
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
                     {/* PROJECT NUMBER */}
+
                     <div className="absolute top-4 right-4">
                       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-xs font-semibold">
                         {String(index + 1).padStart(2, "0")}
@@ -200,6 +312,7 @@ export default function Projects() {
                     </div>
 
                     {/* FEATURED */}
+
                     {project.id === 1 && (
                       <div className="absolute top-4 left-4">
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-yellow-400 text-black px-3 py-1.5 text-xs font-semibold shadow-lg">
@@ -209,7 +322,8 @@ export default function Projects() {
                       </div>
                     )}
 
-                    {/* CATEGORY ON IMAGE */}
+                    {/* CATEGORY */}
+
                     <div className="absolute bottom-4 left-4">
                       <span className="rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white px-3 py-1.5 text-xs">
                         {project.subcategory}
@@ -217,50 +331,105 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  {/* ================= CONTENT ================= */}
-                  <div className="flex flex-col flex-1 p-5 sm:p-6">
-                    {/* TITLE */}
-                    <div className="mb-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
-                          {project.title}
-                        </h3>
+                  {/* =====================================================
+                      CONTENT
+                  ===================================================== */}
 
-                        <span
-                          className="text-xs whitespace-nowrap opacity-60"
-                          title={project.period}
-                        >
-                          {project.period}
-                        </span>
-                      </div>
+                  <div className="relative flex flex-col flex-1 p-5 sm:p-6 lg:p-7 z-10">
+                    {/* DATE */}
+
+                    <div className="relative flex items-center gap-2 mb-4">
+                      <span
+                        className="flex h-7 w-7 items-center justify-center rounded-lg"
+                        style={{
+                          background:
+                            "color-mix(in srgb, var(--primary) 12%, transparent)",
+                          color: "var(--primary)",
+                        }}
+                      >
+                        <FiSmartphone size={13} />
+                      </span>
+
+                      <span
+                        className="text-[11px] sm:text-xs font-semibold tracking-wide"
+                        style={{
+                          color: "var(--primary)",
+                        }}
+                      >
+                        {project.period}
+                      </span>
                     </div>
 
+                    {/* TITLE */}
+
+                    <div className="mb-2">
+                      <h3
+                        className="text-xl sm:text-2xl font-bold tracking-tight"
+                        style={{
+                          color: "var(--text-heading)",
+                        }}
+                      >
+                        {project.title}
+                      </h3>
+                    </div>
+
+                    {/* CATEGORY / SUBCATEGORY */}
+
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2">
+                      <span
+                        className={`text-sm font-medium ${
+                          isDarkMode ? "text-gray-300" : "text-gray-700"
+                        }`}
+                      >
+                        {project.subcategory}
+                      </span>
+                    </div>
+
+                    {/* DIVIDER */}
+
+                    <div
+                      className={`h-px mb-5 ${
+                        isDarkMode ? "bg-white/10" : "bg-gray-100"
+                      }`}
+                    />
+
                     {/* DESCRIPTION */}
+
                     <p
-                      className={`text-sm leading-relaxed mb-5 ${
+                      className={`text-xs sm:text-sm leading-relaxed mb-2 ${
                         isDarkMode ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
                       {project.description}
                     </p>
 
-                    {/* ================= FEATURES ================= */}
+                    {/* =================================================
+                        FEATURES
+                    ================================================= */}
+
                     {project.features?.length > 0 && (
-                      <div className="mb-5">
-                        <div className="space-y-2">
+                      <div className="mb-3">
+                        <div className="space-y-2.5">
                           {project.features
                             .slice(0, 3)
                             .map((feature, featureIndex) => (
                               <div
                                 key={featureIndex}
-                                className="flex items-start gap-2"
+                                className="flex items-start gap-2.5"
                               >
                                 <span
-                                  className="mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0"
+                                  className="mt-1 flex-shrink-0"
                                   style={{
-                                    background: "var(--primary)",
+                                    color: "var(--primary)",
                                   }}
-                                />
+                                >
+                                  <span
+                                    className="block h-1.5 w-1.5 rounded-full"
+                                    style={{
+                                      background: "var(--primary)",
+                                    }}
+                                  />
+                                </span>
 
                                 <p
                                   className={`text-xs sm:text-sm leading-relaxed ${
@@ -277,20 +446,33 @@ export default function Projects() {
                       </div>
                     )}
 
-                    {/* ================= TECH ================= */}
+                    {/* =================================================
+                        TECH STACK
+                    ================================================= */}
+
                     {project.tech?.length > 0 && (
-                      <div className="mb-2">
+                      <div className="relative mt-1 mb-2 pt-5 border-t border-black/10 dark:border-white/10">
+                        <p
+                          className={`text-[10px] uppercase tracking-[0.18em] font-semibold mb-3 ${
+                            isDarkMode ? "text-gray-500" : "text-gray-400"
+                          }`}
+                        >
+                          Technologies
+                        </p>
+
                         <div className="flex flex-wrap gap-2">
                           {project.tech.map((technology) => (
                             <span
                               key={technology}
-                              className={`text-[11px] sm:text-xs px-2.5 py-1 rounded-md border ${
-                                isDarkMode ? "bg-white/[0.03]" : "bg-gray-50"
+                              className={`px-2.5 py-1.5 rounded-lg border text-[11px] sm:text-xs font-medium ${
+                                isDarkMode
+                                  ? "bg-white/[0.03] border-white/10"
+                                  : "bg-gray-50 border-gray-200"
                               }`}
                               style={{
+                                color: "var(--primary)",
                                 borderColor:
                                   "color-mix(in srgb, var(--primary) 35%, transparent)",
-                                color: "var(--primary)",
                               }}
                             >
                               {technology}
@@ -300,10 +482,16 @@ export default function Projects() {
                       </div>
                     )}
 
-                    {/* ================= LINKS ================= */}
-                    {(hasLiveLink || hasGithubLink || hasPlayStoreLinks) && (
+                    {/* =================================================
+                        LINKS
+                    ================================================= */}
+
+                    {(hasLiveLink ||
+                      hasGithubLink ||
+                      hasPlayStoreLinks) && (
                       <div className="mt-auto pt-5 border-t border-black/10 dark:border-white/10">
                         {/* WEBSITE + GITHUB */}
+
                         {(hasLiveLink || hasGithubLink) && (
                           <div
                             className={`grid gap-2.5 ${
@@ -313,6 +501,7 @@ export default function Projects() {
                             }`}
                           >
                             {/* WEBSITE */}
+
                             {hasLiveLink && (
                               <a
                                 href={project.liveLink}
@@ -335,6 +524,7 @@ export default function Projects() {
                             )}
 
                             {/* GITHUB */}
+
                             {hasGithubLink && (
                               <a
                                 href={project.githubLink}
@@ -359,66 +549,83 @@ export default function Projects() {
                           </div>
                         )}
 
-                        {/* PLAY STORE LINKS */}
-                        {hasPlayStoreLinks && (
-                          <div
-                            className={`mt-2.5 grid gap-2.5 ${
-                              playstoreLinks.length > 1
-                                ? "grid-cols-1 sm:grid-cols-2"
-                                : "grid-cols-1"
-                            }`}
-                          >
-                            {playstoreLinks.map((app, appIndex) => (
-                              <a
-                                key={`${app.url}-${appIndex}`}
-                                href={app.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`group/app w-full min-w-0 flex items-center justify-between gap-3 py-2.5 px-3.5 rounded-lg border transition-all duration-300 ${
-                                  isDarkMode
-                                    ? "border-white/10 bg-white/[0.03] hover:bg-white/[0.08]"
-                                    : "border-gray-200 bg-gray-50 hover:bg-gray-100"
-                                }`}
-                              >
-                                {/* LEFT */}
-                                <span className="flex items-center gap-2.5 min-w-0">
-                                  {/* ICON */}
-                                  <span
-                                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg"
-                                    style={{
-                                      background:
-                                        "color-mix(in srgb, var(--primary) 12%, transparent)",
-                                      color: "var(--primary)",
-                                    }}
-                                  >
-                                    <FiSmartphone size={15} />
-                                  </span>
+                {/* PLAY STORE APPS */}
+{hasPlayStoreLinks && (
+  <div className="mt-3">
+    <div className="flex flex-wrap gap-2">
+      {playstoreLinks.map((app, appIndex) => (
+        <a
+          key={`${app.url}-${appIndex}`}
+          href={app.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`group/app inline-flex items-center gap-2 py-2 px-3 rounded-lg border transition-all duration-300 ${
+            isDarkMode
+              ? "border-white/10 bg-white/[0.03] hover:bg-white/[0.08]"
+              : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+          }`}
+        >
+          <span
+            className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md"
+            style={{
+              background:
+                "color-mix(in srgb, var(--primary) 12%, transparent)",
+              color: "var(--primary)",
+            }}
+          >
+            <FiSmartphone size={12} />
+          </span>
 
-                                  {/* APP NAME */}
-                                  <span className="min-w-0 text-sm font-medium truncate">
-                                    {app.name || `App ${appIndex + 1}`}
-                                  </span>
-                                </span>
+          <span className="text-xs font-medium max-w-[90px] truncate">
+            {app.name || `App ${appIndex + 1}`}
+          </span>
 
-                                {/* EXTERNAL ICON */}
-                                <FiExternalLink
-                                  size={15}
-                                  className="flex-shrink-0 opacity-50 transition-all duration-200 group-hover/app:opacity-100 group-hover/app:translate-x-0.5"
-                                />
-                              </a>
-                            ))}
-                          </div>
-                        )}
+          <FiExternalLink
+            size={12}
+            className="flex-shrink-0 opacity-50 transition-all duration-200 group-hover/app:opacity-100"
+          />
+        </a>
+      ))}
+    </div>
+  </div>
+)}
                       </div>
                     )}
                   </div>
+
+                  {/* =====================================================
+                      BOTTOM HOVER ACCENT
+                  ===================================================== */}
+
+                  <div
+                    className="absolute bottom-0 left-1/2 h-0.5 w-0 -translate-x-1/2 transition-all duration-500 group-hover:w-2/3 z-20"
+                    style={{
+                      background: "var(--primary)",
+                    }}
+                  />
                 </motion.article>
               );
             })}
           </div>
         ) : (
-          /* ================= EMPTY STATE ================= */
-          <div className="py-20 text-center">
+          /* =========================================================
+             EMPTY STATE
+          ========================================================= */
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 25,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.5,
+            }}
+            className="py-20 text-center"
+          >
             <div
               className={`inline-flex flex-col items-center justify-center rounded-2xl px-8 py-10 border ${
                 isDarkMode
@@ -426,14 +633,18 @@ export default function Projects() {
                   : "bg-white border-gray-200"
               }`}
             >
-              <p className="text-lg font-semibold mb-2">No projects found</p>
+              <p className="text-lg font-semibold mb-2">
+                No projects found
+              </p>
 
               <p className="text-sm opacity-60">
-                f Try selecting another category.
+                Try selecting another category.
               </p>
             </div>
-          </div>
+          </motion.div>
         )}
+
+  
       </div>
     </section>
   );

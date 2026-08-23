@@ -18,15 +18,15 @@ const colors = [
 export default function PremiumColorPicker() {
   const containerRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState('purple');
+  const [active, setActive] = useState('yellow');
 
-  useEffect(() => {
-    const saved = localStorage.getItem('primary-color');
-    if (saved) {
-      setActive(saved);
-      document.documentElement.setAttribute('data-primary', saved);
-    }
-  }, []);
+useEffect(() => {
+  const saved = localStorage.getItem('primary-color');
+  const defaultColor = saved || 'yellow';
+
+  setActive(defaultColor);
+  document.documentElement.setAttribute('data-primary', defaultColor);
+}, []);
 
   useEffect(() => {
     if (!open) return;

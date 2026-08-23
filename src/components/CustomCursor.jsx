@@ -27,8 +27,8 @@ export default function CustomCursor() {
   const [trail, setTrail] = useState(Array(trailCount).fill({ x: 0, y: 0 }));
   
   // State to track current primary color
-  const [primaryColor, setPrimaryColor] = useState('#8750f7');
-  const [primaryRgb, setPrimaryRgb] = useState('135, 80, 247');
+const [primaryColor, setPrimaryColor] = useState('#eab308');
+const [primaryRgb, setPrimaryRgb] = useState('234, 179, 8');
   
   // Listen for primary color changes from CSS variables
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function CustomCursor() {
         setPrimaryRgb(primaryRgbVar);
       } else {
         // Fallback: extract RGB from hex color
-        const hex = primaryVar || '#8750f7';
+        const hex = primaryVar || '#eab308';
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
         const b = parseInt(hex.slice(5, 7), 16);
@@ -83,7 +83,9 @@ export default function CustomCursor() {
     if (primaryRgb) {
       return `rgba(${primaryRgb}, 1)`;
     }
-    return isDarkMode ? 'rgba(135, 80, 247, 1)' : 'rgba(135, 80, 247, 0.9)';
+   return isDarkMode
+  ? 'rgba(234, 179, 8, 1)'
+  : 'rgba(234, 179, 8, 0.9)';
   };
   
   const getTrailColor = (opacity) => {

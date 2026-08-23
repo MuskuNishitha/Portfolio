@@ -1,101 +1,113 @@
-'use client'
+"use client";
 
-import { createContext, useContext, useEffect, useState } from 'react'
-import ColorPicker from './ColorPicker'
-import { fetchSiteSettings } from '@/lib/publicApi'
+import { createContext, useContext, useEffect, useState } from "react";
+import ColorPicker from "./ColorPicker";
+import { fetchSiteSettings } from "@/lib/publicApi";
 
-const ThemeContext = createContext()
+const ThemeContext = createContext();
 
 export function useTheme() {
-  const context = useContext(ThemeContext)
+  const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider')
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
-  return context
+  return context;
 }
 
 export default function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkMode] = useState(true)
-  const [mounted, setMounted] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
+    setMounted(true);
     // Check for saved theme preference
-    const savedTheme = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+
     if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark')
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark')
+      setIsDarkMode(savedTheme === "dark");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
       } else {
-        document.documentElement.classList.remove('dark')
+        document.documentElement.classList.remove("dark");
       }
     } else if (prefersDark) {
-      setIsDarkMode(true)
-      document.documentElement.classList.add('dark')
+      setIsDarkMode(true);
+      document.documentElement.classList.add("dark");
     } else {
-      setIsDarkMode(false)
-      document.documentElement.classList.remove('dark')
+      setIsDarkMode(false);
+      document.documentElement.classList.remove("dark");
     }
 
     // Load saved color preference
-    const savedColor = localStorage.getItem('primary-color')
+    const savedColor = localStorage.getItem("primary-color");
     if (savedColor) {
-      document.documentElement.setAttribute('data-primary', savedColor)
+      document.documentElement.setAttribute("data-primary", savedColor);
     } else {
-      document.documentElement.setAttribute('data-primary', 'purple')
+      document.documentElement.setAttribute("data-primary", "yellow");
     }
 
     // Optional: load defaults from backend/admin settings (applies only if user has no saved preference)
     fetchSiteSettings().then((settings) => {
-      if (!settings) return
+      if (!settings) return;
 
-      if (!savedTheme && (settings.defaultTheme === 'dark' || settings.defaultTheme === 'light')) {
-        const dark = settings.defaultTheme === 'dark'
-        setIsDarkMode(dark)
-        if (dark) document.documentElement.classList.add('dark')
-        else document.documentElement.classList.remove('dark')
+      if (
+        !savedTheme &&
+        (settings.defaultTheme === "dark" || settings.defaultTheme === "light")
+      ) {
+        const dark = settings.defaultTheme === "dark";
+        setIsDarkMode(dark);
+        if (dark) document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
       }
 
-      if (!savedColor && typeof settings.defaultPrimaryColor === 'string' && settings.defaultPrimaryColor) {
-        document.documentElement.setAttribute('data-primary', settings.defaultPrimaryColor)
-        localStorage.setItem('primary-color', settings.defaultPrimaryColor)
+      if (
+        !savedColor &&
+        typeof settings.defaultPrimaryColor === "string" &&
+        settings.defaultPrimaryColor
+      ) {
+        document.documentElement.setAttribute(
+          "data-primary",
+          settings.defaultPrimaryColor,
+        );
+
+        localStorage.setItem("primary-color", settings.defaultPrimaryColor);
       }
-    })
-  }, [])
+    });
+  }, []);
 
   const toggleTheme = () => {
-    const newDarkMode = !isDarkMode
-    setIsDarkMode(newDarkMode)
-    localStorage.setItem('theme', newDarkMode ? 'dark' : 'light')
-    
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem("theme", newDarkMode ? "dark" : "light");
+
     if (newDarkMode) {
-      document.documentElement.classList.add('dark')
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
-  }
+  };
 
   // Prevent flash of wrong theme
   if (!mounted) {
-    return null
+    return null;
   }
 
   const value = {
     isDarkMode,
-    toggleTheme
-  }
+    toggleTheme,
+  };
 
   return (
     <ThemeContext.Provider value={value}>
       {/* Combined Theme Controls */}
       <div className="fixed top-24 right-6 z-50 flex flex-col gap-2">
-
         {/* Color Picker */}
         <ColorPicker />
       </div>
       {children}
     </ThemeContext.Provider>
-  )
+  );
 }

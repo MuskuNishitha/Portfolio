@@ -18,24 +18,26 @@ export default function RouteTransition() {
   const startedAtRef = useRef(Date.now());
   const lastPathRef = useRef(pathname);
 
-  // 🎨 COLOR
-  const getPrimaryColor = () => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("primary-color");
-      const map = {
-        purple: "#8750f7",
-        blue: "#3b82f6",
-        pink: "#ec489a",
-        green: "#10b981",
-        yellow: "#eab308",
-        orange: "#f97316",
-        cyan: "#06b6d4",
-        red: "#ef4444",
-      };
-      return map[saved] || "#8750f7";
-    }
-    return "#8750f7";
-  };
+const getPrimaryColor = () => {
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem("primary-color");
+
+    const map = {
+      purple: "#8750f7",
+      blue: "#3b82f6",
+      pink: "#ec489a",
+      green: "#10b981",
+      yellow: "#eab308",
+      orange: "#f97316",
+      cyan: "#06b6d4",
+      red: "#ef4444",
+    };
+
+    return map[saved] || "#eab308";
+  }
+
+  return "#eab308";
+};
 
   const primary = getPrimaryColor();
 
