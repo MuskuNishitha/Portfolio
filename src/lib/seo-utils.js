@@ -233,7 +233,7 @@ export function getArticleSchema(article) {
     "@type": "Article",
     headline: article.title,
     description: article.description,
-    image: article.image || `${BASE_URL}/og-image.jpg`,
+    image: article.image || `${BASE_URL}/og_img.jpg`,
     datePublished: article.datePublished || new Date().toISOString(),
     dateModified: article.dateModified || new Date().toISOString(),
     author: {

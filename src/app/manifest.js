@@ -49,7 +49,7 @@ export default function manifest() {
     ],
     screenshots: [
       {
-        src: "/og-image.jpg",
+        src: "/og_img.jpg",
         sizes: "1200x630",
         type: "image/jpeg",
       },
