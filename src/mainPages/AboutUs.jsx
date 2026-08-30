@@ -871,7 +871,7 @@ export default function AboutUs() {
               "
             >
               <a
-                href="/MUSKU NISHITHA.pdf"
+                href="/Musku_Nishitha_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="

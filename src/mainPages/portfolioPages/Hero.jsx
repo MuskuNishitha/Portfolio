@@ -25,7 +25,7 @@ const content = {
 
   image: "/assets/Professional.jpg",
 
-  resume: "/MUSKU NISHITHA.pdf",
+  resume: "/Musku_Nishitha_Resume.pdf",
 
   stats: [
     {
