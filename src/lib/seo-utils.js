@@ -9,7 +9,7 @@ const BASE_URL = "https://muskunishitha.vercel.app";
  * @param {string} options.description - Meta description
  * @param {string} options.path - Page path (e.g., "/about")
  * @param {string[]} options.keywords - Array of keywords
- * @param {string} options.ogImage - Custom OG image path (defaults to main_photo_seo.png)
+ * @param {string} options.ogImage - Custom OG image path (defaults to seo_image.png)
  * @param {string} options.type - OG type (website, article, profile)
  * @param {Object} options.robots - Custom robots config
  * @param {boolean} options.noIndex - If true, sets noindex
@@ -20,7 +20,7 @@ export function generateMetadata({
   description,
   path = "/",
   keywords = [],
-  ogImage = "/main_photo_seo.png",
+  ogImage = "/seo_image.png",
   type = "website",
   robots = {},
   noIndex = false,
