@@ -1,0 +1,71 @@
+---
+title: JavaScript Error Handling For Frontend API Calls
+description: A practical approach to handling failed API requests, network errors, validation messages, and retry states in JavaScript applications.
+date: 2026-08-21
+category: JavaScript
+tags: [JavaScript, REST API, Error Handling, Frontend]
+keywords: [JavaScript error handling, frontend API errors, fetch error handling]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/javascript-error-handling-frontend-apis.svg
+imageAlt: Frontend API error handling illustration with request states
+canonical: https://muskunishitha.vercel.app/blog/javascript-error-handling-frontend-apis
+slug: javascript-error-handling-frontend-apis
+---
+A failed API call should not make the whole interface feel broken. Users need to know whether the app is loading, empty, blocked by validation, or temporarily unable to reach the server.
+
+![Frontend API error handling illustration with request states](/assets/blog/javascript-error-handling-frontend-apis.svg "Frontend API error handling illustration with request states")
+
+## Reproduce The Failure
+
+I separate network failures from application failures. A 400 validation response should land near the form field. A 401 should usually move the user toward login. A 500 should show a short retry path and give the team enough logging to investigate.
+
+## The Fix Pattern
+
+For React screens, I keep request state explicit with values like idle, loading, success, and error. That avoids boolean combinations such as isLoading plus hasError plus data length, which become difficult to reason about.
+
+```jsx
+useEffect(() => {
+  const controller = new AbortController();
+
+  async function loadDashboard() {
+    setState({ status: "loading", data: null, error: null });
+
+    try {
+      const response = await fetch("/api/dashboard", {
+        signal: controller.signal,
+      });
+      const data = await response.json();
+      setState({ status: "success", data, error: null });
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        setState({ status: "error", data: null, error });
+      }
+    }
+  }
+
+  loadDashboard();
+  return () => controller.abort();
+}, []);
+```
+
+## Mistakes That Hide The Real Bug
+
+- Showing the same message for validation errors and server failures.
+- Leaving stale successful data on screen after a failed refresh without any hint.
+- Retrying automatically without a limit.
+- Logging raw tokens or personal form data while debugging.
+
+## Production Debugging Notes
+
+Production error handling should be boring and consistent. The response shape, UI copy, and logs should all help a developer answer what failed and what the user can do next.
+
+## Related Reading
+
+- [Production Error Handling In Express APIs](/blog/express-error-handling-production)
+- [A Practical API Security Checklist For MERN Apps](/blog/api-security-checklist-mern)
+- [React Form Handling With Validation And API Errors](/blog/react-form-handling-validation-errors)
+
+## Final Thought
+
+Error handling is part of the user experience. A clear failed state often earns more trust than a spinner that never ends.

@@ -1,0 +1,92 @@
+---
+title: Redux Toolkit for React Applications
+description: How I decide when Redux Toolkit is worth using and how I structure slices, async state, selectors, and UI updates.
+date: 2026-07-16
+category: State Management
+tags: [Redux Toolkit, React.js, State Management, Frontend]
+author: Nishitha Reddy Musku
+readingTime: 7 min read
+image: /assets/blog/redux-toolkit.svg
+slug: redux-toolkit-react-applications
+---
+
+Redux Toolkit is most useful when state is shared, important, and touched by several parts of an app. I do not use Redux for every input or modal. I use it when the app has auth state, user preferences, cart data, dashboard filters, API status, or data that many screens need.
+
+![Redux Toolkit data flow](/assets/blog/redux-toolkit.svg "A clear slice structure keeps Redux Toolkit approachable.")
+
+## Start With A Slice That Describes The Feature
+
+Good slices usually map to product features: `auth`, `contact`, `cart`, `projects`, or `profile`. The slice should describe what the UI needs, not mirror every backend table.
+
+```js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  items: [],
+  status: "idle",
+  error: null,
+  selectedCategory: "all",
+};
+
+const projectsSlice = createSlice({
+  name: "projects",
+  initialState,
+  reducers: {
+    categoryChanged(state, action) {
+      state.selectedCategory = action.payload;
+    },
+    projectsLoaded(state, action) {
+      state.items = action.payload;
+      state.status = "succeeded";
+    },
+  },
+});
+
+export const { categoryChanged, projectsLoaded } = projectsSlice.actions;
+export default projectsSlice.reducer;
+```
+
+Redux Toolkit uses Immer internally, so writing "mutating" logic like `state.items = ...` is safe inside reducers.
+
+## Keep Local State Local
+
+The fastest way to make Redux messy is to store everything in it. Search input text, dropdown open state, temporary form fields, and one-off UI toggles usually belong in component state.
+
+Global state should earn its place. If only one component needs it, I keep it local.
+
+## Selectors Make Components Cleaner
+
+Selectors keep filtering and derived values out of JSX. They also make it easier to change the state shape later without rewriting every component.
+
+```js
+export const selectVisibleProjects = (state) => {
+  const category = state.projects.selectedCategory;
+
+  if (category === "all") return state.projects.items;
+
+  return state.projects.items.filter((project) => project.category === category);
+};
+```
+
+In larger apps, I use memoized selectors when the derived work is expensive or used often.
+
+## Async State Needs Clear Status Values
+
+I like explicit status values: `idle`, `loading`, `succeeded`, and `failed`. Booleans like `isLoading` and `hasError` work for small cases, but status values scale better as flows grow.
+
+For bigger API-heavy apps, RTK Query is usually a better option than writing thunks manually. It handles caching, refetching, loading state, and invalidation in a cleaner way.
+
+## Avoid Store Shape Leaks
+
+Components should not know too much about how the store is shaped. A component should read through selectors and dispatch actions. That keeps UI code focused on rendering and events.
+
+## My Redux Toolkit Checklist
+
+- Use slices by feature.
+- Keep temporary UI state local.
+- Name actions by what happened, not what should run next.
+- Use selectors for derived data.
+- Keep async status explicit.
+- Reach for RTK Query when API caching becomes important.
+
+Redux Toolkit is not about adding ceremony. Used well, it gives a shared state layer that stays predictable even as a React application grows.

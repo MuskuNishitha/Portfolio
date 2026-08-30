@@ -10,6 +10,7 @@ const BASE_URL = "https://muskunishitha.vercel.app";
  * @param {string} options.path - Page path (e.g., "/about")
  * @param {string[]} options.keywords - Array of keywords
  * @param {string} options.ogImage - Custom OG image path (defaults to seo_image.png)
+ * @param {string} options.ogImageAlt - Custom OG image alt text
  * @param {string} options.type - OG type (website, article, profile)
  * @param {Object} options.robots - Custom robots config
  * @param {boolean} options.noIndex - If true, sets noindex
@@ -21,6 +22,7 @@ export function generateMetadata({
   path = "/",
   keywords = [],
   ogImage = "/seo_image.png",
+  ogImageAlt,
   type = "website",
   robots = {},
   noIndex = false,
@@ -30,6 +32,14 @@ export function generateMetadata({
     : "Nishitha Reddy Musku | React Native & MERN Stack Developer";
   const url = `${BASE_URL}${path}`;
   const imageUrl = ogImage.startsWith("http") ? ogImage : `${BASE_URL}${ogImage}`;
+  const isSvgImage = imageUrl.endsWith(".svg");
+  const imageType = isSvgImage
+    ? "image/svg+xml"
+    : imageUrl.endsWith(".jpg") || imageUrl.endsWith(".jpeg")
+      ? "image/jpeg"
+      : imageUrl.endsWith(".webp")
+        ? "image/webp"
+        : "image/png";
 
   return {
     title: title,
@@ -57,9 +67,9 @@ export function generateMetadata({
         {
           url: imageUrl,
           width: 1200,
-          height: 630,
-          alt: `Nishitha Reddy Musku - ${title || "Portfolio"}`,
-          type: "image/png",
+          height: isSvgImage ? 675 : 630,
+          alt: ogImageAlt || `Nishitha Reddy Musku - ${title || "Portfolio"}`,
+          type: imageType,
           secureUrl: imageUrl,
         },
       ],
@@ -230,15 +240,17 @@ export function getBreadcrumbSchema(items) {
 export function getArticleSchema(article) {
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: article.title,
     description: article.description,
     image: article.image || `${BASE_URL}/og_img.jpg`,
+    thumbnailUrl: article.image || `${BASE_URL}/og_img.jpg`,
     datePublished: article.datePublished || new Date().toISOString(),
     dateModified: article.dateModified || new Date().toISOString(),
+    url: article.url || BASE_URL,
     author: {
       "@type": "Person",
-      name: "Nishitha Reddy Musku",
+      name: article.author || "Nishitha Reddy Musku",
       url: BASE_URL,
     },
     publisher: {
@@ -252,6 +264,9 @@ export function getArticleSchema(article) {
     },
     wordCount: article.wordCount || 0,
     articleSection: article.category || "Technology",
+    keywords: article.keywords || [],
+    isAccessibleForFree: true,
+    inLanguage: "en-US",
   };
 }
 

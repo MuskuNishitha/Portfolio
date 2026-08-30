@@ -1,0 +1,60 @@
+---
+title: Redux Toolkit Async Thunks For API State
+description: How I use createAsyncThunk for shared loading, success, failure, retry, and normalized API state in React applications.
+date: 2026-07-03
+category: State Management
+tags: [Redux Toolkit, Async State, React.js, API Integration]
+keywords: [Redux Toolkit async thunk, Redux API state, createAsyncThunk]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/redux-toolkit-async-thunks-api-state.svg
+imageAlt: Redux Toolkit async thunk illustration with pending fulfilled and rejected states
+canonical: https://muskunishitha.vercel.app/blog/redux-toolkit-async-thunks-api-state
+slug: redux-toolkit-async-thunks-api-state
+---
+Async state becomes hard when every component handles loading and errors differently. Redux Toolkit can make shared API flows more predictable.
+
+![Redux Toolkit async thunk illustration with pending fulfilled and rejected states](/assets/blog/redux-toolkit-async-thunks-api-state.svg "Redux Toolkit async thunk illustration with pending fulfilled and rejected states")
+
+## Where The Problem Starts
+
+I use createAsyncThunk when the result matters across screens or when several components need the same request status. Local-only requests can stay in a hook.
+
+## The Pattern I Use
+
+The slice should handle pending, fulfilled, and rejected states clearly. A rejected action should carry a message the UI can show without decoding Axios internals.
+
+```js
+export const fetchOrders = createAsyncThunk(
+  "orders/fetchOrders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/orders");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Unable to load orders");
+    }
+  }
+);
+```
+
+## Common Mistakes
+
+- Using Redux for one-off local form submissions.
+- Forgetting to reset stale errors before a new request.
+- Saving duplicate copies of the same entity in several slices.
+- Swallowing rejected values and leaving the UI stuck in loading.
+
+## Production Notes
+
+I test refresh, retry, logout, and slow API behavior. Async state bugs often happen after the first successful load.
+
+## Related Reading
+
+- [Redux Toolkit for React Applications](/blog/redux-toolkit-react-applications)
+- [API Integration Patterns For React Dashboards](/blog/api-integration-patterns-react)
+- [Redux Selectors And Store Architecture That Stay Clean](/blog/redux-selectors-store-architecture)
+
+## Final Thought
+
+Redux Toolkit is useful when async state needs a shared contract. It should make API behavior clearer, not heavier.

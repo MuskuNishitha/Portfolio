@@ -1,0 +1,20 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#08111F"/>
+  <rect x="102" y="72" width="996" height="531" rx="22" fill="#0F172A" stroke="#1E3A8A" stroke-width="2"/>
+  <rect x="166" y="128" width="300" height="474" rx="42" fill="#020617" stroke="#475569" stroke-width="3"/>
+  <rect x="190" y="176" width="252" height="358" rx="16" fill="#111827"/>
+  <rect x="214" y="208" width="204" height="38" rx="8" fill="#1E293B"/>
+  <rect x="214" y="272" width="150" height="22" rx="6" fill="#22C55E"/>
+  <rect x="214" y="316" width="196" height="20" rx="6" fill="#334155"/>
+  <rect x="214" y="352" width="170" height="20" rx="6" fill="#334155"/>
+  <circle cx="316" cy="562" r="15" fill="#1E293B"/>
+  <rect x="548" y="176" width="402" height="54" rx="10" fill="#172554"/>
+  <rect x="548" y="258" width="480" height="54" rx="10" fill="#14532D"/>
+  <rect x="548" y="340" width="340" height="54" rx="10" fill="#1F2937"/>
+  <rect x="548" y="422" width="430" height="54" rx="10" fill="#1F2937"/>
+  <text x="548" y="531" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="52" font-weight="700">React Native Android</text>
+  <text x="550" y="568" fill="#A7F3D0" font-family="Arial, sans-serif" font-size="22">screens, APIs, builds, devices, and production polish</text>
+  <path d="M965 116L1016 146L965 176L914 146L965 116Z" fill="#22C55E"/>
+  <path d="M965 176L1016 146V206L965 236V176Z" fill="#16A34A"/>
+  <path d="M965 176L914 146V206L965 236V176Z" fill="#86EFAC"/>
+</svg>

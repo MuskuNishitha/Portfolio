@@ -1,0 +1,59 @@
+---
+title: Next.js App Router Project Structure That Scales
+description: How I organize routes, layouts, server components, client components, metadata, and shared code in Next.js App Router projects.
+date: 2026-08-04
+category: Next.js
+tags: [Next.js, App Router, Architecture, React.js]
+keywords: [Next.js App Router structure, Next.js project architecture, App Router folders]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/nextjs-app-router-project-structure.svg
+imageAlt: Next.js App Router folder structure illustration with routes and layouts
+canonical: https://muskunishitha.vercel.app/blog/nextjs-app-router-project-structure
+slug: nextjs-app-router-project-structure
+---
+The App Router is easiest to maintain when route files stay focused. A page should show what the route does, not contain every UI detail for the feature.
+
+![Next.js App Router folder structure illustration with routes and layouts](/assets/blog/nextjs-app-router-project-structure.svg "Next.js App Router folder structure illustration with routes and layouts")
+
+## Define The Responsibility
+
+I keep route files responsible for metadata, server data loading, redirects, and selecting the main component. The visual UI lives in components where it can be tested and reused.
+
+## A Maintainable Shape
+
+A good App Router structure separates app routes, shared components, content loaders, and API utilities. That keeps the route tree readable as projects, blog posts, and contact forms grow.
+
+```jsx
+export function generateStaticParams() {
+  return getAllBlogPosts().map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+export default function BlogPostPage({ params }) {
+  const post = getBlogPostBySlug(params.slug);
+  return <BlogArticle post={post} />;
+}
+```
+
+## Common Architecture Mistakes
+
+- Putting all business logic directly inside page files.
+- Making a whole route client-side because one child needs state.
+- Duplicating metadata objects across pages.
+- Mixing content parsing utilities into visual components.
+
+## Production Considerations
+
+Production builds are the real test for App Router structure. Static params, metadata, and server-only code need to resolve cleanly without relying on browser APIs.
+
+## Related Reading
+
+- [Server Components And Client Components In Next.js](/blog/nextjs-server-client-component-boundaries)
+- [Dynamic Routes For Blog Slugs In Next.js](/blog/nextjs-dynamic-routes-blog-slugs)
+- [Next.js for Modern Web Development](/blog/nextjs-modern-web-development)
+
+## Final Thought
+
+A scalable App Router project feels boring to navigate. You can open a folder and quickly see what belongs to the route.

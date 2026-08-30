@@ -1,0 +1,55 @@
+---
+title: Working With Bootstrap Layouts In React Projects
+description: A practical way to handle Bootstrap grids, spacing, and components in React without fighting the existing layout system.
+date: 2026-08-16
+category: Frontend
+tags: [Bootstrap, React.js, CSS, Frontend]
+keywords: [Bootstrap React layout, Bootstrap grid React, frontend layout cleanup]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/bootstrap-react-layout-cleanup.svg
+imageAlt: Bootstrap grid layout illustration with responsive rows and columns
+canonical: https://muskunishitha.vercel.app/blog/bootstrap-react-layout-cleanup
+slug: bootstrap-react-layout-cleanup
+---
+Bootstrap still appears in many React projects, especially admin panels and older product screens. The main job is to work with its grid instead of layering random custom CSS over it.
+
+![Bootstrap grid layout illustration with responsive rows and columns](/assets/blog/bootstrap-react-layout-cleanup.svg "Bootstrap grid layout illustration with responsive rows and columns")
+
+## The Checklist
+
+I first identify which parts are Bootstrap structure and which parts are product-specific UI. Container, row, column, and gap utilities should handle layout; component CSS should handle the product card or form.
+
+## A Practical Pattern
+
+When a screen is already Bootstrap-based, I keep the grid predictable and wrap custom React components inside the columns. That prevents the component from needing to know every breakpoint.
+
+```jsx
+<div className="container py-4">
+  <div className="row g-4">
+    <aside className="col-12 col-lg-3">Filters</aside>
+    <main className="col-12 col-lg-9">Product grid</main>
+  </div>
+</div>
+```
+
+## Common Mistakes
+
+- Putting fixed widths inside Bootstrap columns.
+- Mixing grid classes with unrelated absolute positioning.
+- Changing Bootstrap spacing globally for one screen.
+- Forgetting that modals and dropdowns need keyboard and focus behavior checked.
+
+## Before Shipping
+
+If the long-term direction is Tailwind or custom CSS, I migrate screen by screen. A half-migrated layout is where most spacing bugs come from.
+
+## Related Reading
+
+- [Tailwind CSS Patterns For Reusable React Components](/blog/tailwind-css-component-patterns)
+- [CSS Grid And Flexbox Patterns For Dashboard Layouts](/blog/css-grid-flexbox-dashboard-layouts)
+- [A Practical Accessibility Checklist For React Interfaces](/blog/accessible-react-interfaces-checklist)
+
+## Final Thought
+
+Bootstrap can be perfectly serviceable when the team treats it as a layout system, not as a pile of classes to override.

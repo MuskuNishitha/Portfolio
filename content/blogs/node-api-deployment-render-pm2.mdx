@@ -1,0 +1,53 @@
+---
+title: Deploying Node.js APIs With Render Or PM2
+description: A practical Node.js deployment checklist covering start commands, environment variables, health checks, logs, PM2, and MongoDB connections.
+date: 2026-06-22
+category: Deployment
+tags: [Node.js, Render, PM2, Backend Deployment]
+keywords: [Node.js API deployment, Render Node deployment, PM2 Express API]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/node-api-deployment-render-pm2.svg
+imageAlt: Node.js API deployment illustration with server process and logs
+canonical: https://muskunishitha.vercel.app/blog/node-api-deployment-render-pm2
+slug: node-api-deployment-render-pm2
+---
+Deploying a Node.js API is not only choosing a host. The app needs a reliable start command, environment values, database access, logs, and a way to restart safely.
+
+![Node.js API deployment illustration with server process and logs](/assets/blog/node-api-deployment-render-pm2.svg "Node.js API deployment illustration with server process and logs")
+
+## Define The Responsibility
+
+Managed platforms such as Render simplify process management. VPS-style hosting often needs PM2 or a similar process manager to keep the app running after crashes or restarts.
+
+## A Maintainable Shape
+
+I add a health endpoint, set the production start command, confirm MongoDB connection, and check logs during the first deploy.
+
+```bash
+npm run build
+pm2 start npm --name portfolio-api -- start
+pm2 save
+pm2 logs portfolio-api
+```
+
+## Common Architecture Mistakes
+
+- Starting the dev command in production.
+- Leaving required environment variables undefined.
+- Running without process management on a VPS.
+- Ignoring server timezone, port, and firewall behavior.
+
+## Production Considerations
+
+A backend deployment should be observable. If the frontend reports a 500, server logs should quickly show whether the issue is auth, database, validation, or a missing variable.
+
+## Related Reading
+
+- [MongoDB Atlas Connection Checks For Production Apps](/blog/mongodb-atlas-production-connection)
+- [Environment Variables In Node.js And Next.js Projects](/blog/environment-variables-node-nextjs)
+- [A MERN Deployment Checklist For Production Releases](/blog/mern-deployment-checklist)
+
+## Final Thought
+
+Node.js deployment feels much safer when start, config, database, and logs are checked as one system.

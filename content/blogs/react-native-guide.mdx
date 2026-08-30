@@ -1,0 +1,106 @@
+---
+title: React Native Android App Development
+description: How I approach Android app screens, API integration, device testing, and the practical details that make React Native apps feel production-ready.
+date: 2026-08-18
+category: React Native
+tags: [React Native, Android, Mobile Apps, APIs]
+author: Nishitha Reddy Musku
+readingTime: 8 min read
+image: /assets/blog/react-native-android.svg
+slug: react-native-android-app-development
+---
+
+React Native Android development becomes much smoother when the project is treated like a real Android product, not only a React project that happens to run on a phone. The UI has to respect small screens, slow networks, back button behavior, permissions, release builds, and many device sizes.
+
+![React Native Android screen planning](/assets/blog/react-native-android.svg "Android work is a mix of React patterns and native platform details.")
+
+## Start With The Screen Contract
+
+Before I build a screen, I like to write down what it receives, what it fetches, what can fail, and what the user can do next. This keeps the component from becoming a mix of UI, API calls, loading state, and navigation rules.
+
+A simple pattern is:
+
+- A screen component handles navigation and layout.
+- A hook handles fetching and mutations.
+- Small components render repeatable UI.
+- Shared helpers format dates, prices, names, and empty values.
+
+```jsx
+function OrdersScreen({ navigation }) {
+  const { orders, isLoading, refresh, error } = useOrders();
+
+  if (isLoading) return <OrdersSkeleton />;
+  if (error) return <RetryState message={error.message} onRetry={refresh} />;
+
+  return (
+    <FlatList
+      data={orders}
+      keyExtractor={(item) => item._id}
+      renderItem={({ item }) => (
+        <OrderCard order={item} onPress={() => navigation.navigate("OrderDetails", { id: item._id })} />
+      )}
+      refreshing={isLoading}
+      onRefresh={refresh}
+    />
+  );
+}
+```
+
+The screen stays readable, and each piece can be tested or reused without pulling the whole navigation stack into it.
+
+## FlatList Is Usually Better Than ScrollView
+
+For lists, I reach for `FlatList` early. It gives virtualization, pull to refresh, empty states, and pagination hooks without much extra work. `ScrollView` is fine for fixed content, but it becomes expensive when the number of children grows.
+
+The details that matter most are stable keys, small row components, and avoiding inline calculations for every row. If images are part of the list, I also use fixed dimensions so rows do not jump while images load.
+
+## Android Back Button And Permissions
+
+Android users expect the hardware back button to behave naturally. In multi-step flows, I handle back behavior explicitly instead of letting a form or modal trap the user.
+
+Permissions also need friendly failure states. It is not enough to ask for location, camera, or notifications. The app should explain why the permission is needed, handle denial, and give the user a path to continue.
+
+```jsx
+useFocusEffect(
+  useCallback(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      if (isEditing) {
+        setShowDiscardDialog(true);
+        return true;
+      }
+
+      return false;
+    });
+
+    return () => subscription.remove();
+  }, [isEditing])
+);
+```
+
+## API Integration Needs Mobile Thinking
+
+Mobile networks are not always stable. I try to make API states obvious:
+
+- Loading states for first load and refresh.
+- Empty states that tell the user what happened.
+- Retry buttons for failed requests.
+- Optimistic updates only where rollback is simple.
+- Small payloads for screens that open often.
+
+I also avoid blocking the whole screen when only one section is refreshing. Users notice when an app blanks out during simple actions.
+
+## Testing On Real Devices
+
+An emulator is useful, but real devices catch issues earlier: keyboard overlap, touch target size, safe areas, low-end performance, APK size, and camera or file picker behavior. I test with slow network mode at least once before release because it reveals hidden assumptions quickly.
+
+## Production Polish
+
+The small Android details add up:
+
+- Use correct status bar colors for light and dark screens.
+- Keep touch targets at least comfortable for thumb use.
+- Make error messages short and useful.
+- Persist auth and onboarding state safely.
+- Check release mode performance, not only debug mode.
+
+Good React Native Android apps come from combining React structure with platform respect. When both are handled, the result feels less like a web view and more like a native product.

@@ -1,0 +1,56 @@
+---
+title: Handling Android Permissions In React Native Apps
+description: How I request, explain, retry, and recover from Android permissions for notifications, location, camera, storage, and app settings.
+date: 2026-07-26
+category: React Native
+tags: [React Native, Android, Permissions, Mobile Development]
+keywords: [React Native Android permissions, mobile permission UX, Android permission handling]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/android-permissions-react-native.svg
+imageAlt: Android permission handling illustration with mobile permission dialog and settings path
+canonical: https://muskunishitha.vercel.app/blog/android-permissions-react-native
+slug: android-permissions-react-native
+---
+Permission handling is UX, not only native configuration. A user should understand why the app asks and what still works if they say no.
+
+![Android permission handling illustration with mobile permission dialog and settings path](/assets/blog/android-permissions-react-native.svg "Android permission handling illustration with mobile permission dialog and settings path")
+
+## The Checklist
+
+I ask for permission near the moment of value. Requesting location on the first screen rarely feels as reasonable as requesting it when the user starts delivery tracking.
+
+## A Practical Pattern
+
+The UI needs states for granted, denied, blocked, unavailable, and not requested. A blocked permission should explain how to open settings instead of looping the same prompt.
+
+```js
+const status = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+
+if (status === RESULTS.GRANTED) {
+  await registerDeviceForPush();
+} else {
+  setPermissionMessage("Notifications are optional, but order updates may be delayed.");
+}
+```
+
+## Common Mistakes
+
+- Requesting permissions before explaining the feature.
+- Treating denial as a crash path.
+- Assuming Android versions behave the same.
+- Forgetting to test release builds where permissions and manifests matter.
+
+## Before Shipping
+
+I test permissions on a clean install, after denial, after selecting do not ask again, and after changing the setting manually.
+
+## Related Reading
+
+- [Firebase Cloud Messaging For React Native Push Notifications](/blog/firebase-cloud-messaging-react-native-push)
+- [React Native Android App Development](/blog/react-native-android-app-development)
+- [Debugging React Native Android Release Builds](/blog/debugging-react-native-release-builds)
+
+## Final Thought
+
+Good permission handling respects the user's choice and keeps the app useful whenever possible.

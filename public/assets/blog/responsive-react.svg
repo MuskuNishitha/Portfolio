@@ -1,0 +1,18 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#FEF3C7"/>
+  <rect x="84" y="96" width="1032" height="483" rx="24" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+  <rect x="144" y="172" width="520" height="314" rx="20" fill="#0F172A"/>
+  <rect x="180" y="218" width="226" height="36" rx="8" fill="#FACC15"/>
+  <rect x="180" y="284" width="410" height="18" rx="6" fill="#475569"/>
+  <rect x="180" y="322" width="355" height="18" rx="6" fill="#475569"/>
+  <rect x="180" y="382" width="132" height="44" rx="22" fill="#22C55E"/>
+  <rect x="740" y="172" width="176" height="314" rx="30" fill="#0F172A"/>
+  <rect x="762" y="218" width="132" height="34" rx="8" fill="#FACC15"/>
+  <rect x="762" y="284" width="112" height="16" rx="6" fill="#475569"/>
+  <rect x="762" y="318" width="92" height="16" rx="6" fill="#475569"/>
+  <rect x="762" y="378" width="94" height="40" rx="20" fill="#22C55E"/>
+  <path d="M694 335H720" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M706 323L720 335L706 347" stroke="#0F172A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="144" y="543" fill="#0F172A" font-family="Arial, sans-serif" font-size="52" font-weight="700">Responsive Websites with React</text>
+  <text x="146" y="578" fill="#92400E" font-family="Arial, sans-serif" font-size="22">layouts that hold up from phone screens to wide desktops</text>
+</svg>

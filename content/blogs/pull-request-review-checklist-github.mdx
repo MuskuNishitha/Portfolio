@@ -1,0 +1,53 @@
+---
+title: A Pull Request Review Checklist For GitHub Projects
+description: What I check in GitHub pull requests: scope, screenshots, tests, API contracts, accessibility, deployment risk, and rollback safety.
+date: 2026-06-29
+category: Git & GitHub
+tags: [GitHub, Pull Requests, Code Review, Workflow]
+keywords: [GitHub pull request checklist, code review checklist, PR review frontend backend]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/pull-request-review-checklist-github.svg
+imageAlt: GitHub pull request review illustration with checklist and changed files
+canonical: https://muskunishitha.vercel.app/blog/pull-request-review-checklist-github
+slug: pull-request-review-checklist-github
+---
+A pull request should make review easier, not just move code from one branch to another. The reviewer needs context, risk, and proof that the change was tested.
+
+![GitHub pull request review illustration with checklist and changed files](/assets/blog/pull-request-review-checklist-github.svg "GitHub pull request review illustration with checklist and changed files")
+
+## The Checklist
+
+I look for scope first. If a PR changes blog content, API routes, theme behavior, and deployment config together, it becomes harder to review safely.
+
+## A Practical Pattern
+
+A good PR description includes what changed, why it changed, how it was tested, screenshots for UI work, and notes about migrations or environment variables.
+
+```bash
+git fetch origin
+git switch feature/blog-filters
+git rebase origin/main
+git push --force-with-lease
+```
+
+## Common Mistakes
+
+- Opening a large PR without explaining the goal.
+- Skipping screenshots for visual changes.
+- Changing API response shapes without updating frontend callers.
+- Treating review comments as blockers instead of collaboration.
+
+## Before Shipping
+
+For deployment-sensitive PRs, I also ask how to roll back. A simple answer can save a lot of stress later.
+
+## Related Reading
+
+- [A Git Branching Workflow For Small Development Teams](/blog/git-branching-workflow-small-teams)
+- [GitHub Actions CI Basics For Next.js Projects](/blog/github-actions-ci-nextjs)
+- [README Optimization For A Developer Portfolio Repository](/blog/readme-optimization-developer-portfolio)
+
+## Final Thought
+
+Good GitHub review culture is practical. It reduces bugs by making the change easier to understand.

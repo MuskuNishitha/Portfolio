@@ -1,0 +1,59 @@
+---
+title: A Practical Accessibility Checklist For React Interfaces
+description: The accessibility checks I use for React pages, forms, buttons, modals, keyboard navigation, focus, and dynamic UI states.
+date: 2026-08-14
+category: Frontend
+tags: [Accessibility, React.js, HTML, Frontend]
+keywords: [React accessibility checklist, accessible React forms, keyboard navigation]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/accessible-react-interfaces-checklist.svg
+imageAlt: Accessible React interface illustration with keyboard focus and labels
+canonical: https://muskunishitha.vercel.app/blog/accessible-react-interfaces-checklist
+slug: accessible-react-interfaces-checklist
+---
+Accessibility is easiest when it is checked while building, not after the UI is finished. Most fixes are small when they are caught early.
+
+![Accessible React interface illustration with keyboard focus and labels](/assets/blog/accessible-react-interfaces-checklist.svg "Accessible React interface illustration with keyboard focus and labels")
+
+## The Checklist
+
+I check keyboard navigation first because it reveals many hidden problems: missing focus states, buttons built as divs, modals that do not trap focus, and menus that cannot be closed predictably.
+
+## A Practical Pattern
+
+For forms, every input gets a label, every error has a clear relationship to the field, and the submit button communicates loading state without trapping the user.
+
+```jsx
+<label htmlFor="email">Email address</label>
+<input
+  id="email"
+  name="email"
+  type="email"
+  aria-describedby="email-error"
+/>
+<p id="email-error" role="alert">
+  Enter a valid email address.
+</p>
+```
+
+## Common Mistakes
+
+- Removing outlines globally instead of styling focus states.
+- Using icons without accessible names on action buttons.
+- Announcing every small state change with role alert.
+- Relying only on color to communicate errors or selected states.
+
+## Before Shipping
+
+I also test with real content lengths. A button that is accessible with a short label can become unusable when translated or when the CMS content is longer.
+
+## Related Reading
+
+- [Semantic HTML That Helps Portfolio SEO And Accessibility](/blog/semantic-html-for-developer-portfolios)
+- [React Form Handling With Validation And API Errors](/blog/react-form-handling-validation-errors)
+- [Mobile Form UX Details That Matter In React Native](/blog/mobile-form-ux-react-native)
+
+## Final Thought
+
+Accessible React is mostly disciplined HTML plus thoughtful state handling. It helps everyone use the interface with less friction.

@@ -1,0 +1,58 @@
+---
+title: A MERN Deployment Checklist For Production Releases
+description: A practical end-to-end deployment checklist for MERN apps covering frontend build, backend API, MongoDB Atlas, CORS, SSL, environment variables, and logs.
+date: 2026-06-19
+category: Deployment
+tags: [MERN Stack, Deployment, MongoDB Atlas, Production]
+keywords: [MERN deployment checklist, React Node MongoDB deployment, production release checklist]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/mern-deployment-checklist.svg
+imageAlt: MERN deployment checklist illustration with frontend backend database and domain
+canonical: https://muskunishitha.vercel.app/blog/mern-deployment-checklist
+slug: mern-deployment-checklist
+---
+A MERN deployment has several moving parts. The frontend, backend, database, domain, CORS, environment variables, and logs all need to agree.
+
+![MERN deployment checklist illustration with frontend backend database and domain](/assets/blog/mern-deployment-checklist.svg "MERN deployment checklist illustration with frontend backend database and domain")
+
+## The Checklist
+
+I check the production build first, then the API start command, MongoDB Atlas access, required secrets, CORS origins, HTTPS domain, and smoke-test flows.
+
+## A Practical Pattern
+
+A release checklist should include direct URLs for the frontend, API health endpoint, database dashboard, hosting logs, and rollback steps.
+
+```js
+export const config = {
+  apiUrl: process.env.NEXT_PUBLIC_API_URL,
+  mongoUri: process.env.MONGODB_URI,
+  jwtSecret: process.env.JWT_SECRET,
+};
+
+for (const [key, value] of Object.entries(config)) {
+  if (!value) throw new Error(key + " is missing");
+}
+```
+
+## Common Mistakes
+
+- Testing the frontend without testing API writes.
+- Using development database credentials in production.
+- Forgetting to update CORS after adding the real domain.
+- Deploying without checking server logs after the first requests.
+
+## Before Shipping
+
+After release, I test login if present, main CRUD flow, contact or checkout flow, image loading, sitemap, and mobile layout.
+
+## Related Reading
+
+- [Deploying Node.js APIs With Render Or PM2](/blog/node-api-deployment-render-pm2)
+- [MongoDB Atlas Connection Checks For Production Apps](/blog/mongodb-atlas-production-connection)
+- [Debugging CORS Issues Between Frontend And Backend](/blog/cors-production-api-debugging)
+
+## Final Thought
+
+Deployment confidence comes from checking the whole system, not celebrating the first successful build command.

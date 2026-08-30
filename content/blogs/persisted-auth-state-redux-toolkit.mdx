@@ -1,0 +1,60 @@
+---
+title: Persisted Auth State With Redux Toolkit
+description: How I handle persisted login state, hydration, token expiry, logout cleanup, and protected UI with Redux Toolkit.
+date: 2026-07-01
+category: State Management
+tags: [Redux Toolkit, Authentication, Persisted State, React.js]
+keywords: [Redux persisted auth, Redux Toolkit authentication, React auth hydration]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/persisted-auth-state-redux-toolkit.svg
+imageAlt: Persisted Redux auth state illustration with browser storage and protected screens
+canonical: https://muskunishitha.vercel.app/blog/persisted-auth-state-redux-toolkit
+slug: persisted-auth-state-redux-toolkit
+---
+Persisted auth state is useful until it becomes stale. The app should remember a login, but it also needs to recover when the token expires or the user logs out elsewhere.
+
+![Persisted Redux auth state illustration with browser storage and protected screens](/assets/blog/persisted-auth-state-redux-toolkit.svg "Persisted Redux auth state illustration with browser storage and protected screens")
+
+## Reproduce The Failure
+
+I keep token, user, and hydration state explicit. The UI should know the difference between still checking storage and definitely unauthenticated.
+
+## The Fix Pattern
+
+Logout should clear Redux state, storage, API headers, and any cached private data. Partial logout is where many security and UX bugs begin.
+
+```js
+const initialState = {
+  token: null,
+  user: null,
+  hydrated: false,
+};
+
+function hydrateAuth(state, action) {
+  state.token = action.payload.token;
+  state.user = action.payload.user;
+  state.hydrated = true;
+}
+```
+
+## Mistakes That Hide The Real Bug
+
+- Rendering protected screens before auth hydration finishes.
+- Persisting the full user object without refreshing it.
+- Keeping API authorization headers after logout.
+- Assuming local storage exists during server rendering.
+
+## Production Debugging Notes
+
+I test refresh, expired token, logout, and switching accounts. These flows matter more than the first login success.
+
+## Related Reading
+
+- [JWT Authentication Patterns In MERN Applications](/blog/jwt-authentication-mern-apps)
+- [How I Choose State Management In React Projects](/blog/react-state-management-decisions)
+- [Redux Toolkit for React Applications](/blog/redux-toolkit-react-applications)
+
+## Final Thought
+
+Persisted auth should feel convenient to the user and strict to the app. Both are possible with clear state boundaries.

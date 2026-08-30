@@ -1,10 +1,18 @@
 // sitemap.js - Dynamic sitemap generation for Next.js 14+
 // Generates sitemap.xml for all pages
 
+import { getAllBlogPostSummaries } from "@/lib/blogs";
+
 const BASE_URL = "https://muskunishitha.vercel.app";
 
 export default async function sitemap() {
   const currentDate = new Date().toISOString();
+  const blogRoutes = getAllBlogPostSummaries().map((post) => ({
+    url: post.canonical || `${BASE_URL}/blog/${post.slug}`,
+    lastModified: new Date(`${post.dateModified || post.date}T00:00:00`).toISOString(),
+    changeFrequency: "monthly",
+    priority: 0.65,
+  }));
 
   // Define all routes with their metadata
   const routes = [
@@ -51,7 +59,7 @@ export default async function sitemap() {
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/Blog`,
+      url: `${BASE_URL}/blog`,
       lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.7,
@@ -76,7 +84,7 @@ export default async function sitemap() {
     },
   ];
 
-  return routes.map((route) => ({
+  return [...routes, ...blogRoutes].map((route) => ({
     url: route.url,
     lastModified: route.lastModified,
     changeFrequency: route.changeFrequency,

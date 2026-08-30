@@ -1,0 +1,53 @@
+---
+title: Resolving Git Merge Conflicts Without Losing Work
+description: A practical conflict resolution flow using git status, diff, careful file edits, tests, and safe continuation commands.
+date: 2026-06-28
+category: Git & GitHub
+tags: [Git, Merge Conflicts, Workflow, Debugging]
+keywords: [resolve Git merge conflicts, Git conflict workflow, merge conflict debugging]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/resolving-git-merge-conflicts.svg
+imageAlt: Git merge conflict resolution illustration with split code paths
+canonical: https://muskunishitha.vercel.app/blog/resolving-git-merge-conflicts
+slug: resolving-git-merge-conflicts
+---
+Merge conflicts feel stressful because Git stops at exactly the moment when two versions disagree. The safest response is slow and mechanical.
+
+![Git merge conflict resolution illustration with split code paths](/assets/blog/resolving-git-merge-conflicts.svg "Git merge conflict resolution illustration with split code paths")
+
+## Reproduce The Failure
+
+I start with git status, open the conflicted files, and understand both sides before deleting conflict markers. The goal is not to choose mine or theirs blindly; it is to produce the correct final file.
+
+## The Fix Pattern
+
+After editing, I run the smallest relevant check before continuing the merge or rebase. For UI files, I also inspect the screen if the conflict touched layout or behavior.
+
+```bash
+git status
+git diff -- src/components/Header.jsx
+git add src/components/Header.jsx
+git rebase --continue
+```
+
+## Mistakes That Hide The Real Bug
+
+- Deleting conflict markers without reading both versions.
+- Using checkout ours or theirs on a file with mixed changes.
+- Continuing a rebase before running tests.
+- Resolving generated files while ignoring the source file that created them.
+
+## Production Debugging Notes
+
+When conflicts happen in deployment config or environment code, I ask for extra review. Those files can break builds quietly.
+
+## Related Reading
+
+- [A Git Branching Workflow For Small Development Teams](/blog/git-branching-workflow-small-teams)
+- [Git Reset, Revert, And Stash In Practical Workflows](/blog/git-reset-revert-stash-practical)
+- [A Pull Request Review Checklist For GitHub Projects](/blog/pull-request-review-checklist-github)
+
+## Final Thought
+
+A merge conflict is not Git being difficult. It is Git asking for a human decision where automation would be risky.

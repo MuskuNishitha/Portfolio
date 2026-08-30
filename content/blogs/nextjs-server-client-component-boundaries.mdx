@@ -1,0 +1,59 @@
+---
+title: Server Components And Client Components In Next.js
+description: A practical guide to deciding what should stay server-rendered and what should become a client component in Next.js apps.
+date: 2026-08-03
+category: Next.js
+tags: [Next.js, Server Components, Client Components, Performance]
+keywords: [Next.js Server Components, Next.js Client Components, use client boundary]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/nextjs-server-client-component-boundaries.svg
+imageAlt: Next.js server and client component boundary illustration
+canonical: https://muskunishitha.vercel.app/blog/nextjs-server-client-component-boundaries
+slug: nextjs-server-client-component-boundaries
+---
+The use client line is small, but it changes how much JavaScript the browser receives. That decision deserves a little attention.
+
+![Next.js server and client component boundary illustration](/assets/blog/nextjs-server-client-component-boundaries.svg "Next.js server and client component boundary illustration")
+
+## Where The Problem Starts
+
+I keep static content, filesystem reads, metadata work, and database calls on the server. I move only the parts that need browser state, effects, event handlers, or local storage into client components.
+
+## The Pattern I Use
+
+A common pattern is a server page that prepares summaries and passes them into a focused client component for search or filters. The client gets the data it needs but not the full article content or server utilities.
+
+```jsx
+export function generateStaticParams() {
+  return getAllBlogPosts().map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+export default function BlogPostPage({ params }) {
+  const post = getBlogPostBySlug(params.slug);
+  return <BlogArticle post={post} />;
+}
+```
+
+## Common Mistakes
+
+- Adding use client to a page because an icon button inside it needs onClick.
+- Passing server-only functions into client components.
+- Reading localStorage in a server component.
+- Sending large raw content to the browser for a listing page.
+
+## Production Notes
+
+The build output and bundle analyzer are useful when a page unexpectedly becomes heavy. Boundaries are performance decisions, not just syntax decisions.
+
+## Related Reading
+
+- [A Frontend Performance Budget For React And Next.js Sites](/blog/frontend-performance-budget-next-react)
+- [Next.js App Router Project Structure That Scales](/blog/nextjs-app-router-project-structure)
+- [Next.js for Modern Web Development](/blog/nextjs-modern-web-development)
+
+## Final Thought
+
+Server and client components work best when they have clear jobs. The server prepares; the client interacts.

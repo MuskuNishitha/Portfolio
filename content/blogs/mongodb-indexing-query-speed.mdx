@@ -1,0 +1,52 @@
+---
+title: MongoDB Indexing Basics For Faster Queries
+description: How I choose indexes for MongoDB list pages, search fields, filters, sorts, unique slugs, and dashboard queries.
+date: 2026-07-08
+category: Database
+tags: [MongoDB, Indexing, Performance, Database]
+keywords: [MongoDB indexing, MongoDB query performance, Mongoose indexes]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/mongodb-indexing-query-speed.svg
+imageAlt: MongoDB indexing illustration with query paths and indexed fields
+canonical: https://muskunishitha.vercel.app/blog/mongodb-indexing-query-speed
+slug: mongodb-indexing-query-speed
+---
+Indexes are one of the easiest ways to improve MongoDB performance, but they should follow real query patterns. Adding indexes blindly can slow writes and confuse maintenance.
+
+![MongoDB indexing illustration with query paths and indexed fields](/assets/blog/mongodb-indexing-query-speed.svg "MongoDB indexing illustration with query paths and indexed fields")
+
+## The Checklist
+
+I look at the filters and sorts used by the app. Product lists often need category plus publish status plus created date. Blog routes need a stable slug lookup.
+
+## A Practical Pattern
+
+Unique indexes protect data rules, compound indexes support common list queries, and text indexes can help basic search when a dedicated search service is not needed.
+
+```js
+productSchema.index({ slug: 1 }, { unique: true });
+productSchema.index({ category: 1, isPublished: 1, createdAt: -1 });
+productSchema.index({ name: "text", description: "text" });
+```
+
+## Common Mistakes
+
+- Indexing every field because queries might use it someday.
+- Sorting by a field that is not part of the supporting index.
+- Forgetting unique indexes for slugs or email fields.
+- Not checking explain output when a query remains slow.
+
+## Before Shipping
+
+Index changes should be planned carefully on large collections. Building an index in production can affect write performance if handled casually.
+
+## Related Reading
+
+- [MongoDB for Full Stack Developers](/blog/mongodb-full-stack-developers)
+- [Pagination, Filtering, And Sorting In REST APIs](/blog/rest-api-pagination-filtering-sorting)
+- [Using lean And Projections For MongoDB Performance](/blog/mongodb-lean-projections-performance)
+
+## Final Thought
+
+A good index is connected to a real screen, endpoint, or data rule. That connection keeps database performance practical.

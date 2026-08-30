@@ -1,0 +1,60 @@
+---
+title: Using Next.js API Routes For Portfolio Contact Forms
+description: A practical way to build contact form endpoints with validation, safe environment variables, response shapes, and email delivery.
+date: 2026-07-30
+category: Next.js
+tags: [Next.js, API Routes, Forms, Backend]
+keywords: [Next.js API routes, portfolio contact form, Next.js form endpoint]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/nextjs-api-routes-contact-forms.svg
+imageAlt: Next.js contact form API route illustration with form submission flow
+canonical: https://muskunishitha.vercel.app/blog/nextjs-api-routes-contact-forms
+slug: nextjs-api-routes-contact-forms
+---
+A portfolio contact form looks small, but it still needs backend discipline. Validation, spam protection, email errors, and environment variables all matter.
+
+![Next.js contact form API route illustration with form submission flow](/assets/blog/nextjs-api-routes-contact-forms.svg "Next.js contact form API route illustration with form submission flow")
+
+## Define The Responsibility
+
+I keep the route handler focused on parsing, validation, sending, and returning a clean response. The UI should not need to understand mail provider errors.
+
+## A Maintainable Shape
+
+The endpoint should return field-level errors for bad input and a simple success response after the message is accepted. Sensitive values stay in server-only environment variables.
+
+```js
+export async function POST(request) {
+  const body = await request.json();
+  const result = validateContact(body);
+
+  if (!result.ok) {
+    return Response.json({ errors: result.errors }, { status: 400 });
+  }
+
+  await sendContactEmail(result.data);
+  return Response.json({ ok: true });
+}
+```
+
+## Common Architecture Mistakes
+
+- Trusting client-side validation as the only validation.
+- Returning raw provider errors to the browser.
+- Putting private API keys in NEXT_PUBLIC variables.
+- Letting the form submit repeatedly while the request is active.
+
+## Production Considerations
+
+I test the contact form with missing fields, long messages, invalid email, and a temporarily failing mail service. That is where the endpoint proves it is ready.
+
+## Related Reading
+
+- [React Form Handling With Validation And API Errors](/blog/react-form-handling-validation-errors)
+- [Environment Variables In Node.js And Next.js Projects](/blog/environment-variables-node-nextjs)
+- [A Practical API Security Checklist For MERN Apps](/blog/api-security-checklist-mern)
+
+## Final Thought
+
+Small API routes deserve the same clarity as larger backends. The user only sees a form, but the route protects the whole flow.

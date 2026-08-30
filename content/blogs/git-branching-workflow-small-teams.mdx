@@ -1,0 +1,54 @@
+---
+title: A Git Branching Workflow For Small Development Teams
+description: How I use feature branches, focused commits, pull requests, and safe merges for portfolio, MERN, and React Native projects.
+date: 2026-06-30
+category: Git & GitHub
+tags: [Git, GitHub, Branching, Workflow]
+keywords: [Git branching workflow, GitHub feature branches, small team Git workflow]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/git-branching-workflow-small-teams.svg
+imageAlt: Git branching workflow illustration with feature branches and merge path
+canonical: https://muskunishitha.vercel.app/blog/git-branching-workflow-small-teams
+slug: git-branching-workflow-small-teams
+---
+A good Git workflow keeps work reviewable. The branch should tell a small story, and the commits should make rollback possible if something goes wrong.
+
+![Git branching workflow illustration with feature branches and merge path](/assets/blog/git-branching-workflow-small-teams.svg "Git branching workflow illustration with feature branches and merge path")
+
+## Where The Problem Starts
+
+For small teams, I like short-lived feature branches from main, focused commits, and pull requests that describe the change and the test done.
+
+## The Pattern I Use
+
+A branch name should describe the feature, not the developer. I keep unrelated fixes out of the branch so review stays clear.
+
+```bash
+git switch -c feature/blog-filters
+git status
+git add src/components/blog
+git commit -m "Add blog category filters"
+git push origin feature/blog-filters
+```
+
+## Common Mistakes
+
+- Working on many unrelated changes in one branch.
+- Committing generated files or local environment values by accident.
+- Letting a feature branch drift far from main for too long.
+- Force-pushing without checking whether someone else depends on the branch.
+
+## Production Notes
+
+Before merging, I run the project checks and read the diff. Git helps most when the developer still practices careful review.
+
+## Related Reading
+
+- [A Pull Request Review Checklist For GitHub Projects](/blog/pull-request-review-checklist-github)
+- [Resolving Git Merge Conflicts Without Losing Work](/blog/resolving-git-merge-conflicts)
+- [GitHub Actions CI Basics For Next.js Projects](/blog/github-actions-ci-nextjs)
+
+## Final Thought
+
+Git workflow is not ceremony. It is a way to keep code changes understandable under real project pressure.

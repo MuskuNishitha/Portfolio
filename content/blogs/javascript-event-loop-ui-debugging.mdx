@@ -1,0 +1,61 @@
+---
+title: Debugging Async UI Bugs With the JavaScript Event Loop
+description: How I reason about timers, promises, stale responses, and UI updates when JavaScript async behavior causes confusing frontend bugs.
+date: 2026-08-23
+category: JavaScript
+tags: [JavaScript, Async, Debugging, Frontend]
+keywords: [JavaScript event loop, async UI debugging, frontend JavaScript]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/javascript-event-loop-ui-debugging.svg
+imageAlt: JavaScript event loop illustration with queued tasks and UI panels
+canonical: https://muskunishitha.vercel.app/blog/javascript-event-loop-ui-debugging
+slug: javascript-event-loop-ui-debugging
+---
+Async bugs usually look random at first. A search result appears after the user cleared the input, a loading spinner never stops, or an older request overwrites a newer one.
+
+![JavaScript event loop illustration with queued tasks and UI panels](/assets/blog/javascript-event-loop-ui-debugging.svg "JavaScript event loop illustration with queued tasks and UI panels")
+
+## Reproduce The Failure
+
+I start by separating the browser work into three groups: the user event that started the change, the async work that continues later, and the render that finally updates the screen. Once those are separated, the bug is easier to reproduce instead of being treated as a timing mystery.
+
+## The Fix Pattern
+
+For API-driven screens, I like to give each request an identity or use an abort controller. That keeps stale responses from updating current state, especially in search, filters, dashboards, and mobile-style flows where the user can move quickly.
+
+```js
+let requestId = 0;
+
+async function loadProducts(query) {
+  const currentRequest = requestId + 1;
+  requestId = currentRequest;
+
+  const response = await fetch("/api/products?search=" + encodeURIComponent(query));
+  const data = await response.json();
+
+  if (currentRequest !== requestId) return;
+  setProducts(data.products);
+}
+```
+
+## Mistakes That Hide The Real Bug
+
+- Updating state after a component has unmounted.
+- Assuming responses always arrive in the order they were sent.
+- Mixing debounce timers and fetch calls without cleanup.
+- Catching every error but never showing a useful retry state.
+
+## Production Debugging Notes
+
+In production I log request timing and failure type, but I avoid logging full payloads. That gives enough detail to diagnose slow endpoints without exposing customer data.
+
+## Related Reading
+
+- [API Integration Patterns For React Dashboards](/blog/api-integration-patterns-react)
+- [Common useEffect Mistakes In React Applications](/blog/react-hooks-mistakes-useeffect)
+- [React.js Performance Optimization](/blog/react-performance-optimization)
+
+## Final Thought
+
+The event loop is not something to memorize for interviews only. It is a practical debugging tool when a React or Next.js screen behaves differently under real network speed.

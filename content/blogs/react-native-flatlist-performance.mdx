@@ -1,0 +1,58 @@
+---
+title: React Native FlatList Performance For Large Screens
+description: How I tune FlatList rendering, keys, pagination, item layout, images, and memoized rows in React Native apps.
+date: 2026-07-24
+category: React Native
+tags: [React Native, Performance, FlatList, Mobile Development]
+keywords: [React Native FlatList performance, FlatList optimization, mobile list performance]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/react-native-flatlist-performance.svg
+imageAlt: React Native FlatList performance illustration with virtualized mobile list rows
+canonical: https://muskunishitha.vercel.app/blog/react-native-flatlist-performance
+slug: react-native-flatlist-performance
+---
+A mobile list can feel slow even when the API is fast. Rendering too many rows, unstable keys, and heavy images usually show up as dropped frames.
+
+![React Native FlatList performance illustration with virtualized mobile list rows](/assets/blog/react-native-flatlist-performance.svg "React Native FlatList performance illustration with virtualized mobile list rows")
+
+## Where The Problem Starts
+
+I start by checking whether the screen should use FlatList instead of ScrollView. Any list that can grow from real data deserves virtualization.
+
+## The Pattern I Use
+
+Stable keys, small row components, fixed image dimensions, and thoughtful batch settings solve many list issues before deeper optimization is needed.
+
+```jsx
+<FlatList
+  data={orders}
+  keyExtractor={(item) => item._id}
+  renderItem={({ item }) => <OrderCard order={item} />}
+  initialNumToRender={8}
+  maxToRenderPerBatch={10}
+  windowSize={7}
+  removeClippedSubviews
+/>
+```
+
+## Common Mistakes
+
+- Using array indexes as keys for filtered data.
+- Rendering large images without resizing or caching strategy.
+- Creating inline functions and heavy formatting for every row.
+- Nesting virtualized lists inside ScrollView without a strong reason.
+
+## Production Notes
+
+I test list performance on a lower-end Android device or emulator profile. Fast development machines hide list problems too easily.
+
+## Related Reading
+
+- [React.js Performance Optimization](/blog/react-performance-optimization)
+- [React Native Android App Development](/blog/react-native-android-app-development)
+- [Mobile Form UX Details That Matter In React Native](/blog/mobile-form-ux-react-native)
+
+## Final Thought
+
+FlatList performance is mostly about respecting mobile limits. Render what the user needs now and keep each row cheap.

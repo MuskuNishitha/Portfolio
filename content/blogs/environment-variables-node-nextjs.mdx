@@ -1,0 +1,58 @@
+---
+title: Environment Variables In Node.js And Next.js Projects
+description: How I organize public and private environment variables, deployment values, local files, API URLs, and production safety checks.
+date: 2026-07-11
+category: Backend
+tags: [Environment Variables, Node.js, Next.js, Deployment]
+keywords: [Next.js environment variables, Node.js env config, production environment variables]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/environment-variables-node-nextjs.svg
+imageAlt: Environment variable configuration illustration with local and production settings
+canonical: https://muskunishitha.vercel.app/blog/environment-variables-node-nextjs
+slug: environment-variables-node-nextjs
+---
+Environment variables are small strings that can break an entire deployment. API URLs, database URIs, mail credentials, and JWT secrets all need clear ownership.
+
+![Environment variable configuration illustration with local and production settings](/assets/blog/environment-variables-node-nextjs.svg "Environment variable configuration illustration with local and production settings")
+
+## Where The Problem Starts
+
+In Next.js, I treat NEXT_PUBLIC values as visible to the browser. Private keys stay server-only, and the app validates required variables during startup or build.
+
+## The Pattern I Use
+
+A central config helper makes missing values fail early. It is better to stop the build than deploy a contact form with no mail credentials or an API route with no database URI.
+
+```js
+export const config = {
+  apiUrl: process.env.NEXT_PUBLIC_API_URL,
+  mongoUri: process.env.MONGODB_URI,
+  jwtSecret: process.env.JWT_SECRET,
+};
+
+for (const [key, value] of Object.entries(config)) {
+  if (!value) throw new Error(key + " is missing");
+}
+```
+
+## Common Mistakes
+
+- Putting secrets in NEXT_PUBLIC variables.
+- Using local API URLs in production builds.
+- Changing deployment variables without redeploying.
+- Letting undefined values travel deep into controllers before failing.
+
+## Production Notes
+
+I keep a deployment checklist that maps every required variable to the hosting platform. That reduces last-minute guessing.
+
+## Related Reading
+
+- [Debugging Next.js Production Build Errors](/blog/nextjs-production-build-debugging)
+- [MongoDB Atlas Connection Checks For Production Apps](/blog/mongodb-atlas-production-connection)
+- [Deploying A Next.js Site To Vercel For Production](/blog/deploying-nextjs-vercel-production)
+
+## Final Thought
+
+Environment configuration is part of application architecture. Treat it clearly and deployments become calmer.

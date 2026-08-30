@@ -1,0 +1,56 @@
+---
+title: Redux Selectors And Store Architecture That Stay Clean
+description: How selectors, slice boundaries, derived data, normalized state, and component subscriptions keep Redux Toolkit apps maintainable.
+date: 2026-07-02
+category: State Management
+tags: [Redux Toolkit, Selectors, Store Architecture, React.js]
+keywords: [Redux selectors, Redux Toolkit architecture, derived state Redux]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/redux-selectors-store-architecture.svg
+imageAlt: Redux selector architecture illustration with store slices and derived UI data
+canonical: https://muskunishitha.vercel.app/blog/redux-selectors-store-architecture
+slug: redux-selectors-store-architecture
+---
+Selectors are where Redux state becomes useful to the UI. They keep components from understanding every detail of the store shape.
+
+![Redux selector architecture illustration with store slices and derived UI data](/assets/blog/redux-selectors-store-architecture.svg "Redux selector architecture illustration with store slices and derived UI data")
+
+## Define The Responsibility
+
+I keep slices organized by feature or domain and use selectors to derive visible lists, counts, permissions, and filtered results.
+
+## A Maintainable Shape
+
+Derived data should usually be computed in selectors rather than stored separately. That prevents the app from keeping two sources of truth in sync.
+
+```js
+export const selectVisibleOrders = createSelector(
+  [selectOrders, selectOrderFilters],
+  (orders, filters) =>
+    orders.filter((order) => {
+      return filters.status === "all" || order.status === filters.status;
+    })
+);
+```
+
+## Common Architecture Mistakes
+
+- Reading deep store paths directly in many components.
+- Storing filtered lists when the original list and filter are already available.
+- Creating selectors inside components and losing memoization benefits.
+- Letting one slice update unrelated domain data.
+
+## Production Considerations
+
+Clean selectors make refactors safer. If the API response changes, fewer components need to know about the change.
+
+## Related Reading
+
+- [Redux Toolkit Async Thunks For API State](/blog/redux-toolkit-async-thunks-api-state)
+- [How I Choose State Management In React Projects](/blog/react-state-management-decisions)
+- [Persisted Auth State With Redux Toolkit](/blog/persisted-auth-state-redux-toolkit)
+
+## Final Thought
+
+Redux architecture is healthy when components ask for meaning, not raw storage details.

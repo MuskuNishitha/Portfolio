@@ -1,0 +1,59 @@
+---
+title: Practical Image Optimization In Next.js
+description: How to use Next.js Image with stable containers, sizes, priority, alt text, and local assets without hurting page speed.
+date: 2026-07-31
+category: Next.js
+tags: [Next.js, Images, Performance, Frontend]
+keywords: [Next.js image optimization, next image sizes, image performance]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/nextjs-image-optimization-practical.svg
+imageAlt: Next.js image optimization illustration with responsive image containers
+canonical: https://muskunishitha.vercel.app/blog/nextjs-image-optimization-practical
+slug: nextjs-image-optimization-practical
+---
+Images can make a polished site feel slow even when the React code is clean. The fix starts with choosing the right image size and reserving the right space.
+
+![Next.js image optimization illustration with responsive image containers](/assets/blog/nextjs-image-optimization-practical.svg "Next.js image optimization illustration with responsive image containers")
+
+## Where The Problem Starts
+
+I use priority only for above-the-fold images, define sizes to match the layout, and put fill images inside stable aspect-ratio wrappers.
+
+## The Pattern I Use
+
+For blog cards and project cards, a consistent aspect ratio prevents layout shift and keeps the grid clean. The alt text should describe the visual purpose, not repeat the filename.
+
+```jsx
+<div className="relative aspect-[16/9] overflow-hidden rounded-lg">
+  <Image
+    src={project.image}
+    alt={project.title}
+    fill
+    priority={isAboveTheFold}
+    sizes="(max-width: 768px) 100vw, 50vw"
+    className="object-cover"
+  />
+</div>
+```
+
+## Common Mistakes
+
+- Uploading huge images for small thumbnails.
+- Setting priority on every image in a list.
+- Using fill without a positioned parent and stable height.
+- Cropping important product details out of cover images.
+
+## Production Notes
+
+I check mobile because image waste is easier to miss on a fast laptop. A card that looks fine on desktop can still download more than the phone needs.
+
+## Related Reading
+
+- [Reducing Layout Shift With Stable Images And Cards](/blog/reducing-layout-shift-images)
+- [A Frontend Performance Budget For React And Next.js Sites](/blog/frontend-performance-budget-next-react)
+- [Next.js for Modern Web Development](/blog/nextjs-modern-web-development)
+
+## Final Thought
+
+Next.js Image is a tool, not a guarantee. It works best with thoughtful dimensions, real alt text, and a layout that stays stable.

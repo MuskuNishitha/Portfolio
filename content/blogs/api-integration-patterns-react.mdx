@@ -1,0 +1,71 @@
+---
+title: API Integration Patterns For React Dashboards
+description: How I structure loading states, retries, filters, pagination, and response mapping when React screens depend on REST APIs.
+date: 2026-08-13
+category: React
+tags: [React.js, REST API, Frontend, Dashboard]
+keywords: [React API integration, React dashboard API, REST API frontend]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/api-integration-patterns-react.svg
+imageAlt: React dashboard API integration illustration with request and response panels
+canonical: https://muskunishitha.vercel.app/blog/api-integration-patterns-react
+slug: api-integration-patterns-react
+---
+API integration is where many React screens become difficult to maintain. The UI starts simple, then filters, pagination, refresh, auth errors, and empty states arrive.
+
+![React dashboard API integration illustration with request and response panels](/assets/blog/api-integration-patterns-react.svg "React dashboard API integration illustration with request and response panels")
+
+## Define The Responsibility
+
+I keep API code behind a small client or hook so the component does not need to know headers, base URLs, response parsing, and retry rules. The component should mostly decide what to render for each state.
+
+## A Maintainable Shape
+
+A useful API hook returns data, status, error, refetch, and sometimes pagination metadata. That is enough for the screen to stay honest without hiding important behavior.
+
+```jsx
+useEffect(() => {
+  const controller = new AbortController();
+
+  async function loadDashboard() {
+    setState({ status: "loading", data: null, error: null });
+
+    try {
+      const response = await fetch("/api/dashboard", {
+        signal: controller.signal,
+      });
+      const data = await response.json();
+      setState({ status: "success", data, error: null });
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        setState({ status: "error", data: null, error });
+      }
+    }
+  }
+
+  loadDashboard();
+  return () => controller.abort();
+}, []);
+```
+
+## Common Architecture Mistakes
+
+- Calling the API directly from every button and duplicating error handling.
+- Treating an empty array as a loading state.
+- Ignoring cancelled requests when filters change quickly.
+- Letting backend response shapes leak into every component.
+
+## Production Considerations
+
+For production dashboards, I check slow network mode and token expiry. Those two tests reveal more integration bugs than happy-path clicking.
+
+## Related Reading
+
+- [JavaScript Error Handling For Frontend API Calls](/blog/javascript-error-handling-frontend-apis)
+- [Pagination, Filtering, And Sorting In REST APIs](/blog/rest-api-pagination-filtering-sorting)
+- [Redux Toolkit Async Thunks For API State](/blog/redux-toolkit-async-thunks-api-state)
+
+## Final Thought
+
+A React API integration should make failure states boring. When the contract is clear, the UI feels reliable even when the network is not.

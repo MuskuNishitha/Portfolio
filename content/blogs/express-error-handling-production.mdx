@@ -1,0 +1,57 @@
+---
+title: Production Error Handling In Express APIs
+description: How I structure Express error handlers, status codes, request ids, safe messages, logging, and frontend-friendly failure responses.
+date: 2026-07-15
+category: Backend
+tags: [Express.js, Error Handling, Node.js, Production]
+keywords: [Express error handling, Node.js production errors, API error response]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/express-error-handling-production.svg
+imageAlt: Express production error handling illustration with logs and response states
+canonical: https://muskunishitha.vercel.app/blog/express-error-handling-production
+slug: express-error-handling-production
+---
+An API error should help two people at once: the user who needs a safe message and the developer who needs enough detail to fix the issue.
+
+![Express production error handling illustration with logs and response states](/assets/blog/express-error-handling-production.svg "Express production error handling illustration with logs and response states")
+
+## Reproduce The Failure
+
+I use centralized error middleware so controllers do not invent their own failure response shapes. Known errors get specific status codes; unexpected errors get a safe generic message.
+
+## The Fix Pattern
+
+Request ids are useful because frontend reports, backend logs, and hosting logs can all point to the same failed request.
+
+```js
+export function errorHandler(error, req, res, next) {
+  const statusCode = error.statusCode || 500;
+
+  res.status(statusCode).json({
+    message: statusCode === 500 ? "Something went wrong" : error.message,
+    requestId: req.id,
+  });
+}
+```
+
+## Mistakes That Hide The Real Bug
+
+- Returning stack traces to the browser in production.
+- Sending 200 responses with error messages inside the body.
+- Logging sensitive headers or passwords.
+- Catching errors in controllers and forgetting to return a response.
+
+## Production Debugging Notes
+
+Production logs should include route, method, status, request id, and a safe error summary. That is usually enough to start debugging without exposing private data.
+
+## Related Reading
+
+- [JavaScript Error Handling For Frontend API Calls](/blog/javascript-error-handling-frontend-apis)
+- [A Practical API Security Checklist For MERN Apps](/blog/api-security-checklist-mern)
+- [Express Middleware For Auth, Logging, And Errors](/blog/express-middleware-auth-logging-errors)
+
+## Final Thought
+
+Good API error handling makes failure states consistent. The frontend can trust the contract, and developers can trace problems faster.

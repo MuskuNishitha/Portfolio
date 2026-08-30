@@ -1,0 +1,76 @@
+---
+title: React Native Android Deployment
+description: A practical release checklist for React Native Android apps, covering signing keys, versions, environment setup, builds, and Play Console review.
+date: 2026-07-06
+category: React Native
+tags: [React Native, Android, Deployment, Play Store]
+author: Nishitha Reddy Musku
+readingTime: 8 min read
+image: /assets/blog/android-deployment.svg
+slug: react-native-android-deployment
+---
+
+The first Android release of a React Native app always teaches you something. Debug mode hides a lot: logs are available, Metro is running, performance is different, and signing is not the same as a production build. I treat deployment as its own feature with a checklist.
+
+![React Native Android deployment checklist](/assets/blog/android-deployment.svg "Deployment is easier when signing, versions, and release checks are handled early.")
+
+## Keep Release Configuration Separate
+
+Development and production usually need different API URLs, analytics settings, app names, and sometimes feature flags. I avoid hardcoding these values in screens. Environment configuration should be loaded from one place and checked before building.
+
+```js
+export const config = {
+  apiBaseUrl: process.env.API_BASE_URL,
+  enableAnalytics: process.env.APP_ENV === "production",
+};
+```
+
+The release build should never accidentally point to a local API or staging database.
+
+## Understand Version Code And Version Name
+
+Android uses both `versionCode` and `versionName`.
+
+- `versionCode` is an integer that must increase for every Play Store upload.
+- `versionName` is the user-facing version, like `1.0.3`.
+
+If the version code is not higher than the previous release, Play Console rejects the build. I update it as part of the release branch, not at the last minute.
+
+## Signing Keys Are Critical
+
+The signing key is not just another file. It controls whether future updates can be installed over the current app. I store keystore details safely, keep passwords out of source control, and document who owns the release process.
+
+In React Native Android, the release signing configuration usually lives in Gradle, with sensitive values coming from local properties or environment variables.
+
+## Build In Release Mode Before Uploading
+
+I run the app in release mode before preparing the final artifact. This catches minification issues, missing assets, API URL mistakes, and performance differences.
+
+```bash
+cd android
+./gradlew assembleRelease
+./gradlew bundleRelease
+```
+
+The APK is useful for direct device testing. The AAB is usually what Play Console expects for store distribution.
+
+## Test The Install Flow
+
+Before upload, I test:
+
+- Fresh install on a real Android device.
+- Login or onboarding from an empty state.
+- Push notification permission behavior if used.
+- Deep links if the app supports them.
+- Offline and slow network behavior.
+- Logout and token expiry.
+
+I also check app size, splash screen, icon quality, status bar color, and whether the keyboard covers important form fields.
+
+## Prepare Store Assets Early
+
+Deployment is not only code. Play Console asks for screenshots, app icon, feature graphic, privacy policy, target audience details, and data safety information. These can take longer than expected, especially the first time.
+
+## My Release Rule
+
+I do not trust a release until I have installed the release build on a real device and used the main flows like a user. A successful Gradle build is only one step. A production-ready Android app needs signing, versioning, configuration, testing, and store details all lined up.

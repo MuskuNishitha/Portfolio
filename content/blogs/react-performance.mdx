@@ -1,0 +1,97 @@
+---
+title: React.js Performance Optimization
+description: Practical ways I reduce wasted renders, keep lists smooth, and make React pages feel faster without guessing.
+date: 2026-08-24
+category: React
+tags: [React.js, Performance, Frontend, JavaScript]
+author: Nishitha Reddy Musku
+readingTime: 7 min read
+image: /assets/blog/react-performance.svg
+slug: react-performance-optimization
+featured: true
+---
+
+When a React page feels slow, I do not start by adding `memo` everywhere. I first try to answer one boring but useful question: what work is happening that the user did not ask for? Most performance fixes come from finding that extra work and removing it.
+
+![React performance dashboard](/assets/blog/react-performance.svg "The performance work starts with measuring what changed.")
+
+## Measure Before Changing Code
+
+The React DevTools Profiler is usually my first stop. I look for components that re-render when the interaction should only affect a small part of the page. In portfolio pages, dashboards, and forms, the pattern is often the same: a parent stores too much state, so every card, filter, or input re-renders together.
+
+I also check the browser Performance tab when the problem is visual. If scripting is cheap but frames are dropping, the issue may be layout shifts, large images, expensive shadows, or animations running on properties that trigger layout.
+
+## Keep State Close To Where It Changes
+
+State that only belongs to a search box should stay near that search box. State that only belongs to a modal should not sit at the top of the whole page. Smaller state boundaries make React's job easier and keep components easier to reason about.
+
+```jsx
+function ProjectSearch({ projects }) {
+  const [query, setQuery] = useState("");
+
+  const visibleProjects = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) return projects;
+
+    return projects.filter((project) =>
+      [project.title, project.category, project.description]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalized)
+    );
+  }, [projects, query]);
+
+  return (
+    <>
+      <input value={query} onChange={(event) => setQuery(event.target.value)} />
+      <ProjectGrid projects={visibleProjects} />
+    </>
+  );
+}
+```
+
+`useMemo` is useful here because filtering can run often while the user types. It is not a magic speed button, but it is helpful when the computed value is reused and the dependency list is stable.
+
+## Use Memoization Where It Has A Job
+
+I use `React.memo` on components that receive stable props and are rendered many times. Cards, table rows, list items, and expensive visual components are good candidates. I avoid wrapping tiny components automatically because memoization also has a cost.
+
+```jsx
+const SkillCard = memo(function SkillCard({ skill, selected }) {
+  return (
+    <article className={selected ? "ring-2 ring-primary" : ""}>
+      <h3>{skill.name}</h3>
+      <p>{skill.category}</p>
+    </article>
+  );
+});
+```
+
+The important detail is stable props. If a parent creates a new object or callback on every render, a memoized child still sees a changed prop. In that case I move static data outside the component, use `useCallback`, or pass primitive values.
+
+## Lists Need A Little Extra Care
+
+Long lists are where small mistakes become visible. I check these things first:
+
+- Use a real stable id for `key`, not the array index.
+- Avoid expensive formatting inside every row render.
+- Keep hover animations to transform and opacity where possible.
+- Use pagination, load more, or virtualization when the list can grow a lot.
+
+For most portfolio or content pages, a simple load more pattern is enough. For admin tables or chat history, virtualization becomes more valuable.
+
+## Images Are Part Of React Performance
+
+Many "React performance" issues are actually asset issues. A page can have clean components and still feel heavy because the images are huge. In Next.js projects I use `next/image`, sensible `sizes`, and priority only for the image that is truly above the fold.
+
+## What I Usually Fix First
+
+My practical order is:
+
+1. Profile the interaction.
+2. Move local state closer to the component that owns it.
+3. Memoize repeated expensive children only after props are stable.
+4. Split large client components when a server component can do the work.
+5. Optimize images and reduce layout shifts.
+
+The goal is not to make every render disappear. The goal is to make the right render happen at the right time, with the smallest amount of work needed for the user to feel the page respond immediately.

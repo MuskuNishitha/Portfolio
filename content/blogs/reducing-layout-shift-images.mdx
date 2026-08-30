@@ -1,0 +1,59 @@
+---
+title: Reducing Layout Shift With Stable Images And Cards
+description: How image dimensions, aspect ratios, skeleton states, and predictable card heights help React interfaces avoid layout shift.
+date: 2026-08-05
+category: Performance
+tags: [Performance, Images, CSS, Frontend]
+keywords: [reduce layout shift, image aspect ratio, React card layout]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/reducing-layout-shift-images.svg
+imageAlt: Stable image card layout illustration showing reserved space and aspect ratios
+canonical: https://muskunishitha.vercel.app/blog/reducing-layout-shift-images
+slug: reducing-layout-shift-images
+---
+Layout shift makes a site feel unfinished. The user reaches for a button, an image loads, and the button moves.
+
+![Stable image card layout illustration showing reserved space and aspect ratios](/assets/blog/reducing-layout-shift-images.svg "Stable image card layout illustration showing reserved space and aspect ratios")
+
+## Where The Problem Starts
+
+I prevent this by reserving space before content arrives. Image wrappers get an aspect ratio, cards have stable structure, and loading states approximate the final layout.
+
+## The Pattern I Use
+
+Next.js Image works best when its parent has known dimensions. A fill image inside an aspect-ratio wrapper gives the browser a stable box to reserve.
+
+```jsx
+<div className="relative aspect-[16/9] overflow-hidden rounded-lg">
+  <Image
+    src={project.image}
+    alt={project.title}
+    fill
+    priority={isAboveTheFold}
+    sizes="(max-width: 768px) 100vw, 50vw"
+    className="object-cover"
+  />
+</div>
+```
+
+## Common Mistakes
+
+- Using image tags without width, height, or a stable wrapper.
+- Letting dynamic labels change card height in a grid.
+- Loading custom fonts without considering fallback size differences.
+- Showing skeletons that are much smaller than the real content.
+
+## Production Notes
+
+I test layout with slow image loading and long titles. The fastest way to catch shift is to make the page wait for assets.
+
+## Related Reading
+
+- [A Frontend Performance Budget For React And Next.js Sites](/blog/frontend-performance-budget-next-react)
+- [Practical Image Optimization In Next.js](/blog/nextjs-image-optimization-practical)
+- [CSS Grid And Flexbox Patterns For Dashboard Layouts](/blog/css-grid-flexbox-dashboard-layouts)
+
+## Final Thought
+
+Stable layout is a performance feature and a design feature. It makes the interface feel intentional even while data is loading.

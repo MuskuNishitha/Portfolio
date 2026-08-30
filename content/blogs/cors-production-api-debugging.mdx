@@ -1,0 +1,61 @@
+---
+title: Debugging CORS Issues Between Frontend And Backend
+description: How I debug production CORS errors involving origins, credentials, preflight requests, headers, API URLs, and deployment domains.
+date: 2026-06-20
+category: Deployment
+tags: [CORS, REST API, Deployment, Backend]
+keywords: [CORS production debugging, frontend backend CORS, Express CORS config]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/cors-production-api-debugging.svg
+imageAlt: CORS debugging illustration with browser, frontend origin, and API server
+canonical: https://muskunishitha.vercel.app/blog/cors-production-api-debugging
+slug: cors-production-api-debugging
+---
+CORS errors look like frontend problems because the browser shows them, but the fix is usually in backend headers or deployment URLs.
+
+![CORS debugging illustration with browser, frontend origin, and API server](/assets/blog/cors-production-api-debugging.svg "CORS debugging illustration with browser, frontend origin, and API server")
+
+## Reproduce The Failure
+
+I confirm the exact frontend origin, API URL, request method, credentials setting, and whether the browser is sending a preflight request.
+
+## The Fix Pattern
+
+Production CORS should allow known domains, not every origin. If cookies or auth headers are involved, credentials settings must match on both frontend and backend.
+
+```js
+const allowedOrigins = [
+  "https://muskunishitha.vercel.app",
+  "https://admin.example.com",
+];
+
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
+```
+
+## Mistakes That Hide The Real Bug
+
+- Allowing localhost but forgetting the production domain.
+- Using wildcard origins with credentials.
+- Debugging the browser message without checking the network preflight response.
+- Changing frontend API URLs without updating backend CORS.
+
+## Production Debugging Notes
+
+I keep allowed origins in environment configuration so staging and production can differ safely.
+
+## Related Reading
+
+- [A Practical API Security Checklist For MERN Apps](/blog/api-security-checklist-mern)
+- [Environment Variables In Node.js And Next.js Projects](/blog/environment-variables-node-nextjs)
+- [Frontend Deployment Notes For Netlify And Hostinger](/blog/frontend-deployment-netlify-hostinger)
+
+## Final Thought
+
+CORS becomes easier when you treat origins as deployment configuration, not as random browser behavior.

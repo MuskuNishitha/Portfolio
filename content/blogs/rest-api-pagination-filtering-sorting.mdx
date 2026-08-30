@@ -1,0 +1,57 @@
+---
+title: Pagination, Filtering, And Sorting In REST APIs
+description: How I design query parameters, limits, metadata, indexes, and response shapes for scalable REST API list endpoints.
+date: 2026-07-14
+category: Backend
+tags: [REST API, Pagination, Node.js, MongoDB]
+keywords: [REST API pagination, API filtering sorting, MongoDB paginated API]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/rest-api-pagination-filtering-sorting.svg
+imageAlt: REST API pagination illustration with pages, filters, and sorted records
+canonical: https://muskunishitha.vercel.app/blog/rest-api-pagination-filtering-sorting
+slug: rest-api-pagination-filtering-sorting
+---
+List endpoints start easy and become slow when the product grows. Search, filters, sort menus, and load more buttons all need backend support.
+
+![REST API pagination illustration with pages, filters, and sorted records](/assets/blog/rest-api-pagination-filtering-sorting.svg "REST API pagination illustration with pages, filters, and sorted records")
+
+## Where The Problem Starts
+
+I make pagination explicit with page, limit, total, and hasMore or totalPages. The frontend should not guess whether more data exists.
+
+## The Pattern I Use
+
+Filters should map to indexed fields where possible. Sort options should be whitelisted so the API does not accept arbitrary database fields.
+
+```js
+const page = Math.max(Number(req.query.page) || 1, 1);
+const limit = Math.min(Number(req.query.limit) || 12, 50);
+const skip = (page - 1) * limit;
+
+const [items, total] = await Promise.all([
+  Product.find(filter).sort(sort).skip(skip).limit(limit).lean(),
+  Product.countDocuments(filter),
+]);
+```
+
+## Common Mistakes
+
+- Returning every record and asking the frontend to filter.
+- Allowing unlimited page sizes.
+- Sorting by fields that do not have supporting indexes.
+- Changing response metadata between endpoints.
+
+## Production Notes
+
+I test pagination with real data volume or seeded data. A query that feels instant with 20 documents can struggle with 20,000.
+
+## Related Reading
+
+- [MongoDB Indexing Basics For Faster Queries](/blog/mongodb-indexing-query-speed)
+- [API Integration Patterns For React Dashboards](/blog/api-integration-patterns-react)
+- [Using lean And Projections For MongoDB Performance](/blog/mongodb-lean-projections-performance)
+
+## Final Thought
+
+Good pagination is a contract between UI and database. Both sides need to know how the list grows.

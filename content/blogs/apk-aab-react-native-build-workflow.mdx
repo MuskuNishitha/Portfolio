@@ -1,0 +1,53 @@
+---
+title: APK And AAB Build Workflow For React Native Android
+description: How I think about APK testing, AAB release artifacts, version codes, signing, and pre-upload checks in React Native Android projects.
+date: 2026-07-20
+category: React Native
+tags: [React Native, Android, APK, AAB]
+keywords: [React Native APK AAB, Android build workflow, React Native release artifact]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/apk-aab-react-native-build-workflow.svg
+imageAlt: Android APK and AAB build workflow illustration with release artifacts
+canonical: https://muskunishitha.vercel.app/blog/apk-aab-react-native-build-workflow
+slug: apk-aab-react-native-build-workflow
+---
+APK and AAB files serve different release jobs. I use APKs for direct testing and AABs for Play Store upload when the release is ready.
+
+![Android APK and AAB build workflow illustration with release artifacts](/assets/blog/apk-aab-react-native-build-workflow.svg "Android APK and AAB build workflow illustration with release artifacts")
+
+## Where The Problem Starts
+
+Before generating artifacts, I confirm environment values, app version, version code, signing configuration, icons, splash screen, permissions, and API endpoints.
+
+## The Pattern I Use
+
+The build workflow should be repeatable from a release branch. If a developer cannot rebuild the same artifact later, the process is too fragile.
+
+```bash
+cd android
+./gradlew clean
+./gradlew assembleRelease
+./gradlew bundleRelease
+```
+
+## Common Mistakes
+
+- Forgetting to increase versionCode before upload.
+- Sharing keystore passwords in source control.
+- Testing an APK built with staging configuration.
+- Uploading without installing the release build on a real device.
+
+## Production Notes
+
+I keep a release checklist beside the app, not inside chat messages or memory. It saves time when updates become routine.
+
+## Related Reading
+
+- [React Native Android Deployment](/blog/react-native-android-deployment)
+- [Debugging React Native Android Release Builds](/blog/debugging-react-native-release-builds)
+- [Expo Or React Native CLI: How I Think About The Choice](/blog/expo-vs-react-native-cli-practical-choice)
+
+## Final Thought
+
+A successful Android build is not only a Gradle result. It is a verified artifact that matches the release plan.

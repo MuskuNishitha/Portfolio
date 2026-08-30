@@ -1,0 +1,53 @@
+---
+title: DNS, Domains, SSL, And HTTPS For Web Deployments
+description: A practical explanation of domain records, DNS propagation, SSL certificates, HTTPS redirects, www vs apex domains, and deployment checks.
+date: 2026-06-21
+category: Hosting
+tags: [DNS, SSL, HTTPS, Hosting]
+keywords: [DNS deployment basics, SSL HTTPS setup, domain configuration web app]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/dns-domain-ssl-deployment-basics.svg
+imageAlt: DNS and SSL deployment illustration with domain records and HTTPS certificate
+canonical: https://muskunishitha.vercel.app/blog/dns-domain-ssl-deployment-basics
+slug: dns-domain-ssl-deployment-basics
+---
+A web app is not really ready until the domain works cleanly. DNS, SSL, redirects, and canonical URLs all shape how users and search engines reach the site.
+
+![DNS and SSL deployment illustration with domain records and HTTPS certificate](/assets/blog/dns-domain-ssl-deployment-basics.svg "DNS and SSL deployment illustration with domain records and HTTPS certificate")
+
+## The Checklist
+
+I identify the apex domain, www behavior, required A or CNAME records, SSL status, and whether HTTP redirects to HTTPS.
+
+## A Practical Pattern
+
+For SEO, one canonical domain should win. If both www and non-www work, they should agree through redirects and metadata.
+
+```bash
+npm run build
+vercel pull --yes --environment=production
+vercel build --prod
+vercel deploy --prebuilt --prod
+```
+
+## Common Mistakes
+
+- Changing DNS repeatedly before propagation has time to settle.
+- Pointing www and apex to different apps by accident.
+- Forgetting to update canonical URLs after adding a custom domain.
+- Ignoring mixed-content issues where HTTP assets load on an HTTPS page.
+
+## Before Shipping
+
+After DNS changes, I test the site from the final domain, not only the hosting preview URL. Metadata, sitemap, robots, and API calls should all use the right origin.
+
+## Related Reading
+
+- [Deploying A Next.js Site To Vercel For Production](/blog/deploying-nextjs-vercel-production)
+- [Frontend Deployment Notes For Netlify And Hostinger](/blog/frontend-deployment-netlify-hostinger)
+- [Next.js Metadata For SEO, Canonicals, Open Graph, And Twitter](/blog/nextjs-metadata-seo-canonical)
+
+## Final Thought
+
+Domain setup is infrastructure and SEO at the same time. A clean HTTPS domain makes the deployment feel complete.

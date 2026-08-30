@@ -1,0 +1,59 @@
+---
+title: Dynamic Routes For Blog Slugs In Next.js
+description: How dynamic routes, generateStaticParams, slug lookups, and not-found states work together for crawlable Next.js blog pages.
+date: 2026-08-02
+category: Next.js
+tags: [Next.js, Dynamic Routes, Blog, SEO]
+keywords: [Next.js dynamic routes, blog slug Next.js, generateStaticParams]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/nextjs-dynamic-routes-blog-slugs.svg
+imageAlt: Next.js dynamic blog route illustration with slug paths
+canonical: https://muskunishitha.vercel.app/blog/nextjs-dynamic-routes-blog-slugs
+slug: nextjs-dynamic-routes-blog-slugs
+---
+A blog route needs to be predictable for people and crawlable for search engines. The URL should describe the article and resolve without client-side tricks.
+
+![Next.js dynamic blog route illustration with slug paths](/assets/blog/nextjs-dynamic-routes-blog-slugs.svg "Next.js dynamic blog route illustration with slug paths")
+
+## Where The Problem Starts
+
+With the App Router, I use a folder like blog/[slug] and generate static params from the content source. That gives every post a real route at build time.
+
+## The Pattern I Use
+
+The slug in frontmatter should remain stable after publishing. A title can be improved later, but changing the URL should be rare and should include redirects when needed.
+
+```jsx
+export function generateStaticParams() {
+  return getAllBlogPosts().map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+export default function BlogPostPage({ params }) {
+  const post = getBlogPostBySlug(params.slug);
+  return <BlogArticle post={post} />;
+}
+```
+
+## Common Mistakes
+
+- Building article pages only after client-side search.
+- Changing slugs while keeping old links in the sitemap.
+- Returning a generic page for missing posts instead of notFound.
+- Generating metadata without checking that the post exists.
+
+## Production Notes
+
+For production SEO, I confirm that every slug appears in the sitemap and that canonical URLs match the actual route.
+
+## Related Reading
+
+- [Next.js Metadata For SEO, Canonicals, Open Graph, And Twitter](/blog/nextjs-metadata-seo-canonical)
+- [Semantic HTML That Helps Portfolio SEO And Accessibility](/blog/semantic-html-for-developer-portfolios)
+- [Next.js App Router Project Structure That Scales](/blog/nextjs-app-router-project-structure)
+
+## Final Thought
+
+Dynamic routes are simple when content ownership is clear: one slug, one article, one canonical URL.

@@ -1,0 +1,77 @@
+---
+title: Building Responsive Websites with React
+description: How I build responsive React interfaces with stable layouts, accessible controls, image sizing, and mobile-first testing.
+date: 2026-06-28
+category: Frontend
+tags: [React.js, Responsive Design, Tailwind CSS, Frontend]
+author: Nishitha Reddy Musku
+readingTime: 7 min read
+image: /assets/blog/responsive-react.svg
+slug: building-responsive-websites-react
+---
+
+Responsive design is not only about adding breakpoints. A responsive React site should feel planned at every size: mobile, tablet, laptop, and wide desktop. The layout should not jump when data changes, text should fit, buttons should stay usable, and images should keep their space.
+
+![Responsive React layouts](/assets/blog/responsive-react.svg "Responsive UI starts with stable layout decisions, not random breakpoints.")
+
+## Start Mobile First
+
+I usually build the smallest layout first because it exposes the hard decisions quickly. What content is essential? Which actions need to be visible? What can become a tab, drawer, or stacked section?
+
+After mobile works, larger screens become an enhancement instead of a rescue operation.
+
+## Use Stable Layout Containers
+
+Cards, media blocks, dashboards, and grids should have predictable dimensions. If every card grows differently, the page becomes hard to scan. I use aspect ratios for images, grid tracks for repeated elements, and line clamping where summaries need to stay tidy.
+
+```jsx
+function BlogCard({ post }) {
+  return (
+    <article className="overflow-hidden rounded-lg border bg-white">
+      <div className="relative aspect-[16/10]">
+        <Image src={post.image} alt={post.title} fill className="object-cover" />
+      </div>
+      <div className="flex min-h-[240px] flex-col p-5">
+        <h3 className="line-clamp-2 text-xl font-bold">{post.title}</h3>
+        <p className="mt-3 line-clamp-3 text-sm leading-6">{post.description}</p>
+      </div>
+    </article>
+  );
+}
+```
+
+The exact numbers can change by project, but the idea stays the same: dynamic content should not break the rhythm of the page.
+
+## Buttons And Inputs Need Real Space
+
+On mobile, touch targets matter. I try to keep important buttons easy to tap and avoid placing small controls too close together. Search inputs, filters, and form fields should be comfortable with one hand.
+
+For horizontal filters, I prefer scrollable rows on mobile instead of squeezing every category into two cramped lines.
+
+## Images Should Not Cause Layout Shift
+
+Every image needs a known container. With Next.js, I often use `fill` inside an aspect-ratio wrapper. For normal React apps, I define width, height, or CSS aspect ratio so the browser can reserve space.
+
+## Test Real Content, Not Perfect Content
+
+Responsive bugs usually appear when content is messy:
+
+- Long titles.
+- Empty descriptions.
+- Different image sizes.
+- Tags that wrap.
+- User names or emails that are longer than expected.
+
+I test with realistic content because real projects rarely have perfectly balanced text.
+
+## My Responsive Checklist
+
+Before I call a page ready, I check:
+
+1. 360px mobile width.
+2. Tablet width with navigation open.
+3. Laptop width around 1366px.
+4. Wide desktop width.
+5. Dark and light themes if the project supports both.
+
+Responsive React work is mostly about respecting constraints. When the structure is stable, the UI feels polished instead of fragile.

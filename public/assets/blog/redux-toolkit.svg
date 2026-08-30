@@ -1,0 +1,19 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#170B2E"/>
+  <rect x="98" y="88" width="1004" height="499" rx="24" fill="#24113F" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="158" y="162" width="254" height="312" rx="18" fill="#111827" stroke="#A78BFA"/>
+  <rect x="474" y="162" width="254" height="312" rx="18" fill="#111827" stroke="#A78BFA"/>
+  <rect x="790" y="162" width="254" height="312" rx="18" fill="#111827" stroke="#A78BFA"/>
+  <path d="M412 318H474" stroke="#FACC15" stroke-width="10" stroke-linecap="round"/>
+  <path d="M728 318H790" stroke="#FACC15" stroke-width="10" stroke-linecap="round"/>
+  <text x="203" y="248" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="29" font-weight="700">slice</text>
+  <text x="194" y="318" fill="#C4B5FD" font-family="Arial, sans-serif" font-size="22">actions</text>
+  <text x="190" y="359" fill="#C4B5FD" font-family="Arial, sans-serif" font-size="22">reducers</text>
+  <text x="520" y="248" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="29" font-weight="700">store</text>
+  <text x="509" y="318" fill="#C4B5FD" font-family="Arial, sans-serif" font-size="22">selectors</text>
+  <text x="511" y="359" fill="#C4B5FD" font-family="Arial, sans-serif" font-size="22">middleware</text>
+  <text x="827" y="248" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="29" font-weight="700">UI</text>
+  <text x="835" y="318" fill="#C4B5FD" font-family="Arial, sans-serif" font-size="22">dispatch</text>
+  <text x="835" y="359" fill="#C4B5FD" font-family="Arial, sans-serif" font-size="22">render</text>
+  <text x="152" y="544" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="52" font-weight="700">Redux Toolkit for React Apps</text>
+</svg>

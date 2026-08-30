@@ -1,0 +1,56 @@
+---
+title: How I Choose State Management In React Projects
+description: A practical decision guide for local state, context, Redux Toolkit, server state, and persisted state in React applications.
+date: 2026-08-07
+category: State Management
+tags: [React.js, State Management, Redux Toolkit, Frontend]
+keywords: [React state management, Redux Toolkit decision, local state vs global state]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/react-state-management-decisions.svg
+imageAlt: React state management illustration with local, shared, and server state layers
+canonical: https://muskunishitha.vercel.app/blog/react-state-management-decisions
+slug: react-state-management-decisions
+---
+State management gets easier when every piece of state has a home. The wrong home is what makes simple features feel heavy.
+
+![React state management illustration with local, shared, and server state layers](/assets/blog/react-state-management-decisions.svg "React state management illustration with local, shared, and server state layers")
+
+## Define The Responsibility
+
+Local UI state stays local. Shared application state can move to context or Redux Toolkit. Server data should keep its loading and error behavior close to the API boundary.
+
+## A Maintainable Shape
+
+I reach for Redux Toolkit when state is shared, important, and updated from several places. Auth, dashboard filters, carts, and cross-screen preferences are good examples.
+
+```js
+export const selectVisibleOrders = createSelector(
+  [selectOrders, selectOrderFilters],
+  (orders, filters) =>
+    orders.filter((order) => {
+      return filters.status === "all" || order.status === filters.status;
+    })
+);
+```
+
+## Common Architecture Mistakes
+
+- Putting every input value into Redux.
+- Using context for fast-changing values that re-render a large tree.
+- Persisting state without planning logout and token expiry.
+- Duplicating the same data in local state and global state.
+
+## Production Considerations
+
+In production, state bugs often show up after refresh, logout, or switching users. I test those flows before trusting the architecture.
+
+## Related Reading
+
+- [Redux Toolkit for React Applications](/blog/redux-toolkit-react-applications)
+- [Redux Selectors And Store Architecture That Stay Clean](/blog/redux-selectors-store-architecture)
+- [Persisted Auth State With Redux Toolkit](/blog/persisted-auth-state-redux-toolkit)
+
+## Final Thought
+
+The best state solution is not the biggest one. It is the one that matches how the feature changes over time.

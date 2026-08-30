@@ -1,0 +1,54 @@
+---
+title: JWT Authentication Patterns In MERN Applications
+description: How I approach JWT login flows, token payloads, middleware, expiry, frontend storage decisions, and logout behavior in MERN apps.
+date: 2026-07-17
+category: Backend
+tags: [JWT, Authentication, Node.js, MERN Stack]
+keywords: [JWT authentication MERN, Node.js JWT auth, React auth state]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/jwt-authentication-mern-apps.svg
+imageAlt: JWT authentication flow illustration with user, token, and API middleware
+canonical: https://muskunishitha.vercel.app/blog/jwt-authentication-mern-apps
+slug: jwt-authentication-mern-apps
+---
+Authentication bugs are expensive because they affect trust. I keep JWT flows simple, explicit, and easy to expire.
+
+![JWT authentication flow illustration with user, token, and API middleware](/assets/blog/jwt-authentication-mern-apps.svg "JWT authentication flow illustration with user, token, and API middleware")
+
+## Define The Responsibility
+
+A token should contain only the claims needed by the API, such as user id and role. Sensitive profile details belong in the database, not inside the token payload.
+
+## A Maintainable Shape
+
+The frontend stores auth state carefully, sends the token through a consistent API client, and handles expiry by redirecting or refreshing based on the product rules.
+
+```js
+const token = jwt.sign(
+  { userId: user._id, role: user.role },
+  process.env.JWT_SECRET,
+  { expiresIn: "7d" }
+);
+```
+
+## Common Architecture Mistakes
+
+- Putting passwords or private profile data into JWT payloads.
+- Using very long expiry times without a logout plan.
+- Checking only authentication when the route also needs authorization.
+- Persisting stale user state after the token is invalid.
+
+## Production Considerations
+
+I rotate secrets carefully, keep JWT_SECRET out of public variables, and test expired token behavior before release.
+
+## Related Reading
+
+- [Persisted Auth State With Redux Toolkit](/blog/persisted-auth-state-redux-toolkit)
+- [Express Middleware For Auth, Logging, And Errors](/blog/express-middleware-auth-logging-errors)
+- [A Practical API Security Checklist For MERN Apps](/blog/api-security-checklist-mern)
+
+## Final Thought
+
+JWT auth is manageable when the token has a small job and every route knows what level of access it requires.

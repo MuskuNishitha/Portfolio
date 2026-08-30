@@ -1,0 +1,76 @@
+---
+title: Next.js for Modern Web Development
+description: The practical Next.js patterns I use for portfolio pages, SEO, server rendering, image optimization, and maintainable routing.
+date: 2026-08-10
+category: Next.js
+tags: [Next.js, SEO, App Router, Web Development]
+author: Nishitha Reddy Musku
+readingTime: 7 min read
+image: /assets/blog/nextjs-modern-web.svg
+slug: nextjs-modern-web-development
+---
+
+Next.js is useful because it lets me choose the right rendering model for each part of a site. A portfolio page, a blog article, a dashboard route, and a contact form do not all need the same amount of JavaScript in the browser.
+
+![Next.js web architecture](/assets/blog/nextjs-modern-web.svg "A modern Next.js site works best when server and client responsibilities are clear.")
+
+## Use The App Router To Match The Product
+
+The App Router is folder-based, which makes the route structure easy to understand. I keep pages thin and move the real UI into components. That makes metadata, loading states, and route-specific logic easier to see.
+
+```jsx
+export const metadata = {
+  title: "Projects",
+  description: "Selected web and mobile work built with React and the MERN stack.",
+};
+
+export default function ProjectsPage() {
+  return <Projects />;
+}
+```
+
+For content pages, this keeps the page file focused on SEO and data loading while the component owns the visual experience.
+
+## Server Components Are A Good Default
+
+If a component does not need `useState`, browser events, local storage, or animation state, I keep it as a server component. Server components can read local files, fetch data, and send less JavaScript to the browser.
+
+Client components are still important for search, filters, forms, menus, theme toggles, and animated interactions. The trick is to make the client boundary deliberate.
+
+## Metadata Should Live Close To The Route
+
+For portfolio sites and blogs, metadata is not optional. Recruiters and clients often see links through search previews, LinkedIn, or messaging apps. A route should provide a clear title, description, canonical URL, and Open Graph image.
+
+```jsx
+export async function generateMetadata({ params }) {
+  const post = getBlogPostBySlug(params.slug);
+
+  return {
+    title: post.title,
+    description: post.description,
+    alternates: {
+      canonical: `https://example.com/blog/${post.slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      images: [post.image],
+    },
+  };
+}
+```
+
+This is one of the reasons Next.js is a good fit for a developer portfolio. SEO can be implemented as part of the route instead of added later as a separate concern.
+
+## Images Need Real Sizes
+
+The `Image` component helps with lazy loading and responsive formats, but it still needs thoughtful usage. I set `priority` only for above-the-fold images, define `sizes`, and keep containers stable with aspect ratios. That avoids layout shifts and keeps mobile pages lighter.
+
+## API Routes Are Useful For Small Backend Needs
+
+For a portfolio, API routes are great for contact forms, lightweight AI tools, or adapters around an existing backend. For larger systems, I still prefer a separate backend service because logs, scaling, auth, and deployment boundaries become clearer.
+
+## A Simple Project Rule
+
+My rule is: keep static or content-heavy routes mostly server-rendered, keep interaction-specific pieces client-side, and make SEO part of the route from the beginning. That gives a site that feels fast, reads well to search engines, and stays maintainable as new sections are added.

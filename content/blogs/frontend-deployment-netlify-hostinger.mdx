@@ -1,0 +1,53 @@
+---
+title: Frontend Deployment Notes For Netlify And Hostinger
+description: What I check when deploying React or Next.js frontends to Netlify, Hostinger, or similar hosts, including builds, paths, domains, and environment values.
+date: 2026-06-23
+category: Hosting
+tags: [Netlify, Hostinger, Frontend Deployment, Hosting]
+keywords: [frontend deployment Netlify, Hostinger React deployment, frontend hosting checklist]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/frontend-deployment-netlify-hostinger.svg
+imageAlt: Frontend hosting illustration with build output and domain configuration
+canonical: https://muskunishitha.vercel.app/blog/frontend-deployment-netlify-hostinger
+slug: frontend-deployment-netlify-hostinger
+---
+Frontend hosting problems usually come from build output, route handling, environment variables, or domain settings. The code may be fine while the host serves it incorrectly.
+
+![Frontend hosting illustration with build output and domain configuration](/assets/blog/frontend-deployment-netlify-hostinger.svg "Frontend hosting illustration with build output and domain configuration")
+
+## Where The Problem Starts
+
+For React SPAs, the host needs fallback routing so refreshes on nested routes work. For Next.js, the hosting target must support the rendering features the app uses.
+
+## The Pattern I Use
+
+I write down the build command, output directory, Node version, environment variables, and domain records for each deployment. That prevents guessing during updates.
+
+```bash
+npm run build
+vercel pull --yes --environment=production
+vercel build --prod
+vercel deploy --prebuilt --prod
+```
+
+## Common Mistakes
+
+- Uploading source files instead of the production build output.
+- Forgetting fallback rewrites for client-side routes.
+- Using a host that cannot run required Next.js server features.
+- Changing DNS and expecting it to update everywhere immediately.
+
+## Production Notes
+
+After deploy, I test direct refresh on nested routes, image loading, metadata previews, and API base URLs.
+
+## Related Reading
+
+- [Deploying A Next.js Site To Vercel For Production](/blog/deploying-nextjs-vercel-production)
+- [DNS, Domains, SSL, And HTTPS For Web Deployments](/blog/dns-domain-ssl-deployment-basics)
+- [Debugging CORS Issues Between Frontend And Backend](/blog/cors-production-api-debugging)
+
+## Final Thought
+
+Frontend deployment is mostly matching the app's rendering model to the host's capabilities.

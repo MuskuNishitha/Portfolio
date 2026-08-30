@@ -1,0 +1,15 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#ECFDF5"/>
+  <rect x="96" y="78" width="1008" height="519" rx="24" fill="#FFFFFF" stroke="#A7F3D0" stroke-width="2"/>
+  <ellipse cx="328" cy="246" rx="198" ry="66" fill="#DCFCE7" stroke="#16A34A" stroke-width="3"/>
+  <path d="M130 246V428C130 464 219 494 328 494C437 494 526 464 526 428V246" fill="#BBF7D0"/>
+  <path d="M130 246V428C130 464 219 494 328 494C437 494 526 464 526 428V246" stroke="#16A34A" stroke-width="3"/>
+  <ellipse cx="328" cy="428" rx="198" ry="66" stroke="#16A34A" stroke-width="3"/>
+  <path d="M792 159C854 235 853 357 792 494C731 357 730 235 792 159Z" fill="#16A34A"/>
+  <path d="M792 185V501" stroke="#064E3B" stroke-width="9" stroke-linecap="round"/>
+  <rect x="634" y="226" width="340" height="58" rx="10" fill="#F1F5F9"/>
+  <rect x="634" y="320" width="398" height="58" rx="10" fill="#F1F5F9"/>
+  <rect x="634" y="414" width="284" height="58" rx="10" fill="#F1F5F9"/>
+  <text x="150" y="559" fill="#064E3B" font-family="Arial, sans-serif" font-size="52" font-weight="700">MongoDB for Full Stack Developers</text>
+  <text x="152" y="592" fill="#047857" font-family="Arial, sans-serif" font-size="21">schemas, indexes, projections, and real API usage</text>
+</svg>

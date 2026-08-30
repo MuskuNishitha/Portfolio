@@ -1,0 +1,53 @@
+---
+title: When A React Native App Needs Native Modules
+description: How I decide whether to add a native module, use an existing package, or adjust product requirements in React Native apps.
+date: 2026-07-23
+category: Mobile Development
+tags: [React Native, Native Modules, Android, Mobile Development]
+keywords: [React Native native modules, Android native module, React Native packages]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/react-native-native-modules-when-needed.svg
+imageAlt: React Native native module illustration connecting JavaScript and Android layers
+canonical: https://muskunishitha.vercel.app/blog/react-native-native-modules-when-needed
+slug: react-native-native-modules-when-needed
+---
+Native modules are useful, but they raise the maintenance level of a React Native app. I add them only when the product value is worth the native surface area.
+
+![React Native native module illustration connecting JavaScript and Android layers](/assets/blog/react-native-native-modules-when-needed.svg "React Native native module illustration connecting JavaScript and Android layers")
+
+## Define The Responsibility
+
+The decision starts with the feature: does an existing stable package solve it, does the app need a custom Android SDK, or can the requirement be simplified?
+
+## A Maintainable Shape
+
+When native code is needed, I keep the JavaScript API small and documented. The screen should not need to know native setup details.
+
+```bash
+cd android
+./gradlew clean
+./gradlew assembleRelease
+./gradlew bundleRelease
+```
+
+## Common Architecture Mistakes
+
+- Adding a native dependency before checking release build support.
+- Ignoring Android version compatibility.
+- Leaving setup steps undocumented for the next developer.
+- Wrapping too much behavior in a native module instead of exposing a small capability.
+
+## Production Considerations
+
+Every native dependency belongs in the release checklist. I test clean installs, release builds, and app updates after adding native code.
+
+## Related Reading
+
+- [Expo Or React Native CLI: How I Think About The Choice](/blog/expo-vs-react-native-cli-practical-choice)
+- [Debugging React Native Android Release Builds](/blog/debugging-react-native-release-builds)
+- [React Native Android Deployment](/blog/react-native-android-deployment)
+
+## Final Thought
+
+Native modules are not scary when they are intentional. They just need stronger ownership than a normal JavaScript helper.

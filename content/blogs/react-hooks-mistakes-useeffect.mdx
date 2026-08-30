@@ -1,0 +1,62 @@
+---
+title: Common useEffect Mistakes In React Applications
+description: How to avoid stale data, repeated API calls, missing cleanup, and confusing dependency arrays when using React useEffect.
+date: 2026-08-09
+category: React
+tags: [React.js, Hooks, useEffect, Debugging]
+keywords: [useEffect mistakes, React hooks debugging, React effect cleanup]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/react-hooks-mistakes-useeffect.svg
+imageAlt: React useEffect debugging illustration with dependencies and cleanup
+canonical: https://muskunishitha.vercel.app/blog/react-hooks-mistakes-useeffect
+slug: react-hooks-mistakes-useeffect
+---
+The hardest useEffect bugs are not syntax problems. They are ownership problems: the effect is doing work that belongs in an event handler, a data hook, or a derived value.
+
+![React useEffect debugging illustration with dependencies and cleanup](/assets/blog/react-hooks-mistakes-useeffect.svg "React useEffect debugging illustration with dependencies and cleanup")
+
+## Reproduce The Failure
+
+Before changing a dependency array, I ask what the effect is synchronizing with. If it is synchronizing with the URL, a subscription, or an external API, an effect makes sense. If it is calculating display data, it probably belongs in render or useMemo.
+
+## The Fix Pattern
+
+Cleanup matters for timers, subscriptions, requests, and async callbacks. Without cleanup, old work can update new screens and create bugs that only appear when users move quickly.
+
+```jsx
+useEffect(() => {
+  if (!userId) return;
+
+  let isCurrent = true;
+
+  getUserProfile(userId).then((profile) => {
+    if (isCurrent) setProfile(profile);
+  });
+
+  return () => {
+    isCurrent = false;
+  };
+}, [userId]);
+```
+
+## Mistakes That Hide The Real Bug
+
+- Suppressing dependency warnings without understanding the stale value.
+- Fetching data in multiple child components for the same screen.
+- Using useEffect to copy props into state by default.
+- Starting intervals without clearing them when the component unmounts.
+
+## Production Debugging Notes
+
+I test effects by changing filters quickly, navigating away during loading, and switching accounts. Those flows expose stale updates better than a slow happy path.
+
+## Related Reading
+
+- [Debugging Async UI Bugs With the JavaScript Event Loop](/blog/javascript-event-loop-ui-debugging)
+- [API Integration Patterns For React Dashboards](/blog/api-integration-patterns-react)
+- [React.js Performance Optimization](/blog/react-performance-optimization)
+
+## Final Thought
+
+useEffect is powerful when it synchronizes with something outside React. It becomes noisy when it is used as a general place to put logic.

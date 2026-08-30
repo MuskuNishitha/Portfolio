@@ -1,0 +1,17 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#052E16"/>
+  <rect x="96" y="84" width="1008" height="507" rx="22" fill="#07131F" stroke="#166534" stroke-width="2"/>
+  <rect x="150" y="140" width="350" height="90" rx="14" fill="#0F172A" stroke="#22C55E" stroke-opacity="0.45"/>
+  <rect x="150" y="278" width="350" height="90" rx="14" fill="#0F172A" stroke="#22C55E" stroke-opacity="0.45"/>
+  <rect x="150" y="416" width="350" height="90" rx="14" fill="#0F172A" stroke="#22C55E" stroke-opacity="0.45"/>
+  <path d="M512 185H688" stroke="#84CC16" stroke-width="10" stroke-linecap="round"/>
+  <path d="M512 323H688" stroke="#84CC16" stroke-width="10" stroke-linecap="round"/>
+  <path d="M512 461H688" stroke="#84CC16" stroke-width="10" stroke-linecap="round"/>
+  <rect x="700" y="214" width="350" height="240" rx="20" fill="#111827" stroke="#475569"/>
+  <text x="184" y="195" fill="#BBF7D0" font-family="Arial, sans-serif" font-size="25" font-weight="700">GET /projects</text>
+  <text x="184" y="333" fill="#BBF7D0" font-family="Arial, sans-serif" font-size="25" font-weight="700">POST /contacts</text>
+  <text x="184" y="471" fill="#BBF7D0" font-family="Arial, sans-serif" font-size="25" font-weight="700">PATCH /profile</text>
+  <text x="744" y="302" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="35" font-weight="700">{ status: 200 }</text>
+  <text x="744" y="356" fill="#94A3B8" font-family="Arial, sans-serif" font-size="24">validate, authorize, respond</text>
+  <text x="148" y="556" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="52" font-weight="700">Node.js + Express REST APIs</text>
+</svg>

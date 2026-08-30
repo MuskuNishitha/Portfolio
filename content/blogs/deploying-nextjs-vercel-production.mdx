@@ -1,0 +1,53 @@
+---
+title: Deploying A Next.js Site To Vercel For Production
+description: A practical deployment checklist for Next.js on Vercel, including builds, environment variables, domains, metadata, and post-deploy checks.
+date: 2026-06-24
+category: Deployment
+tags: [Next.js, Vercel, Deployment, Production]
+keywords: [Next.js Vercel deployment, Vercel production checklist, Next.js hosting]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/deploying-nextjs-vercel-production.svg
+imageAlt: Vercel deployment illustration with Next.js build and production domain
+canonical: https://muskunishitha.vercel.app/blog/deploying-nextjs-vercel-production
+slug: deploying-nextjs-vercel-production
+---
+A Vercel deployment is smooth when the project is already honest locally. The production build, environment variables, images, and metadata should all work before pushing.
+
+![Vercel deployment illustration with Next.js build and production domain](/assets/blog/deploying-nextjs-vercel-production.svg "Vercel deployment illustration with Next.js build and production domain")
+
+## The Checklist
+
+I run the build, confirm required variables, check dynamic routes, verify sitemap and robots, and open several pages after deploy.
+
+## A Practical Pattern
+
+For blog sites, I check that each article route is crawlable and that canonical URLs point to the production domain, not localhost or a preview URL.
+
+```bash
+npm run build
+vercel pull --yes --environment=production
+vercel build --prod
+vercel deploy --prebuilt --prod
+```
+
+## Common Mistakes
+
+- Assuming the dev server proves the production build will pass.
+- Forgetting server-only environment variables in the Vercel dashboard.
+- Testing only the home page after deploy.
+- Leaving preview URLs in shared metadata or canonical links.
+
+## Before Shipping
+
+After deployment, I check the main pages, a few article pages, image loading, contact form behavior, and logs for route errors.
+
+## Related Reading
+
+- [Debugging Next.js Production Build Errors](/blog/nextjs-production-build-debugging)
+- [Next.js Metadata For SEO, Canonicals, Open Graph, And Twitter](/blog/nextjs-metadata-seo-canonical)
+- [DNS, Domains, SSL, And HTTPS For Web Deployments](/blog/dns-domain-ssl-deployment-basics)
+
+## Final Thought
+
+Vercel makes deployment convenient, but production confidence still comes from a checklist.

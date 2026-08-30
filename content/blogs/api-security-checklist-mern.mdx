@@ -1,0 +1,59 @@
+---
+title: A Practical API Security Checklist For MERN Apps
+description: Security checks I use for MERN APIs, covering authentication, authorization, validation, CORS, secrets, rate limits, and safe errors.
+date: 2026-07-12
+category: Backend
+tags: [API Security, MERN Stack, Node.js, Express.js]
+keywords: [MERN API security, Node.js API security checklist, Express security]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/api-security-checklist-mern.svg
+imageAlt: MERN API security illustration with protected routes and request checks
+canonical: https://muskunishitha.vercel.app/blog/api-security-checklist-mern
+slug: api-security-checklist-mern
+---
+API security is not one library. It is a set of small checks that close common gaps before the app reaches real users.
+
+![MERN API security illustration with protected routes and request checks](/assets/blog/api-security-checklist-mern.svg "MERN API security illustration with protected routes and request checks")
+
+## The Checklist
+
+I start with authentication, authorization, input validation, CORS, safe error messages, environment variables, and sensible request size limits.
+
+## A Practical Pattern
+
+Each protected route should answer two questions: who is the user, and are they allowed to perform this action on this resource?
+
+```js
+export function requireAuth(req, res, next) {
+  const token = req.headers.authorization?.replace("Bearer ", "");
+
+  if (!token) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  req.user = verifyToken(token);
+  next();
+}
+```
+
+## Common Mistakes
+
+- Checking that a token exists but not checking the user's role or ownership.
+- Using permissive CORS in production.
+- Returning detailed internal errors to the browser.
+- Committing secrets or using public environment variables for private keys.
+
+## Before Shipping
+
+Security should be part of deployment review. A working API is not finished until its unsafe defaults are removed.
+
+## Related Reading
+
+- [JWT Authentication Patterns In MERN Applications](/blog/jwt-authentication-mern-apps)
+- [Debugging CORS Issues Between Frontend And Backend](/blog/cors-production-api-debugging)
+- [Environment Variables In Node.js And Next.js Projects](/blog/environment-variables-node-nextjs)
+
+## Final Thought
+
+Good API security is mostly consistent discipline. The earlier it is built into the route pattern, the less painful it becomes.

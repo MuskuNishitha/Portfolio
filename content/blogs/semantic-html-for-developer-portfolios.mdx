@@ -1,0 +1,59 @@
+---
+title: Semantic HTML That Helps Portfolio SEO And Accessibility
+description: How headings, landmarks, links, alt text, and readable document structure improve a developer portfolio for users and search engines.
+date: 2026-08-20
+category: Frontend
+tags: [HTML, SEO, Accessibility, Frontend]
+keywords: [semantic HTML portfolio, portfolio SEO, accessible HTML]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/semantic-html-for-developer-portfolios.svg
+imageAlt: Semantic HTML portfolio page illustration with landmarks and content sections
+canonical: https://muskunishitha.vercel.app/blog/semantic-html-for-developer-portfolios
+slug: semantic-html-for-developer-portfolios
+---
+Portfolio SEO is not only metadata. Search engines and assistive technologies both benefit when the page structure says what each section actually is.
+
+![Semantic HTML portfolio page illustration with landmarks and content sections](/assets/blog/semantic-html-for-developer-portfolios.svg "Semantic HTML portfolio page illustration with landmarks and content sections")
+
+## The Checklist
+
+I use one clear page heading, section headings that follow a real hierarchy, descriptive links, and form labels that are connected to inputs. This makes the site easier to scan and easier to crawl.
+
+## A Practical Pattern
+
+A portfolio page usually has obvious landmarks: header, main, sections for projects and skills, and footer. The markup should express those landmarks instead of relying on divs for everything.
+
+```jsx
+<label htmlFor="email">Email address</label>
+<input
+  id="email"
+  name="email"
+  type="email"
+  aria-describedby="email-error"
+/>
+<p id="email-error" role="alert">
+  Enter a valid email address.
+</p>
+```
+
+## Common Mistakes
+
+- Skipping heading levels because a smaller style is needed.
+- Using vague link text such as click here for project links.
+- Adding alt text that repeats the filename instead of describing the image.
+- Building forms with placeholder text but no label.
+
+## Before Shipping
+
+Before shipping, I navigate the page with the keyboard, inspect headings, and check that social links and project cards make sense when read out of visual context.
+
+## Related Reading
+
+- [Next.js Metadata For SEO, Canonicals, Open Graph, And Twitter](/blog/nextjs-metadata-seo-canonical)
+- [A Practical Accessibility Checklist For React Interfaces](/blog/accessible-react-interfaces-checklist)
+- [Building Responsive Websites with React](/blog/building-responsive-websites-react)
+
+## Final Thought
+
+Semantic HTML is a quiet quality signal. It improves SEO, accessibility, and maintainability without changing the visual design.

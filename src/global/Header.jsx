@@ -93,6 +93,7 @@ export default function Header() {
     // { name: "Skills", path: "/skills", icon: FiCode },
     { name: "Projects", path: "/projects", icon: FiFolder },
     { name: "Experience", path: "/experience", icon: FiBriefcase },
+    { name: "Blog", path: "/blog", icon: FiBookOpen },
     { name: "Contact", path: "/contact", icon: FiMail },
     { name: "Resume", path: "/resume", icon: FiFileText },
   ];
@@ -114,6 +115,9 @@ export default function Header() {
     setActiveItem(path);
     setMobileMenuOpen(false);
   };
+
+  const isNavItemActive = (path) =>
+    activeItem === path || (path !== "/" && activeItem.startsWith(`${path}/`));
 
   const triggerNavDots = (path) => {
     const id = Date.now();
@@ -341,7 +345,7 @@ export default function Header() {
                     handleNavClick(item.path);
                   }}
                   className={`relative px-3 xl:px-4 py-2 text-sm xl:text-base font-medium transition-all duration-300 group ${
-                    activeItem === item.path
+                    isNavItemActive(item.path)
                       ? "text-primary"
                       : isDarkMode
                         ? "text-gray-300 hover:text-primary"
@@ -350,7 +354,7 @@ export default function Header() {
                 >
                   <span className="relative z-10">{item.name}</span>
 
-                  {activeItem === item.path && (
+                  {isNavItemActive(item.path) && (
                     <motion.span
                       layoutId="activeNav"
                       className={`absolute inset-0 rounded-lg ${
@@ -380,7 +384,7 @@ export default function Header() {
                     handleNavClick(item.path);
                   }}
                   className={`relative px-2.5 py-2 text-xs font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
-                    activeItem === item.path
+                    isNavItemActive(item.path)
                       ? "text-primary"
                       : isDarkMode
                         ? "text-gray-300 hover:text-primary"
@@ -388,7 +392,7 @@ export default function Header() {
                   }`}
                 >
                   {item.name}
-                  {activeItem === item.path && (
+                  {isNavItemActive(item.path) && (
                     <motion.span
                       layoutId="activeNavTablet"
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
@@ -543,7 +547,7 @@ export default function Header() {
                 <nav className="flex-1 overflow-y-auto py-6 px-5 sm:px-6">
                   {navItems.map((item, i) => {
                     const Icon = item.icon;
-                    const isActive = activeItem === item.path;
+                    const isActive = isNavItemActive(item.path);
                     return (
                       <motion.div
                         key={item.name}

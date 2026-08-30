@@ -1,0 +1,60 @@
+---
+title: Controller Architecture For Node.js And Express APIs
+description: How I organize Express controllers, services, request validation, response shapes, and database calls in MERN applications.
+date: 2026-07-19
+category: Backend
+tags: [Node.js, Express.js, REST API, Backend]
+keywords: [Express controller architecture, Node.js API structure, MERN backend]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/node-express-controller-architecture.svg
+imageAlt: Express controller architecture illustration with routes, controllers, and database
+canonical: https://muskunishitha.vercel.app/blog/node-express-controller-architecture
+slug: node-express-controller-architecture
+---
+A controller should be easy to scan. It receives a request, asks the right layer to do work, and returns a predictable response.
+
+![Express controller architecture illustration with routes, controllers, and database](/assets/blog/node-express-controller-architecture.svg "Express controller architecture illustration with routes, controllers, and database")
+
+## Define The Responsibility
+
+I keep routing, auth middleware, validation, controller logic, and database helpers separate enough that each file has a clear job. The goal is clarity, not a complicated folder system.
+
+## A Maintainable Shape
+
+For many MERN APIs, a controller plus model is enough at first. I introduce services when business logic starts repeating across endpoints.
+
+```js
+export async function getProjects(req, res, next) {
+  try {
+    const projects = await Project.find({ isPublished: true })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json({ data: projects });
+  } catch (error) {
+    next(error);
+  }
+}
+```
+
+## Common Architecture Mistakes
+
+- Putting validation, authorization, database writes, and email sending into one long controller.
+- Returning different response shapes for similar endpoints.
+- Catching errors but never passing them to centralized middleware.
+- Letting frontend-specific naming leak into database models.
+
+## Production Considerations
+
+A consistent controller structure makes API debugging faster. Logs can include route, user, status, and request id without changing every endpoint.
+
+## Related Reading
+
+- [Building REST APIs with Node.js and Express.js](/blog/node-express-rest-apis)
+- [Express Middleware For Auth, Logging, And Errors](/blog/express-middleware-auth-logging-errors)
+- [Validating Express API Inputs Without Making Controllers Messy](/blog/validating-express-api-inputs)
+
+## Final Thought
+
+Good Express architecture keeps endpoints predictable. That is what frontend integration needs most.

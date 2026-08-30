@@ -1,0 +1,64 @@
+---
+title: Next.js Metadata For SEO, Canonicals, Open Graph, And Twitter
+description: How I set per-page Next.js metadata for blog posts, portfolio pages, canonical URLs, Open Graph previews, and Twitter cards.
+date: 2026-08-01
+category: Next.js
+tags: [Next.js, SEO, Metadata, Open Graph]
+keywords: [Next.js metadata SEO, canonical URL Next.js, Open Graph Next.js]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/nextjs-metadata-seo-canonical.svg
+imageAlt: Next.js SEO metadata illustration with canonical and social preview cards
+canonical: https://muskunishitha.vercel.app/blog/nextjs-metadata-seo-canonical
+slug: nextjs-metadata-seo-canonical
+---
+Metadata is part of the route, not an afterthought. A good blog post should explain itself to search results, link previews, and browser tabs.
+
+![Next.js SEO metadata illustration with canonical and social preview cards](/assets/blog/nextjs-metadata-seo-canonical.svg "Next.js SEO metadata illustration with canonical and social preview cards")
+
+## The Checklist
+
+For each article I want a clear title, description, canonical URL, Open Graph image, Twitter image, publish date, tags, and structured data. None of that should require hardcoding posts inside a component.
+
+## A Practical Pattern
+
+A content loader can read frontmatter and a route-level generateMetadata function can turn that into Next.js metadata. This keeps SEO close to the page while content stays in MDX.
+
+```js
+export async function generateMetadata({ params }) {
+  const post = getBlogPostBySlug(params.slug);
+
+  return {
+    title: post.title,
+    description: post.description,
+    alternates: {
+      canonical: "/blog/" + post.slug,
+    },
+    openGraph: {
+      type: "article",
+      images: [post.image],
+    },
+  };
+}
+```
+
+## Common Mistakes
+
+- Using the same description for every blog post.
+- Pointing canonical URLs to the blog index instead of the article.
+- Using images without dimensions or meaningful alt text.
+- Forgetting that social previews use absolute URLs after deployment.
+
+## Before Shipping
+
+Before shipping, I inspect generated metadata for several slugs, not only the first post. Dynamic routes can hide mistakes until an older article is opened.
+
+## Related Reading
+
+- [Dynamic Routes For Blog Slugs In Next.js](/blog/nextjs-dynamic-routes-blog-slugs)
+- [Semantic HTML That Helps Portfolio SEO And Accessibility](/blog/semantic-html-for-developer-portfolios)
+- [Deploying A Next.js Site To Vercel For Production](/blog/deploying-nextjs-vercel-production)
+
+## Final Thought
+
+Strong metadata is boring in code and useful everywhere else. It helps each post stand on its own.

@@ -1,0 +1,59 @@
+---
+title: A Frontend Performance Budget For React And Next.js Sites
+description: How I set practical performance limits for JavaScript, images, fonts, animation, and client components in content-heavy websites.
+date: 2026-08-06
+category: Performance
+tags: [Performance, React.js, Next.js, Frontend]
+keywords: [frontend performance budget, React performance checklist, Next.js performance]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/frontend-performance-budget-next-react.svg
+imageAlt: Frontend performance budget illustration with metrics and asset sizes
+canonical: https://muskunishitha.vercel.app/blog/frontend-performance-budget-next-react
+slug: frontend-performance-budget-next-react
+---
+Performance improves faster when the team has limits before the page becomes slow. A budget turns vague goals like make it fast into specific decisions.
+
+![Frontend performance budget illustration with metrics and asset sizes](/assets/blog/frontend-performance-budget-next-react.svg "Frontend performance budget illustration with metrics and asset sizes")
+
+## The Checklist
+
+For portfolio and content sites, I watch JavaScript shipped to the browser, image weight, font loading, and layout shifts. The page should not pay dashboard-level JavaScript cost for static content.
+
+## A Practical Pattern
+
+In Next.js, I keep static content in server components where possible and make interactive islands deliberate. Search boxes, filters, and animated controls can be client components without making the entire page client-rendered.
+
+```jsx
+<div className="relative aspect-[16/9] overflow-hidden rounded-lg">
+  <Image
+    src={project.image}
+    alt={project.title}
+    fill
+    priority={isAboveTheFold}
+    sizes="(max-width: 768px) 100vw, 50vw"
+    className="object-cover"
+  />
+</div>
+```
+
+## Common Mistakes
+
+- Marking a large page with use client because one small section needs state.
+- Loading high-resolution images into small cards.
+- Preloading every asset instead of only above-the-fold essentials.
+- Animating layout properties that force repeated reflow.
+
+## Before Shipping
+
+I verify performance with production builds, not only the dev server. Development mode is useful for coding, but it does not represent the final bundle.
+
+## Related Reading
+
+- [React.js Performance Optimization](/blog/react-performance-optimization)
+- [Practical Image Optimization In Next.js](/blog/nextjs-image-optimization-practical)
+- [Reducing Layout Shift With Stable Images And Cards](/blog/reducing-layout-shift-images)
+
+## Final Thought
+
+A performance budget protects future changes. It helps a site stay fast as more posts, projects, and images are added.

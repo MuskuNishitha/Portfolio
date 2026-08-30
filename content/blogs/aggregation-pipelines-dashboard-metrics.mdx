@@ -1,0 +1,55 @@
+---
+title: MongoDB Aggregation Pipelines For Dashboard Metrics
+description: How I use MongoDB aggregation for totals, grouped results, chart data, date ranges, and reporting endpoints in dashboard projects.
+date: 2026-07-07
+category: Database
+tags: [MongoDB, Aggregation, Dashboard, Database]
+keywords: [MongoDB aggregation, dashboard metrics MongoDB, aggregation pipeline]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/aggregation-pipelines-dashboard-metrics.svg
+imageAlt: MongoDB aggregation dashboard illustration with grouped chart metrics
+canonical: https://muskunishitha.vercel.app/blog/aggregation-pipelines-dashboard-metrics
+slug: aggregation-pipelines-dashboard-metrics
+---
+Dashboards need summaries, not just raw records. Aggregation pipelines are useful when the API needs totals, grouped values, chart data, or date-based reporting.
+
+![MongoDB aggregation dashboard illustration with grouped chart metrics](/assets/blog/aggregation-pipelines-dashboard-metrics.svg "MongoDB aggregation dashboard illustration with grouped chart metrics")
+
+## Where The Problem Starts
+
+I build aggregation from the question the dashboard asks: revenue by vendor, orders by status, users by month, or stock by category. The pipeline should answer one clear question.
+
+## The Pattern I Use
+
+A typical reporting pipeline filters early, groups next, sorts or limits after grouping, and returns a response shape the chart can use directly.
+
+```js
+const totals = await Order.aggregate([
+  { $match: { status: "completed" } },
+  { $group: { _id: "$restaurantId", revenue: { $sum: "$total" } } },
+  { $sort: { revenue: -1 } },
+  { $limit: 10 },
+]);
+```
+
+## Common Mistakes
+
+- Running aggregation across all time when the screen only needs a date range.
+- Grouping before filtering and making MongoDB process too much data.
+- Returning raw aggregation field names that the frontend has to untangle.
+- Forgetting indexes on match fields used at the start of the pipeline.
+
+## Production Notes
+
+For heavy dashboards, I consider caching or precomputed summaries. Not every chart needs to recalculate from raw orders on every refresh.
+
+## Related Reading
+
+- [MongoDB Indexing Basics For Faster Queries](/blog/mongodb-indexing-query-speed)
+- [Using lean And Projections For MongoDB Performance](/blog/mongodb-lean-projections-performance)
+- [React Native FlatList Performance For Large Screens](/blog/react-native-flatlist-performance)
+
+## Final Thought
+
+Aggregation is most valuable when it turns database work into a clear product metric, not when it becomes a hidden data puzzle.

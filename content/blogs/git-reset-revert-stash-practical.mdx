@@ -1,0 +1,52 @@
+---
+title: Git Reset, Revert, And Stash In Practical Workflows
+description: When to use git reset, git revert, and git stash while keeping local work safe and project history understandable.
+date: 2026-06-27
+category: Git & GitHub
+tags: [Git, Git History, Stash, Workflow]
+keywords: [git reset revert stash, Git history cleanup, Git safe workflow]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/git-reset-revert-stash-practical.svg
+imageAlt: Git history tool illustration with reset revert and stash paths
+canonical: https://muskunishitha.vercel.app/blog/git-reset-revert-stash-practical
+slug: git-reset-revert-stash-practical
+---
+Reset, revert, and stash solve different problems. Confusing them can lose work or make shared history harder to understand.
+
+![Git history tool illustration with reset revert and stash paths](/assets/blog/git-reset-revert-stash-practical.svg "Git history tool illustration with reset revert and stash paths")
+
+## Where The Problem Starts
+
+I use stash for temporary local changes, revert for undoing a commit that may already be shared, and reset mostly for local history cleanup before pushing.
+
+## The Pattern I Use
+
+The safest question is: has this commit been shared? If yes, revert is usually safer. If no, reset may be acceptable when used deliberately.
+
+```bash
+git stash push -m "wip contact form"
+git revert abc1234
+git reset --soft HEAD~1
+```
+
+## Common Mistakes
+
+- Using hard reset to clean up without checking uncommitted work.
+- Rewriting shared history without coordinating.
+- Stashing changes and forgetting they exist.
+- Using revert for a local commit that could simply be amended.
+
+## Production Notes
+
+On production branches, I prefer reversible history. A revert commit explains what happened and keeps the timeline honest.
+
+## Related Reading
+
+- [Resolving Git Merge Conflicts Without Losing Work](/blog/resolving-git-merge-conflicts)
+- [A Git Branching Workflow For Small Development Teams](/blog/git-branching-workflow-small-teams)
+- [A Pull Request Review Checklist For GitHub Projects](/blog/pull-request-review-checklist-github)
+
+## Final Thought
+
+Git history tools are powerful when the developer chooses based on whether the work is local, shared, or temporary.

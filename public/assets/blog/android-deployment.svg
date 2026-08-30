@@ -1,0 +1,15 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#111827"/>
+  <rect x="96" y="80" width="1008" height="515" rx="24" fill="#0B1120" stroke="#334155" stroke-width="2"/>
+  <rect x="146" y="152" width="348" height="350" rx="36" fill="#020617" stroke="#64748B" stroke-width="3"/>
+  <rect x="185" y="205" width="270" height="218" rx="16" fill="#1E293B"/>
+  <path d="M320 252L374 346H266L320 252Z" fill="#22C55E"/>
+  <rect x="580" y="161" width="410" height="58" rx="12" fill="#1F2937"/>
+  <rect x="580" y="253" width="470" height="58" rx="12" fill="#1F2937"/>
+  <rect x="580" y="345" width="360" height="58" rx="12" fill="#1F2937"/>
+  <rect x="580" y="437" width="430" height="58" rx="12" fill="#14532D"/>
+  <path d="M520 328H555" stroke="#FACC15" stroke-width="10" stroke-linecap="round"/>
+  <path d="M535 313L555 328L535 343" stroke="#FACC15" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="150" y="552" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="52" font-weight="700">React Native Android Deployment</text>
+  <text x="152" y="586" fill="#94A3B8" font-family="Arial, sans-serif" font-size="22">signing, versions, release builds, and Play Console checks</text>
+</svg>

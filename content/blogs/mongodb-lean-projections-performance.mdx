@@ -1,0 +1,53 @@
+---
+title: Using lean And Projections For MongoDB Performance
+description: How lean queries, selected fields, DTO-style responses, and smaller payloads improve MERN API speed and frontend rendering.
+date: 2026-07-05
+category: Database
+tags: [MongoDB, Mongoose, Performance, REST API]
+keywords: [Mongoose lean performance, MongoDB projections, MERN API optimization]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/mongodb-lean-projections-performance.svg
+imageAlt: MongoDB lean query illustration with selected fields and smaller payloads
+canonical: https://muskunishitha.vercel.app/blog/mongodb-lean-projections-performance
+slug: mongodb-lean-projections-performance
+---
+A slow API is often returning more data than the screen needs. Mongoose documents are useful when changing data, but list endpoints often need plain objects.
+
+![MongoDB lean query illustration with selected fields and smaller payloads](/assets/blog/mongodb-lean-projections-performance.svg "MongoDB lean query illustration with selected fields and smaller payloads")
+
+## The Checklist
+
+I use select to return only the fields required by the UI and lean when I do not need document methods. That can reduce memory work and payload size for frequently loaded lists.
+
+## A Practical Pattern
+
+Project cards, blog summaries, dropdown options, and dashboard tables usually benefit from field selection. Detail pages can fetch richer data when the user asks for it.
+
+```js
+const projects = await Project.find({ isPublished: true })
+  .select("title slug image category")
+  .sort({ createdAt: -1 })
+  .lean();
+```
+
+## Common Mistakes
+
+- Returning full documents for card grids.
+- Using lean and then expecting Mongoose virtuals or methods to be available.
+- Sending private fields because the API response mirrors the database document.
+- Optimizing the frontend while the backend still ships huge payloads.
+
+## Before Shipping
+
+Smaller responses help web and mobile apps. They reduce network cost, JSON parsing, and rendering pressure.
+
+## Related Reading
+
+- [MongoDB for Full Stack Developers](/blog/mongodb-full-stack-developers)
+- [API Integration Patterns For React Dashboards](/blog/api-integration-patterns-react)
+- [A Frontend Performance Budget For React And Next.js Sites](/blog/frontend-performance-budget-next-react)
+
+## Final Thought
+
+Performance is not only algorithms. Sometimes the fastest fix is to stop sending data the screen never uses.

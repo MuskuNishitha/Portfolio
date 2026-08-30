@@ -1,0 +1,64 @@
+---
+title: GitHub Actions CI Basics For Next.js Projects
+description: How to set up a simple GitHub Actions workflow that installs dependencies, runs lint checks, and builds a Next.js project on pull requests.
+date: 2026-06-26
+category: DevOps
+tags: [GitHub Actions, CI/CD, Next.js, DevOps]
+keywords: [GitHub Actions Next.js, CI/CD basics, Next.js build workflow]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/github-actions-ci-nextjs.svg
+imageAlt: GitHub Actions CI illustration with build pipeline and pull request checks
+canonical: https://muskunishitha.vercel.app/blog/github-actions-ci-nextjs
+slug: github-actions-ci-nextjs
+---
+CI does not need to start complicated. A workflow that installs dependencies and runs the build already catches many broken pull requests before deployment.
+
+![GitHub Actions CI illustration with build pipeline and pull request checks](/assets/blog/github-actions-ci-nextjs.svg "GitHub Actions CI illustration with build pipeline and pull request checks")
+
+## The Checklist
+
+For a Next.js portfolio or MERN frontend, I usually start with npm ci, lint if configured, and npm run build. The point is to make the same check run every time.
+
+## A Practical Pattern
+
+Pull request CI protects main from simple mistakes: missing imports, invalid routes, broken metadata generation, and code that only worked locally.
+
+```yaml
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+```
+
+## Common Mistakes
+
+- Running CI with a different Node version than deployment.
+- Skipping environment variables needed by the build.
+- Letting CI warnings pile up until nobody trusts them.
+- Making the workflow so slow that developers avoid opening PRs.
+
+## Before Shipping
+
+CI should match deployment closely enough to be meaningful. It does not need every production secret, but it should fail for the same build problems.
+
+## Related Reading
+
+- [A Pull Request Review Checklist For GitHub Projects](/blog/pull-request-review-checklist-github)
+- [Deploying A Next.js Site To Vercel For Production](/blog/deploying-nextjs-vercel-production)
+- [Debugging Next.js Production Build Errors](/blog/nextjs-production-build-debugging)
+
+## Final Thought
+
+Basic CI is a habit that pays back quickly. It gives every change a clean gate before release.

@@ -1,0 +1,106 @@
+---
+title: Building REST APIs with Node.js and Express.js
+description: How I structure Express APIs with controllers, validation, error handling, pagination, and clean response shapes.
+date: 2026-08-02
+category: Backend
+tags: [Node.js, Express.js, REST API, Backend]
+author: Nishitha Reddy Musku
+readingTime: 8 min read
+image: /assets/blog/node-express-rest.svg
+slug: node-express-rest-apis
+---
+
+A good REST API is predictable. The frontend should know where to send data, what shape comes back, and how errors behave. When I build with Node.js and Express.js, I try to make every endpoint boring in the best way.
+
+![Node Express REST API flow](/assets/blog/node-express-rest.svg "Predictable API layers make frontend integration easier.")
+
+## Start With Route Shape
+
+I keep route names based on resources, not actions. Actions can still exist, but the common operations should be easy to scan.
+
+```js
+router.get("/projects", getProjects);
+router.get("/projects/:id", getProjectById);
+router.post("/contacts", createContact);
+router.patch("/profile", requireAdmin, updateProfile);
+```
+
+This reads clearly from the frontend and maps well to controllers.
+
+## Keep Controllers Thin
+
+Controllers should translate HTTP details into application work. They should not grow into large files full of database logic, formatting, validation, and email sending. When a controller starts doing too much, I move logic into services or helpers.
+
+```js
+export async function createContact(req, res, next) {
+  try {
+    const payload = validateContact(req.body);
+    const contact = await contactService.create(payload);
+
+    res.status(201).json({
+      success: true,
+      data: contact,
+      message: "Contact request created successfully.",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+```
+
+The frontend now receives the same top-level shape on most successful requests: `success`, `data`, and sometimes `message`.
+
+## Centralize Error Handling
+
+Repeated `try/catch` blocks are fine at first, but errors should eventually flow into one handler. A shared handler makes validation errors, auth errors, missing records, and server errors consistent.
+
+```js
+export function errorHandler(error, req, res, next) {
+  const statusCode = error.statusCode || 500;
+
+  res.status(statusCode).json({
+    success: false,
+    message: error.message || "Something went wrong.",
+  });
+}
+```
+
+In production, I avoid leaking database or stack details to the client. Logs can keep the detail; API responses should stay safe and useful.
+
+## Validate At The Boundary
+
+Validation belongs near the route boundary. If a contact form expects `name`, `email`, and `message`, I validate before saving anything. Even small APIs need this because frontend validation can be bypassed.
+
+Validation also makes frontend error handling cleaner. Instead of a generic 500, the UI can show "Please enter a valid email address" and let the user fix it.
+
+## Pagination And Filtering Should Be Explicit
+
+For collection routes, I usually support `page`, `limit`, and simple filters. I also return pagination metadata so the frontend does not guess.
+
+```js
+res.json({
+  success: true,
+  data: projects,
+  pagination: {
+    page,
+    limit,
+    total,
+    totalPages: Math.ceil(total / limit),
+  },
+});
+```
+
+This is especially useful for admin dashboards and blog listings where data grows over time.
+
+## Security Basics I Do Not Skip
+
+Even a portfolio backend should treat security seriously:
+
+- Use environment variables for secrets.
+- Hash passwords with `bcryptjs`.
+- Sign tokens with a strong JWT secret.
+- Protect admin routes with middleware.
+- Limit request body size.
+- Never trust client-submitted roles.
+
+REST APIs do not need to be complicated. They need to be consistent, validated, and easy for the frontend to consume.

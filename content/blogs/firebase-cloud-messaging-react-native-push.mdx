@@ -1,0 +1,56 @@
+---
+title: Firebase Cloud Messaging For React Native Push Notifications
+description: A practical push notification flow for React Native apps using Firebase Cloud Messaging, device tokens, permissions, and foreground handling.
+date: 2026-07-25
+category: React Native
+tags: [React Native, Firebase, Push Notifications, Android]
+keywords: [Firebase Cloud Messaging React Native, React Native push notifications, FCM Android]
+author: Nishitha Reddy Musku
+readingTime: 4 min read
+image: /assets/blog/firebase-cloud-messaging-react-native-push.svg
+imageAlt: Firebase Cloud Messaging push notification illustration with mobile devices
+canonical: https://muskunishitha.vercel.app/blog/firebase-cloud-messaging-react-native-push
+slug: firebase-cloud-messaging-react-native-push
+---
+Push notifications touch frontend, backend, Android setup, and user trust. The feature is small on the screen but wide in implementation.
+
+![Firebase Cloud Messaging push notification illustration with mobile devices](/assets/blog/firebase-cloud-messaging-react-native-push.svg "Firebase Cloud Messaging push notification illustration with mobile devices")
+
+## Define The Responsibility
+
+I split the work into permission request, token registration, backend storage, message sending, and foreground or background handling. Each step gets its own failure state.
+
+## A Maintainable Shape
+
+The backend should store the latest device token against the right user or device record. The app should refresh the token when Firebase rotates it.
+
+```js
+messaging().onMessage(async (remoteMessage) => {
+  showInAppNotification({
+    title: remoteMessage.notification?.title,
+    body: remoteMessage.notification?.body,
+    data: remoteMessage.data,
+  });
+});
+```
+
+## Common Architecture Mistakes
+
+- Sending notifications before the user has opted in.
+- Not handling foreground messages because they worked in the background.
+- Keeping old device tokens forever.
+- Testing only debug mode and missing release configuration issues.
+
+## Production Considerations
+
+Notification copy should be useful and limited. Too many low-value messages train users to disable the permission.
+
+## Related Reading
+
+- [Handling Android Permissions In React Native Apps](/blog/android-permissions-react-native)
+- [React Native Android Deployment](/blog/react-native-android-deployment)
+- [Environment Variables In Node.js And Next.js Projects](/blog/environment-variables-node-nextjs)
+
+## Final Thought
+
+FCM is reliable when the app treats token lifecycle and permission UX as first-class parts of the feature.
