@@ -60,183 +60,441 @@ export default function AboutUs() {
      TECHNICAL SKILLS
   ========================================================= */
 
-  const technicalSkills = [
-    {
-      name: "JavaScript",
-      icon: <SiJavascript />,
-      color: "#f7df1e",
-      category: "Languages",
-    },
-    {
-      name: "TypeScript",
-      icon: <SiTypescript />,
-      color: "#3178c6",
-      category: "Languages",
-    },
-    {
-      name: "HTML5",
-      icon: <FaHtml5 />,
-      color: "#e34f26",
-      category: "Languages",
-    },
-    {
-      name: "CSS3",
-      icon: <FaCss3Alt />,
-      color: "#264de4",
-      category: "Languages",
-    },
-    {
-      name: "Java Basics",
-      icon: <FaCode />,
-      color: "#007396",
-      category: "Languages",
-    },
+const technicalSkills = [
+  // =========================================================
+  // LANGUAGES
+  // =========================================================
+  {
+    name: "JavaScript (ES6+)",
+    icon: <SiJavascript />,
+    color: "#f7df1e",
+    category: "Languages",
+  },
+  {
+    name: "TypeScript",
+    icon: <SiTypescript />,
+    color: "#3178c6",
+    category: "Languages",
+  },
+  {
+    name: "HTML5",
+    icon: <FaHtml5 />,
+    color: "#e34f26",
+    category: "Languages",
+  },
+  {
+    name: "CSS3",
+    icon: <FaCss3Alt />,
+    color: "#264de4",
+    category: "Languages",
+  },
+  {
+    name: "Java Basics",
+    icon: <FaCode />,
+    color: "#007396",
+    category: "Languages",
+  },
 
-    {
-      name: "React.js",
-      icon: <FaReact />,
-      color: "#61dafb",
-      category: "Frontend",
-    },
-    {
-      name: "React Native",
-      icon: <FaMobileAlt />,
-      color: "#61dafb",
-      category: "Frontend",
-    },
-    {
-      name: "Next.js",
-      icon: <SiNextdotjs />,
-      color: isDarkMode ? "#ffffff" : "#000000",
-      category: "Frontend",
-    },
-    {
-      name: "Redux Toolkit",
-      icon: <SiRedux />,
-      color: "#764abc",
-      category: "Frontend",
-    },
-    {
-      name: "Tailwind CSS",
-      icon: <SiTailwindcss />,
-      color: "#22d3ee",
-      category: "Frontend",
-    },
-    {
-      name: "Framer Motion",
-      icon: <FaReact />,
-      color: "#ff6b6b",
-      category: "Frontend",
-    },
+  // =========================================================
+  // FRONTEND & MOBILE
+  // =========================================================
+  {
+    name: "React.js",
+    icon: <FaReact />,
+    color: "#61dafb",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "React Native",
+    icon: <FaMobileAlt />,
+    color: "#61dafb",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Next.js",
+    icon: <SiNextdotjs />,
+    color: isDarkMode ? "#ffffff" : "#000000",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Redux Toolkit",
+    icon: <SiRedux />,
+    color: "#764abc",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Flutter",
+    icon: <FaMobileAlt />,
+    color: "#02569b",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Tailwind CSS",
+    icon: <SiTailwindcss />,
+    color: "#22d3ee",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Bootstrap",
+    icon: <FaCode />,
+    color: "#7952b3",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Ant Design",
+    icon: <FaCode />,
+    color: "#1677ff",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Material UI (MUI)",
+    icon: <FaCode />,
+    color: "#007fff",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Framer Motion",
+    icon: <FaReact />,
+    color: "#ff6b6b",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Responsive UI",
+    icon: <FaPalette />,
+    color: "#14b8a6",
+    category: "Frontend & Mobile",
+  },
+  {
+    name: "Cross-Platform UI",
+    icon: <FaMobileAlt />,
+    color: "#8b5cf6",
+    category: "Frontend & Mobile",
+  },
 
-    {
-      name: "Node.js",
-      icon: <FaNodeJs />,
-      color: "#6fbc44",
-      category: "Backend",
-    },
-    {
-      name: "Express.js",
-      icon: <SiExpress />,
-      color: isDarkMode ? "#ffffff" : "#000000",
-      category: "Backend",
-    },
-    {
-      name: "RESTful APIs",
-      icon: <FaServer />,
-      color: "#818cf8",
-      category: "Backend",
-    },
-    {
-      name: "JWT Authentication",
-      icon: <FaCode />,
-      color: "#e879f9",
-      category: "Backend",
-    },
-    {
-      name: "API Integration",
-      icon: <FaServer />,
-      color: "#34d399",
-      category: "Backend",
-    },
+  // =========================================================
+  // BACKEND & APIs
+  // =========================================================
+  {
+    name: "Node.js",
+    icon: <FaNodeJs />,
+    color: "#6fbc44",
+    category: "Backend & APIs",
+  },
+  {
+    name: "Express.js",
+    icon: <SiExpress />,
+    color: isDarkMode ? "#ffffff" : "#000000",
+    category: "Backend & APIs",
+  },
+  {
+    name: "RESTful API Design",
+    icon: <FaServer />,
+    color: "#818cf8",
+    category: "Backend & APIs",
+  },
+  {
+    name: "GraphQL",
+    icon: <FaCode />,
+    color: "#e10098",
+    category: "Backend & APIs",
+  },
+  {
+    name: "JWT Authentication",
+    icon: <FaCode />,
+    color: "#e879f9",
+    category: "Backend & APIs",
+  },
+  {
+    name: "API Integration",
+    icon: <FaServer />,
+    color: "#34d399",
+    category: "Backend & APIs",
+  },
+  {
+    name: "Microservices Fundamentals",
+    icon: <FaLayerGroup />,
+    color: "#f59e0b",
+    category: "Backend & APIs",
+  },
 
-    {
-      name: "MongoDB",
-      icon: <SiMongodb />,
-      color: "#4db33d",
-      category: "Database",
-    },
-    {
-      name: "Firebase",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
-    {
-      name: "Firestore",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
-    {
-      name: "Realtime DB",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
-    {
-      name: "Cloud Messaging",
-      icon: <SiFirebase />,
-      color: "#ffca28",
-      category: "Database",
-    },
+  // =========================================================
+  // AI / LLM
+  // =========================================================
+  {
+    name: "OpenAI API Integration",
+    icon: <FaCode />,
+    color: "#10a37f",
+    category: "AI / LLM",
+  },
+  {
+    name: "AI Chatbot Development",
+    icon: <FaCode />,
+    color: "#8b5cf6",
+    category: "AI / LLM",
+  },
+  {
+    name: "Prompt Engineering",
+    icon: <FaCode />,
+    color: "#06b6d4",
+    category: "AI / LLM",
+  },
+  {
+    name: "AI-Powered Search",
+    icon: <FaCode />,
+    color: "#f97316",
+    category: "AI / LLM",
+  },
 
-    {
-      name: "Git",
-      icon: <FaGitAlt />,
-      color: "#f05032",
-      category: "Tools",
-    },
-    {
-      name: "GitHub",
-      icon: <FaGithub />,
-      color: isDarkMode ? "#ffffff" : "#000000",
-      category: "Tools",
-    },
-    {
-      name: "Google Maps API",
-      icon: <SiGooglemaps />,
-      color: "#34d399",
-      category: "Tools",
-    },
-    {
-      name: "Postman",
-      icon: <SiPostman />,
-      color: "#ff6c37",
-      category: "Tools",
-    },
-    {
-      name: "Vite",
-      icon: <SiVite />,
-      color: "#646cff",
-      category: "Tools",
-    },
-    {
-      name: "Agile / Scrum",
-      icon: <FaLayerGroup />,
-      color: "#ffb347",
-      category: "Tools",
-    },
-  ];
+  // =========================================================
+  // DATABASE & FIREBASE
+  // =========================================================
+  {
+    name: "MongoDB",
+    icon: <SiMongodb />,
+    color: "#4db33d",
+    category: "Database & Firebase",
+  },
+  {
+    name: "Redis",
+    icon: <FaDatabase />,
+    color: "#dc2626",
+    category: "Database & Firebase",
+  },
+  {
+    name: "Firebase",
+    icon: <SiFirebase />,
+    color: "#ffca28",
+    category: "Database & Firebase",
+  },
+  {
+    name: "Firestore",
+    icon: <SiFirebase />,
+    color: "#ffca28",
+    category: "Database & Firebase",
+  },
+  {
+    name: "Realtime Database",
+    icon: <SiFirebase />,
+    color: "#ffca28",
+    category: "Database & Firebase",
+  },
+  {
+    name: "Cloud Messaging",
+    icon: <SiFirebase />,
+    color: "#ffca28",
+    category: "Database & Firebase",
+  },
+  {
+    name: "Firebase Authentication",
+    icon: <SiFirebase />,
+    color: "#ffca28",
+    category: "Database & Firebase",
+  },
+  {
+    name: "OTP Verification",
+    icon: <FaPhone />,
+    color: "#22c55e",
+    category: "Database & Firebase",
+  },
 
-  const categories = [
-    "All",
-    "Languages",
-    "Frontend",
-    "Backend",
-    "Database",
-    "Tools",
-  ];
+  // =========================================================
+  // DEVOPS & DEPLOYMENT
+  // =========================================================
+  {
+    name: "CI/CD",
+    icon: <FaServer />,
+    color: "#2088ff",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "GitHub Actions",
+    icon: <FaGithub />,
+    color: isDarkMode ? "#ffffff" : "#000000",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Nginx",
+    icon: <FaServer />,
+    color: "#009639",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Load Balancing",
+    icon: <FaServer />,
+    color: "#0ea5e9",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "PM2",
+    icon: <FaServer />,
+    color: "#334155",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Clustering",
+    icon: <FaLayerGroup />,
+    color: "#6366f1",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Docker Basics",
+    icon: <FaCode />,
+    color: "#2496ed",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Vercel",
+    icon: <SiNextdotjs />,
+    color: isDarkMode ? "#ffffff" : "#000000",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Firebase Hosting",
+    icon: <SiFirebase />,
+    color: "#ffca28",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Hostinger",
+    icon: <FaServer />,
+    color: "#673de6",
+    category: "DevOps & Deployment",
+  },
+  {
+    name: "Netlify",
+    icon: <FaServer />,
+    color: "#00c7b7",
+    category: "DevOps & Deployment",
+  },
+
+  // =========================================================
+  // PAYMENTS & SECURITY
+  // =========================================================
+  {
+    name: "Razorpay",
+    icon: <FaCode />,
+    color: "#3395ff",
+    category: "Payments & Security",
+  },
+  {
+    name: "Role-Based Access Control",
+    icon: <FaUserTie />,
+    color: "#6366f1",
+    category: "Payments & Security",
+  },
+
+  // =========================================================
+  // TESTING & QUALITY
+  // =========================================================
+  {
+    name: "Unit Testing",
+    icon: <FaCheckCircle />,
+    color: "#22c55e",
+    category: "Testing & Quality",
+  },
+  {
+    name: "Debugging",
+    icon: <FaCode />,
+    color: "#f59e0b",
+    category: "Testing & Quality",
+  },
+  {
+    name: "Code Review",
+    icon: <FaCheckCircle />,
+    color: "#14b8a6",
+    category: "Testing & Quality",
+  },
+  {
+    name: "Postman",
+    icon: <SiPostman />,
+    color: "#ff6c37",
+    category: "Testing & Quality",
+  },
+  {
+    name: "Lighthouse",
+    icon: <FaBolt />,
+    color: "#f59e0b",
+    category: "Testing & Quality",
+  },
+  {
+    name: "Performance Optimization",
+    icon: <FaRocket />,
+    color: "#ec4899",
+    category: "Testing & Quality",
+  },
+
+  // =========================================================
+  // TOOLS & METHODOLOGY
+  // =========================================================
+  {
+    name: "Git",
+    icon: <FaGitAlt />,
+    color: "#f05032",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "GitHub",
+    icon: <FaGithub />,
+    color: isDarkMode ? "#ffffff" : "#000000",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "Google Maps API",
+    icon: <SiGooglemaps />,
+    color: "#34d399",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "Google Analytics",
+    icon: <FaCode />,
+    color: "#f9ab00",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "Vite",
+    icon: <SiVite />,
+    color: "#646cff",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "Agile / Scrum",
+    icon: <FaLayerGroup />,
+    color: "#ffb347",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "SDLC",
+    icon: <FaLayerGroup />,
+    color: "#8b5cf6",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "Cross-Functional Collaboration",
+    icon: <FaUserTie />,
+    color: "#14b8a6",
+    category: "Tools & Methodology",
+  },
+  {
+    name: "Problem Solving",
+    icon: <FaBolt />,
+    color: "#f97316",
+    category: "Tools & Methodology",
+  },
+];
+
+
+const categories = [
+  "All",
+  "Languages",
+  "Frontend & Mobile",
+  "Backend & APIs",
+  "AI / LLM",
+  "Database & Firebase",
+  "DevOps & Deployment",
+  "Payments & Security",
+  "Testing & Quality",
+  "Tools & Methodology",
+];
 
   const filteredSkills =
     activeCategory === "All"
