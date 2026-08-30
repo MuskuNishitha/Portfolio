@@ -1,23 +1,34 @@
-<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="675" fill="#0F172A"/>
-  <rect width="1200" height="675" fill="url(#bg)"/>
-  <rect x="72" y="70" width="1056" height="535" rx="28" fill="#111827" stroke="#334155" stroke-width="2"/>
-  <rect x="112" y="116" width="370" height="54" rx="27" fill="#7C3AED" fill-opacity="0.18" stroke="#7C3AED" stroke-opacity="0.6"/>
-  <text x="140" y="151" fill="#7C3AED" font-family="Arial, sans-serif" font-size="22" font-weight="700">State Management</text>
-  <rect x="112" y="224" width="420" height="30" rx="10" fill="#1F2937"/>
-  <rect x="112" y="282" width="500" height="24" rx="8" fill="#1F2937"/>
-  <rect x="112" y="328" width="450" height="24" rx="8" fill="#334155"/>
-  <rect x="650" y="176" width="370" height="260" rx="22" fill="#020617" stroke="#7C3AED" stroke-opacity="0.75"/>
-  <path d="M710 254L765 309L710 364" stroke="#7C3AED" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M805 364H940" stroke="#94A3B8" stroke-width="14" stroke-linecap="round"/>
-  <path d="M805 308H910" stroke="#475569" stroke-width="12" stroke-linecap="round"/>
-  <text x="112" y="500" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="38" font-weight="700">How I Choose State Management In</text>
-  <text x="112" y="544" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="38" font-weight="700">React Projects</text>
+<svg width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="title">How I Choose State Management In React Projects</title>
+  <desc id="desc">How I Choose State Management In React Projects technical illustration showing React state management decision map</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="675" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7C3AED" stop-opacity="0.28"/>
-      <stop offset="0.52" stop-color="#0F172A" stop-opacity="0.96"/>
-      <stop offset="1" stop-color="#22C55E" stop-opacity="0.16"/>
+      <stop stop-color="#38BDF8" stop-opacity="0.34"/>
+      <stop offset="0.48" stop-color="#111827" stop-opacity="1"/>
+      <stop offset="1" stop-color="#A855F7" stop-opacity="0.28"/>
     </linearGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#334155" stroke-opacity="0.35"/>
+    </pattern>
   </defs>
+  <rect width="1200" height="675" fill="#0B1020"/>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#grid)" opacity="0.55"/>
+  <rect x="64" y="58" width="1072" height="555" rx="30" fill="#111827" fill-opacity="0.92" stroke="#334155" stroke-width="2"/>
+  <rect x="96" y="100" width="300" height="50" rx="25" fill="#38BDF8" fill-opacity="0.16" stroke="#38BDF8" stroke-opacity="0.8"/>
+  <text x="126" y="133" fill="#38BDF8" font-family="Arial, sans-serif" font-size="21" font-weight="800">State Management</text>
+  <rect x="96" y="202" width="396" height="24" rx="8" fill="#334155"/>
+  <rect x="96" y="250" width="456" height="18" rx="7" fill="#475569"/>
+  <rect x="96" y="290" width="362" height="18" rx="7" fill="#1F2937"/>
+  
+    <rect x="612" y="140" width="398" height="282" rx="26" fill="#0F172A" stroke="#38BDF8" stroke-width="6"/>
+    <rect x="650" y="190" width="144" height="78" rx="16" fill="#38BDF8" fill-opacity="0.18" stroke="#38BDF8" stroke-width="4"/>
+    <rect x="828" y="190" width="144" height="78" rx="16" fill="#A855F7" fill-opacity="0.18" stroke="#A855F7" stroke-width="4"/>
+    <rect x="650" y="306" width="322" height="54" rx="16" fill="#111827" stroke="#64748B" stroke-width="4"/>
+    <path d="M794 229h34M811 268v38" stroke="#94A3B8" stroke-width="8" stroke-linecap="round"/>
+    <text x="811" y="486" text-anchor="middle" fill="#F8FAFC" font-family="Arial" font-size="25" font-weight="700">React state management decision</text>
+  <rect x="96" y="548" width="980" height="34" rx="17" fill="#0F172A" stroke="#334155"/>
+  <text x="126" y="571" fill="#CBD5E1" font-family="Arial, sans-serif" font-size="17" font-weight="700">choosing local state  |  state decisions that make future features  |  State Management</text>
+  <text x="96" y="430" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="37" font-weight="800">How I Choose State Management</text>
+<text x="96" y="474" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="37" font-weight="800">In React Projects</text>
 </svg>

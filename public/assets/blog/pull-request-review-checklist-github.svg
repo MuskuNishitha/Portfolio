@@ -1,23 +1,34 @@
-<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="675" fill="#0F172A"/>
-  <rect width="1200" height="675" fill="url(#bg)"/>
-  <rect x="72" y="70" width="1056" height="535" rx="28" fill="#111827" stroke="#334155" stroke-width="2"/>
-  <rect x="112" y="116" width="370" height="54" rx="27" fill="#334155" fill-opacity="0.18" stroke="#334155" stroke-opacity="0.6"/>
-  <text x="140" y="151" fill="#334155" font-family="Arial, sans-serif" font-size="22" font-weight="700">Git &amp; GitHub</text>
-  <rect x="112" y="224" width="420" height="30" rx="10" fill="#1F2937"/>
-  <rect x="112" y="282" width="500" height="24" rx="8" fill="#1F2937"/>
-  <rect x="112" y="328" width="450" height="24" rx="8" fill="#334155"/>
-  <circle cx="824" cy="302" r="118" fill="#020617" stroke="#334155" stroke-width="12"/>
-  <path d="M748 302H900" stroke="#334155" stroke-width="10" stroke-linecap="round"/>
-  <path d="M824 226V378" stroke="#94A3B8" stroke-width="10" stroke-linecap="round"/>
-  <circle cx="824" cy="302" r="24" fill="#334155"/>
-  <text x="112" y="500" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="38" font-weight="700">A Pull Request Review Checklist</text>
-  <text x="112" y="544" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="38" font-weight="700">For GitHub Projects</text>
+<svg width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="title">A Pull Request Review Checklist For GitHub Projects</title>
+  <desc id="desc">A Pull Request Review Checklist For GitHub Projects technical illustration showing GitHub pull request review checklist</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="675" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#334155" stop-opacity="0.28"/>
-      <stop offset="0.52" stop-color="#0F172A" stop-opacity="0.96"/>
-      <stop offset="1" stop-color="#22C55E" stop-opacity="0.16"/>
+      <stop stop-color="#818CF8" stop-opacity="0.34"/>
+      <stop offset="0.48" stop-color="#111827" stop-opacity="1"/>
+      <stop offset="1" stop-color="#F97316" stop-opacity="0.28"/>
     </linearGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#334155" stroke-opacity="0.35"/>
+    </pattern>
   </defs>
+  <rect width="1200" height="675" fill="#0B1020"/>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#grid)" opacity="0.55"/>
+  <rect x="64" y="58" width="1072" height="555" rx="30" fill="#111827" fill-opacity="0.92" stroke="#334155" stroke-width="2"/>
+  <rect x="96" y="100" width="300" height="50" rx="25" fill="#818CF8" fill-opacity="0.16" stroke="#818CF8" stroke-opacity="0.8"/>
+  <text x="126" y="133" fill="#818CF8" font-family="Arial, sans-serif" font-size="21" font-weight="800">Git &amp; GitHub</text>
+  <rect x="96" y="202" width="396" height="24" rx="8" fill="#334155"/>
+  <rect x="96" y="250" width="456" height="18" rx="7" fill="#475569"/>
+  <rect x="96" y="290" width="362" height="18" rx="7" fill="#1F2937"/>
+  
+      <circle cx="650" cy="205" r="34" fill="#0F172A" stroke="#818CF8" stroke-width="7"/>
+      <circle cx="806" cy="305" r="34" fill="#0F172A" stroke="#F97316" stroke-width="7"/>
+      <circle cx="962" cy="405" r="34" fill="#0F172A" stroke="#818CF8" stroke-width="7"/>
+      <path d="M684 205c64 0 58 100 88 100M840 305c64 0 58 100 88 100" stroke="#94A3B8" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <rect x="610" y="486" width="392" height="58" rx="16" fill="#0F172A" stroke="#818CF8" stroke-opacity="0.8"/>
+      <text x="806" y="523" text-anchor="middle" fill="#F8FAFC" font-family="Arial" font-size="24" font-weight="700">Production check</text>
+  <rect x="96" y="548" width="980" height="34" rx="17" fill="#0F172A" stroke="#334155"/>
+  <text x="126" y="571" fill="#CBD5E1" font-family="Arial, sans-serif" font-size="17" font-weight="700">small diffs  |  reviews that catch bugs without turning  |  Git &amp; GitHub</text>
+  <text x="96" y="430" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="37" font-weight="800">A Pull Request Review Checklist</text>
+<text x="96" y="474" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="37" font-weight="800">For GitHub Projects</text>
 </svg>
